@@ -8,11 +8,15 @@
 
 import UIKit
 
-class Tile: UIView {
+class TileView: UIView {
     
     var number: Int = 0 {
         didSet {
-            numberLabel?.text = String(number)
+            if number <= 0 {
+                numberLabel?.text = ""
+            } else {
+                numberLabel?.text = String(number)
+            }
         }
     }
     var numberLabel: UILabel!
@@ -58,8 +62,8 @@ class Tile: UIView {
         numberLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 40)
         numberLabel.minimumScaleFactor = 12.0 / numberLabel.font.pointSize
         numberLabel.adjustsFontSizeToFitWidth = true
-        numberLabel.text = String(number)
         numberLabel.textAlignment = NSTextAlignment.Center
+        numberLabel.baselineAdjustment = UIBaselineAdjustment.AlignCenters
         
         numberLabel.setContentCompressionResistancePriority(900, forAxis: UILayoutConstraintAxis.Horizontal)
         numberLabel.setContentCompressionResistancePriority(900, forAxis: UILayoutConstraintAxis.Vertical)

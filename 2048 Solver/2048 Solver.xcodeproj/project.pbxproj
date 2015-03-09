@@ -8,13 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		02107C981AACCC4400CFF8FF /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107C971AACCC4400CFF8FF /* GameBoard.swift */; };
+		02107C9A1AAD1F0000CFF8FF /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107C991AAD1F0000CFF8FF /* ScoreView.swift */; };
+		02107C9C1AAD220800CFF8FF /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107C9B1AAD220800CFF8FF /* Appearance.swift */; };
+		02107C9F1AAD240400CFF8FF /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107C9E1AAD240400CFF8FF /* GameModel.swift */; };
+		02107CA11AAD244A00CFF8FF /* GameModelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107CA01AAD244A00CFF8FF /* GameModelHelper.swift */; };
 		023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */; };
 		023EDE821AAA325100F5B9C5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE811AAA325100F5B9C5 /* ViewController.swift */; };
 		023EDE851AAA325100F5B9C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE831AAA325100F5B9C5 /* Main.storyboard */; };
 		023EDE871AAA325100F5B9C5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE861AAA325100F5B9C5 /* Images.xcassets */; };
 		023EDE8A1AAA325100F5B9C5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE881AAA325100F5B9C5 /* LaunchScreen.xib */; };
 		023EDE961AAA325100F5B9C5 /* _048_SolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */; };
-		028159611AAD07E500C795D9 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028159601AAD07E500C795D9 /* Tile.swift */; };
+		028159611AAD07E500C795D9 /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028159601AAD07E500C795D9 /* TileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +33,10 @@
 
 /* Begin PBXFileReference section */
 		02107C971AACCC4400CFF8FF /* GameBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
+		02107C991AAD1F0000CFF8FF /* ScoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
+		02107C9B1AAD220800CFF8FF /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
+		02107C9E1AAD240400CFF8FF /* GameModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		02107CA01AAD244A00CFF8FF /* GameModelHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModelHelper.swift; sourceTree = "<group>"; };
 		023EDE7A1AAA325100F5B9C5 /* 2048 Solver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2048 Solver.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023EDE7E1AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -39,7 +47,7 @@
 		023EDE8F1AAA325100F5B9C5 /* 2048 SolverTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "2048 SolverTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023EDE941AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _048_SolverTests.swift; sourceTree = "<group>"; };
-		028159601AAD07E500C795D9 /* Tile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
+		028159601AAD07E500C795D9 /* TileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,10 +71,21 @@
 		02107C961AACCC4400CFF8FF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				02107C9B1AAD220800CFF8FF /* Appearance.swift */,
 				02107C971AACCC4400CFF8FF /* GameBoard.swift */,
-				028159601AAD07E500C795D9 /* Tile.swift */,
+				028159601AAD07E500C795D9 /* TileView.swift */,
+				02107C991AAD1F0000CFF8FF /* ScoreView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		02107C9D1AAD238D00CFF8FF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				02107C9E1AAD240400CFF8FF /* GameModel.swift */,
+				02107CA01AAD244A00CFF8FF /* GameModelHelper.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		023EDE711AAA325100F5B9C5 = {
@@ -90,6 +109,7 @@
 		023EDE7C1AAA325100F5B9C5 /* 2048 Solver */ = {
 			isa = PBXGroup;
 			children = (
+				02107C9D1AAD238D00CFF8FF /* Model */,
 				02107C961AACCC4400CFF8FF /* View */,
 				023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */,
 				023EDE811AAA325100F5B9C5 /* ViewController.swift */,
@@ -227,9 +247,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				023EDE821AAA325100F5B9C5 /* ViewController.swift in Sources */,
+				02107C9C1AAD220800CFF8FF /* Appearance.swift in Sources */,
 				02107C981AACCC4400CFF8FF /* GameBoard.swift in Sources */,
+				02107CA11AAD244A00CFF8FF /* GameModelHelper.swift in Sources */,
 				023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */,
-				028159611AAD07E500C795D9 /* Tile.swift in Sources */,
+				028159611AAD07E500C795D9 /* TileView.swift in Sources */,
+				02107C9F1AAD240400CFF8FF /* GameModel.swift in Sources */,
+				02107C9A1AAD1F0000CFF8FF /* ScoreView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

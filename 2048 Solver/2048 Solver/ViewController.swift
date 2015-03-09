@@ -21,9 +21,9 @@ class ViewController: UIViewController {
     }
     
     func setupViews() {
-        self.view.backgroundColor = UIColor(red: 160.0/255.0, green: 167.0/255.0, blue: 147.0/255.0, alpha: 1.0)
+        self.view.backgroundColor = SharedColors.BackgroundColor
 
-        gameBoard = GameBoard()
+        gameBoard = GameBoard(width: UIScreen.mainScreen().bounds.width * 0.9, dimension: 4)
         gameBoard.setTranslatesAutoresizingMaskIntoConstraints(false)
         
         views["gameBoard"] = gameBoard
