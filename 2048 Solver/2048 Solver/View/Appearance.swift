@@ -12,4 +12,3 @@ import UIKit
 struct SharedColors {
     static let BackgroundColor = UIColor(red: 160.0/255.0, green: 167.0/255.0, blue: 147.0/255.0, alpha: 1.0)
 }
-

@@ -53,6 +53,12 @@ struct MoveAction: Action {
     var toCoordinate: (Int, Int)
 }
 
+// Private usage
+struct OneDimensionAction {
+    var fromIndexs: [Int]
+    var toIndex: Int
+}
+
 // MARK: General purpose square game board
 /**
 *  A struct representing a square gameboard. Because this struct uses generics, it could conceivably be used to represent state for many other games without modification.
@@ -77,6 +83,38 @@ struct SquareGameBoard<T> {
             assert(col >= 0 && col < dimension)
             boardArray[row*dimension + col] = newValue
         }
+    }
+    
+    func getRow(row: Int, reversed: Bool = false) -> [T] {
+        precondition(row >= 0 && row < dimension, "")
+        var result = [T]()
+        if reversed {
+            for col in stride(from: dimension - 1, through: -1, by: -1) {
+                result.append(boardArray[row * dimension + col])
+            }
+        } else {
+            for col in stride(from: 0, through: dimension, by: 1) {
+                result.append(boardArray[row * dimension + col])
+            }
+        }
+        
+        return result
+    }
+    
+    func getColumn(col: Int, reversed: Bool = false) -> [T] {
+        precondition(col >= 0 && col < dimension, "")
+        var result = [T]()
+        if reversed {
+            for row in stride(from: dimension - 1, through: -1, by: -1) {
+                result.append(boardArray[row * dimension + col])
+            }
+        } else {
+            for row in stride(from: 0, through: dimension, by: 1) {
+                result.append(boardArray[row * dimension + col])
+            }
+        }
+        
+        return result
     }
     
     // We mark this function as 'mutating' since it changes its 'parent' struct.

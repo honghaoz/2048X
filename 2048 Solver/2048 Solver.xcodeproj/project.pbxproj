@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02107C981AACCC4400CFF8FF /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107C971AACCC4400CFF8FF /* GameBoard.swift */; };
+		02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107C971AACCC4400CFF8FF /* GameBoardView.swift */; };
 		02107C9A1AAD1F0000CFF8FF /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107C991AAD1F0000CFF8FF /* ScoreView.swift */; };
 		02107C9C1AAD220800CFF8FF /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107C9B1AAD220800CFF8FF /* Appearance.swift */; };
 		02107C9F1AAD240400CFF8FF /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107C9E1AAD240400CFF8FF /* GameModel.swift */; };
@@ -32,7 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		02107C971AACCC4400CFF8FF /* GameBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
+		02107C971AACCC4400CFF8FF /* GameBoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoardView.swift; sourceTree = "<group>"; };
 		02107C991AAD1F0000CFF8FF /* ScoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
 		02107C9B1AAD220800CFF8FF /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		02107C9E1AAD240400CFF8FF /* GameModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
@@ -72,7 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				02107C9B1AAD220800CFF8FF /* Appearance.swift */,
-				02107C971AACCC4400CFF8FF /* GameBoard.swift */,
+				02107C971AACCC4400CFF8FF /* GameBoardView.swift */,
 				028159601AAD07E500C795D9 /* TileView.swift */,
 				02107C991AAD1F0000CFF8FF /* ScoreView.swift */,
 			);
@@ -248,7 +248,7 @@
 			files = (
 				023EDE821AAA325100F5B9C5 /* ViewController.swift in Sources */,
 				02107C9C1AAD220800CFF8FF /* Appearance.swift in Sources */,
-				02107C981AACCC4400CFF8FF /* GameBoard.swift in Sources */,
+				02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */,
 				02107CA11AAD244A00CFF8FF /* GameModelHelper.swift in Sources */,
 				023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */,
 				028159611AAD07E500C795D9 /* TileView.swift in Sources */,
