@@ -109,6 +109,7 @@ extension Game2048 {
             }
         }
         
+        // FIXME: Only insert when there's changes on board
         insertTileAtRandomLocation(2)
         printOutGameBoard()
         
@@ -359,6 +360,52 @@ extension Game2048 {
             }
         }
         println()
+    }
+}
 
+// MARK: Expose to AI
+extension Game2048 {
+    // Return a copy of gameBoard (a 2d matrix contains integers, 0 stands for .Empty)
+    func currentGameBoard() -> [[Int]] {
+        var result = [[Int]]()
+        for i in 0 ..< dimension {
+            var row = [Int]()
+            for j in 0 ..< dimension {
+                switch gameBoard[i, j].memory {
+                case .Empty:
+                    row.append(0)
+                case let .Number(num):
+                    row.append(num)
+                }
+            }
+            result.append(row)
+        }
+        return result
+    }
+    
+    func nextStateFromGameBoard(gameBoard: [[Int]], withCommand command: MoveCommand) -> [[Int]] {
+//        switch command.direction {
+//        case .Up:
+//            for i in 0 ..< dimension {
+//                var tiles = gameBoard.getColumn(i, reversed: true)
+//                processOneDimensionTiles(&tiles)
+//            }
+//        case .Down:
+//            for i in 0 ..< dimension {
+//                var tiles = gameBoard.getColumn(i, reversed: false)
+//                processOneDimensionTiles(&tiles)
+//            }
+//        case .Left:
+//            for i in 0 ..< dimension {
+//                var tilePointers = gameBoard.getRow(i, reversed: true)
+//                processOneDimensionTiles(&tilePointers)
+//            }
+//        case .Right:
+//            for i in 0 ..< dimension {
+//                var tilePointers = gameBoard.getRow(i, reversed: false)
+//                processOneDimensionTiles(&tilePointers)
+//            }
+//        }
+        return []
     }
 }
