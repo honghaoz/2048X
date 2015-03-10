@@ -185,39 +185,24 @@ extension Game2048 {
     */
     func mergeOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [OneDimensionAction] {
         
-//        for t in tiles {
-//            switch t {
-//            case .Empty:
-//                print("_\t")
-//            case let .Number(num):
-//                print("\(num)\t")
-//            }
-//        }
-//        println()
-        
         let count = tiles.count
         for i in stride(from: count - 1, to: -1, by: -1) {
-//            print("i: \(i)  ")
             switch tiles[i].memory {
             case .Empty:
-//                println("Empty")
                 continue
             case let .Number(tileNumber):
                 // Right most tile
                 if i == count - 1 {
-//                    println("RightMost")
                     continue
                 } else {
                     let (rightTile, rightIndex) = getFirstRightNonEmptyTileForIndex(i, inTiles: tiles)
                     switch rightTile {
                     case .Empty:
-//                        println("Right is Empty")
                         // Right wall
                         // [2,_,_] -> [_,_,2]
                         tiles[rightIndex - 1].memory = Tile.Number(tileNumber)
                         tiles[i].memory = Tile.Empty
                     case let .Number(rightTileNumber):
-//                        println("Right is \(rightTileNumber)")
                         // Exist rightTile
                         if tileNumber == rightTileNumber {
                             // Merge
@@ -233,16 +218,6 @@ extension Game2048 {
             }
         }
         
-//        for t in tiles {
-//            switch t {
-//            case .Empty:
-//                print("_\t")
-//            case let .Number(num):
-//                print("\(num)\t")
-//            }
-//        }
-//        println()
-        
         return []
     }
     
@@ -256,25 +231,13 @@ extension Game2048 {
     :returns: a list of actions
     */
     func condenseOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [OneDimensionAction] {
-//        for t in tiles {
-//            switch t {
-//            case .Empty:
-//                print("_\t")
-//            case let .Number(num):
-//                print("\(num)\t")
-//            }
-//        }
-//        println()
         
         let count = tiles.count
         for i in stride(from: count - 1, to: -1, by: -1) {
-//            print("i: \(i)  ")
             switch tiles[i].memory {
             case .Empty:
-//                println("Empty")
                 continue
             case let .Number(tileNumber):
-//                println("tileNumber: \(tileNumber)")
                 if tileNumber == 0 {
                     tiles[i].memory = Tile.Empty
                     continue
@@ -282,7 +245,6 @@ extension Game2048 {
                     let (rightTile, rightIndex) = getFirstRightNonEmptyTileForIndex(i, inTiles: tiles)
                     switch rightTile {
                     case .Empty:
-//                        println("Right is Empty")
                         // Right wall
                         // [_,_,4] -> [_,_,4]
                         // [2,_,_] -> [_,_,2]
@@ -291,7 +253,6 @@ extension Game2048 {
                             tiles[i].memory = Tile.Empty
                         }
                     case let .Number(rightTileNumber):
-//                        println("Right is \(rightTileNumber)")
                         // Exist rightTile
                         if rightIndex > i + 1 {
                             // Move
@@ -303,15 +264,6 @@ extension Game2048 {
             }
         }
         
-//        for t in tiles {
-//            switch t {
-//            case .Empty:
-//                print("_\t")
-//            case let .Number(num):
-//                print("\(num)\t")
-//            }
-//        }
-//        println()
         return []
     }
     
