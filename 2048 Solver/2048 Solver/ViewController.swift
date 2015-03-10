@@ -22,6 +22,8 @@ class ViewController: UIViewController {
         setupViews()
         
         gameModel.start()
+        
+        gameModel.performMoveCommand(MoveCommand(direction: MoveDirection.Up))
     }
     
     func setupGameModel() {

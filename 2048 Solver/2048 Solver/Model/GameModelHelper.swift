@@ -89,7 +89,7 @@ struct SquareGameBoard<T> {
         precondition(row >= 0 && row < dimension, "")
         var result = [T]()
         if reversed {
-            for col in stride(from: dimension - 1, through: -1, by: -1) {
+            for col in stride(from: dimension - 1, through: 0, by: -1) {
                 result.append(boardArray[row * dimension + col])
             }
         } else {
@@ -105,7 +105,7 @@ struct SquareGameBoard<T> {
         precondition(col >= 0 && col < dimension, "")
         var result = [T]()
         if reversed {
-            for row in stride(from: dimension - 1, through: -1, by: -1) {
+            for row in stride(from: dimension - 1, through: 0, by: -1) {
                 result.append(boardArray[row * dimension + col])
             }
         } else {

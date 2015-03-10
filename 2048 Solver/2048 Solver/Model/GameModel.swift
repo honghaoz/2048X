@@ -98,6 +98,8 @@ extension Game2048 {
                 processOneDimensionTiles(&tiles)
             }
         }
+        printGameModel()
+        
         delegate?.game2048DidUpdate(self)
         return []
     }
@@ -172,7 +174,7 @@ extension Game2048 {
     */
     func mergeOneDimensionTiles(inout tiles: [Tile]) -> [OneDimensionAction] {
         let count = tiles.count
-        for i in stride(from: count - 1, to: -1, by: -1) {
+        for i in stride(from: count - 1, to: 0, by: -1) {
             switch tiles[i] {
             case .Empty:
                 continue
@@ -218,7 +220,7 @@ extension Game2048 {
     */
     func condenseOneDimensionTiles(inout tiles: [Tile]) -> [OneDimensionAction] {
         let count = tiles.count
-        for i in stride(from: count - 1, to: -1, by: -1) {
+        for i in stride(from: count - 1, to: 0, by: -1) {
             switch tiles[i] {
             case .Empty:
                 continue
