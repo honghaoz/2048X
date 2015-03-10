@@ -109,6 +109,7 @@ extension Game2048 {
             }
         }
         
+        insertTileAtRandomLocation(2)
         printOutGameBoard()
         
         delegate?.game2048DidUpdate(self)

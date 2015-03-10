@@ -20,10 +20,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setupGameModel()
         setupViews()
+        setupSwipeGestures()
         
         gameModel.start()
-        
-        gameModel.performMoveCommand(MoveCommand(direction: MoveDirection.Up))
     }
     
     func setupGameModel() {
@@ -48,6 +47,56 @@ class ViewController: UIViewController {
         
         self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0.0))
         self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0))
+    }
+    
+    func setupSwipeGestures() {
+        let upSwipe = UISwipeGestureRecognizer(target: self, action: Selector("up:"))
+        upSwipe.numberOfTouchesRequired = 1
+        upSwipe.direction = UISwipeGestureRecognizerDirection.Up
+        gameBoardView.addGestureRecognizer(upSwipe)
+        
+        let downSwipe = UISwipeGestureRecognizer(target: self, action: Selector("down:"))
+        downSwipe.numberOfTouchesRequired = 1
+        downSwipe.direction = UISwipeGestureRecognizerDirection.Down
+        gameBoardView.addGestureRecognizer(downSwipe)
+        
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: Selector("left:"))
+        leftSwipe.numberOfTouchesRequired = 1
+        leftSwipe.direction = UISwipeGestureRecognizerDirection.Left
+        gameBoardView.addGestureRecognizer(leftSwipe)
+        
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: Selector("right:"))
+        rightSwipe.numberOfTouchesRequired = 1
+        rightSwipe.direction = UISwipeGestureRecognizerDirection.Right
+        gameBoardView.addGestureRecognizer(rightSwipe)
+    }
+}
+
+// MARK: Swipe Gestures
+extension ViewController {
+    // Commands
+    @objc(up:)
+    func upCommand(r: UIGestureRecognizer!) {
+        precondition(gameModel != nil, "")
+        gameModel.performMoveCommand(MoveCommand(direction: MoveDirection.Up))
+    }
+    
+    @objc(down:)
+    func downCommand(r: UIGestureRecognizer!) {
+        precondition(gameModel != nil, "")
+        gameModel.performMoveCommand(MoveCommand(direction: MoveDirection.Down))
+    }
+    
+    @objc(left:)
+    func leftCommand(r: UIGestureRecognizer!) {
+        precondition(gameModel != nil, "")
+        gameModel.performMoveCommand(MoveCommand(direction: MoveDirection.Left))
+    }
+    
+    @objc(right:)
+    func rightCommand(r: UIGestureRecognizer!) {
+        precondition(gameModel != nil, "")
+        gameModel.performMoveCommand(MoveCommand(direction: MoveDirection.Right))
     }
 }
 
