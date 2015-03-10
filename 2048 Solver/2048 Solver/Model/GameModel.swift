@@ -63,10 +63,13 @@ extension Game2048 {
     
     func start() {
         precondition(!gameboardFull(), "Game is not empty, before starting a new game, please reset a game")
-        for i in 0 ..< 2 {
-            insertTileAtRandomLocation(2)
-            // TODO: Could randomly insert 4
-        }
+//        for i in 0 ..< 2 {
+//            insertTileAtRandomLocation(2)
+//             TODO: Could randomly insert 4
+//        }
+        
+        insertTile((0, 0), value: 2)
+        insertTile((0, 1), value: 2)
         
         printGameModel()
         
@@ -79,23 +82,73 @@ extension Game2048 {
         switch moveCommand.direction {
         case .Up:
             for i in 0 ..< dimension {
-                var tiles = gameBoard.getColumn(i, reversed: true)
-                processOneDimensionTiles(&tiles)
+//                var tiles = gameBoard.getColumn(i, reversed: true)
+//                processOneDimensionTiles(&tiles)
             }
         case .Down:
             for i in 0 ..< dimension {
-                var tiles = gameBoard.getColumn(i, reversed: false)
-                processOneDimensionTiles(&tiles)
+//                var tiles = gameBoard.getColumn(i, reversed: false)
+//                processOneDimensionTiles(&tiles)
             }
         case .Left:
             for i in 0 ..< dimension {
-                var tiles = gameBoard.getRow(i, reversed: true)
-                processOneDimensionTiles(&tiles)
+//                var tilePointers = gameBoard.getRowReference(i, reversed: true)
+//                var tiles = [Tile]()
+//                for p in tilePointers {
+//                    tiles.append(p.memory)
+//                }
+//                for t in tiles {
+//                    switch t {
+//                    case .Empty:
+//                        print("_\t")
+//                    case let .Number(num):
+//                        print("\(num)\t")
+//                    }
+//                }
+//                println()
+//                processOneDimensionTiles(&tiles)
+//                for t in tiles {
+//                    switch t {
+//                    case .Empty:
+//                        print("_\t")
+//                    case let .Number(num):
+//                        print("\(num)\t")
+//                    }
+//                }
+//                println()
             }
         case .Right:
-            for i in 0 ..< dimension {
-                var tiles = gameBoard.getRow(i, reversed: false)
+//            for i in 0 ..< dimension {
+////                var tiles = gameBoard.getRow(i, reversed: false)
+////                processOneDimensionTiles(&tiles)
+//            }
+            for i in 0 ..< 1 {//dimension {
+                var tilePointers = gameBoard.getRowReference(i, reversed: false)
+                
+                var tiles = [Tile]()
+                for p in tilePointers {
+                    tiles.append(p.memory)
+                }
+                
+                for t in tiles {
+                    switch t {
+                    case .Empty:
+                        print("_\t")
+                    case let .Number(num):
+                        print("\(num)\t")
+                    }
+                }
+                println()
                 processOneDimensionTiles(&tiles)
+                for t in tiles {
+                    switch t {
+                    case .Empty:
+                        print("_\t")
+                    case let .Number(num):
+                        print("\(num)\t")
+                    }
+                }
+                println()
             }
         }
         printGameModel()
@@ -146,7 +199,6 @@ extension Game2048 {
         switch gameBoard[x, y] {
         case .Empty:
             gameBoard[x, y] = Tile.Number(value)
-//            delegate.insertTile(pos, value: value)
         case .Number:
             break
         }
@@ -173,24 +225,40 @@ extension Game2048 {
     :returns: Return a list of actions
     */
     func mergeOneDimensionTiles(inout tiles: [Tile]) -> [OneDimensionAction] {
+        
+//        for t in tiles {
+//            switch t {
+//            case .Empty:
+//                print("_\t")
+//            case let .Number(num):
+//                print("\(num)\t")
+//            }
+//        }
+//        println()
+        
         let count = tiles.count
-        for i in stride(from: count - 1, to: 0, by: -1) {
+        for i in stride(from: count - 1, to: -1, by: -1) {
+//            print("i: \(i)  ")
             switch tiles[i] {
             case .Empty:
+//                println("Empty")
                 continue
             case let .Number(tileNumber):
                 // Right most tile
                 if i == count - 1 {
+//                    println("RightMost")
                     continue
                 } else {
                     let (rightTile, rightIndex) = getFirstRightNonEmptyTileForIndex(i, inTiles: tiles)
                     switch rightTile {
                     case .Empty:
+//                        println("Right is Empty")
                         // Right wall
                         // [2,_,_] -> [_,_,2]
                         tiles[rightIndex - 1] = Tile.Number(tileNumber)
                         tiles[i] = Tile.Empty
                     case let .Number(rightTileNumber):
+//                        println("Right is \(rightTileNumber)")
                         // Exist rightTile
                         if tileNumber == rightTileNumber {
                             // Merge
@@ -206,6 +274,16 @@ extension Game2048 {
             }
         }
         
+//        for t in tiles {
+//            switch t {
+//            case .Empty:
+//                print("_\t")
+//            case let .Number(num):
+//                print("\(num)\t")
+//            }
+//        }
+//        println()
+        
         return []
     }
     
@@ -219,12 +297,25 @@ extension Game2048 {
     :returns: a list of actions
     */
     func condenseOneDimensionTiles(inout tiles: [Tile]) -> [OneDimensionAction] {
+//        for t in tiles {
+//            switch t {
+//            case .Empty:
+//                print("_\t")
+//            case let .Number(num):
+//                print("\(num)\t")
+//            }
+//        }
+//        println()
+        
         let count = tiles.count
-        for i in stride(from: count - 1, to: 0, by: -1) {
+        for i in stride(from: count - 1, to: -1, by: -1) {
+//            print("i: \(i)  ")
             switch tiles[i] {
             case .Empty:
+//                println("Empty")
                 continue
             case let .Number(tileNumber):
+//                println("tileNumber: \(tileNumber)")
                 if tileNumber == 0 {
                     tiles[i] = Tile.Empty
                     continue
@@ -232,11 +323,16 @@ extension Game2048 {
                     let (rightTile, rightIndex) = getFirstRightNonEmptyTileForIndex(i, inTiles: tiles)
                     switch rightTile {
                     case .Empty:
+//                        println("Right is Empty")
                         // Right wall
+                        // [_,_,4] -> [_,_,4]
                         // [2,_,_] -> [_,_,2]
-                        tiles[rightIndex - 1] = Tile.Number(tileNumber)
-                        tiles[i] = Tile.Empty
+                        if rightIndex > i + 1 {
+                            tiles[rightIndex - 1] = Tile.Number(tileNumber)
+                            tiles[i] = Tile.Empty
+                        }
                     case let .Number(rightTileNumber):
+//                        println("Right is \(rightTileNumber)")
                         // Exist rightTile
                         if rightIndex > i + 1 {
                             // Move
@@ -247,6 +343,16 @@ extension Game2048 {
                 }
             }
         }
+        
+//        for t in tiles {
+//            switch t {
+//            case .Empty:
+//                print("_\t")
+//            case let .Number(num):
+//                print("\(num)\t")
+//            }
+//        }
+//        println()
         return []
     }
     

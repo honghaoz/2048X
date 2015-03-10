@@ -85,37 +85,41 @@ struct SquareGameBoard<T> {
         }
     }
     
-    func getRow(row: Int, reversed: Bool = false) -> [T] {
+    func getRowReference(row: Int, reversed: Bool = false) -> [UnsafeMutablePointer<T>] {
         precondition(row >= 0 && row < dimension, "")
-        var result = [T]()
+        var result = [UnsafeMutablePointer<T>]()
         if reversed {
             for col in stride(from: dimension - 1, through: 0, by: -1) {
-                result.append(boardArray[row * dimension + col])
+                var t = UnsafeMutablePointer<T>.alloc(1)
+                t[0] = boardArray[row * dimension + col]
+                result.append(t)
             }
         } else {
-            for col in stride(from: 0, through: dimension, by: 1) {
-                result.append(boardArray[row * dimension + col])
+            for col in stride(from: 0, through: dimension - 1, by: 1) {
+                var t = UnsafeMutablePointer<T>.alloc(1)
+                t[0] = boardArray[row * dimension + col]
+                result.append(t)
             }
         }
         
         return result
     }
     
-    func getColumn(col: Int, reversed: Bool = false) -> [T] {
-        precondition(col >= 0 && col < dimension, "")
-        var result = [T]()
-        if reversed {
-            for row in stride(from: dimension - 1, through: 0, by: -1) {
-                result.append(boardArray[row * dimension + col])
-            }
-        } else {
-            for row in stride(from: 0, through: dimension, by: 1) {
-                result.append(boardArray[row * dimension + col])
-            }
-        }
-        
-        return result
-    }
+//    func getColumnReference(col: Int, reversed: Bool = false) -> [T] {
+//        precondition(col >= 0 && col < dimension, "")
+//        var result = [T]()
+//        if reversed {
+//            for row in stride(from: dimension - 1, through: 0, by: -1) {
+//                result.append(boardArray[row * dimension + col])
+//            }
+//        } else {
+//            for row in stride(from: 0, through: dimension, by: 1) {
+//                result.append(boardArray[row * dimension + col])
+//            }
+//        }
+//        
+//        return result
+//    }
     
     // We mark this function as 'mutating' since it changes its 'parent' struct.
     mutating func setAll(item: T) {
