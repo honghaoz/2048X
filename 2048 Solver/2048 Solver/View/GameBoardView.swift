@@ -156,7 +156,7 @@ class GameBoardView: UIView {
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
                 let tile = forgroundTiles[i][j]
-                switch gameModel.gameBoard[i, j] {
+                switch gameModel.gameBoard[i, j].memory {
                 case .Empty:
                     tile.number = 0
                 case let .Number(tileNumber):

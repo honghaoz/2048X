@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         
         gameModel.start()
         
-        gameModel.performMoveCommand(MoveCommand(direction: MoveDirection.Right))
+        gameModel.performMoveCommand(MoveCommand(direction: MoveDirection.Up))
     }
     
     func setupGameModel() {

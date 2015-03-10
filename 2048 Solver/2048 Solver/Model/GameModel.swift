@@ -19,7 +19,8 @@ class Game2048: NSObject {
     let target: Int
     
     var score: Int = 0
-    var gameBoard: SquareGameBoard<Tile>
+    // Store pointers to Tiles, this will give a chance to modify in place
+    var gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>
     
     var moveCommandsQueue = [MoveCommand]()
     var timer: NSTimer
@@ -38,6 +39,7 @@ class Game2048: NSObject {
     :returns: an initialized Game2048
     */
     init(dimension d: Int, target t: Int) {
+        
         dimension = d
         if t == 0 {
             target = Int.max
@@ -45,8 +47,16 @@ class Game2048: NSObject {
             target = t
         }
         timer = NSTimer()
-        gameBoard =  SquareGameBoard(dimension: d, initialValue: Tile.Empty)
+        
+        // Initialize gameBoard, alloc memory and initialize it
+        gameBoard =  SquareGameBoard(dimension: d, initialValue: nil)
         super.init()
+        
+        allocateGameBoard()
+    }
+    
+    deinit {
+        deallocateGameBoard()
     }
 }
 
@@ -54,7 +64,7 @@ class Game2048: NSObject {
 extension Game2048 {
     func reset() {
         score = 0
-        gameBoard.setAll(Tile.Empty)
+        emptyGameBoard()
         moveCommandsQueue.removeAll(keepCapacity: true)
         timer.invalidate()
         
@@ -63,15 +73,12 @@ extension Game2048 {
     
     func start() {
         precondition(!gameboardFull(), "Game is not empty, before starting a new game, please reset a game")
-//        for i in 0 ..< 2 {
-//            insertTileAtRandomLocation(2)
-//             TODO: Could randomly insert 4
-//        }
+        for i in 0 ..< 2 {
+            insertTileAtRandomLocation(2)
+            // TODO: Could randomly insert 4
+        }
         
-        insertTile((0, 0), value: 2)
-        insertTile((0, 1), value: 2)
-        
-        printGameModel()
+        printOutGameBoard()
         
         // TODO: Could issue Actions
         delegate?.game2048DidStartNewGame(self)
@@ -82,90 +89,41 @@ extension Game2048 {
         switch moveCommand.direction {
         case .Up:
             for i in 0 ..< dimension {
-//                var tiles = gameBoard.getColumn(i, reversed: true)
-//                processOneDimensionTiles(&tiles)
+                var tiles = gameBoard.getColumn(i, reversed: true)
+                processOneDimensionTiles(&tiles)
             }
         case .Down:
             for i in 0 ..< dimension {
-//                var tiles = gameBoard.getColumn(i, reversed: false)
-//                processOneDimensionTiles(&tiles)
+                var tiles = gameBoard.getColumn(i, reversed: false)
+                processOneDimensionTiles(&tiles)
             }
         case .Left:
             for i in 0 ..< dimension {
-//                var tilePointers = gameBoard.getRowReference(i, reversed: true)
-//                var tiles = [Tile]()
-//                for p in tilePointers {
-//                    tiles.append(p.memory)
-//                }
-//                for t in tiles {
-//                    switch t {
-//                    case .Empty:
-//                        print("_\t")
-//                    case let .Number(num):
-//                        print("\(num)\t")
-//                    }
-//                }
-//                println()
-//                processOneDimensionTiles(&tiles)
-//                for t in tiles {
-//                    switch t {
-//                    case .Empty:
-//                        print("_\t")
-//                    case let .Number(num):
-//                        print("\(num)\t")
-//                    }
-//                }
-//                println()
+                var tilePointers = gameBoard.getRow(i, reversed: true)
+                processOneDimensionTiles(&tilePointers)
             }
         case .Right:
-//            for i in 0 ..< dimension {
-////                var tiles = gameBoard.getRow(i, reversed: false)
-////                processOneDimensionTiles(&tiles)
-//            }
-            for i in 0 ..< 1 {//dimension {
-                var tilePointers = gameBoard.getRowReference(i, reversed: false)
-                
-                var tiles = [Tile]()
-                for p in tilePointers {
-                    tiles.append(p.memory)
-                }
-                
-                for t in tiles {
-                    switch t {
-                    case .Empty:
-                        print("_\t")
-                    case let .Number(num):
-                        print("\(num)\t")
-                    }
-                }
-                println()
-                processOneDimensionTiles(&tiles)
-                for t in tiles {
-                    switch t {
-                    case .Empty:
-                        print("_\t")
-                    case let .Number(num):
-                        print("\(num)\t")
-                    }
-                }
-                println()
+            for i in 0 ..< dimension {
+                var tilePointers = gameBoard.getRow(i, reversed: false)
+                processOneDimensionTiles(&tilePointers)
             }
         }
-        printGameModel()
+        
+        printOutGameBoard()
         
         delegate?.game2048DidUpdate(self)
         return []
     }
 }
 
-// MARK: Helpers
+// MARK: Game Helpers
 extension Game2048 {
     /// Return a list of tuples describing the coordinates of empty spots remaining on the gameboard.
     func gameboardEmptySpots() -> [(Int, Int)] {
         var buffer = Array<(Int, Int)>()
         for i in 0..<dimension {
             for j in 0..<dimension {
-                switch gameBoard[i, j] {
+                switch gameBoard[i, j].memory {
                 case .Empty:
                     buffer += [(i, j)]
                 case .Number:
@@ -196,15 +154,15 @@ extension Game2048 {
     /// Insert a tile with a given value at a position upon the gameboard.
     func insertTile(pos: (Int, Int), value: Int) {
         let (x, y) = pos
-        switch gameBoard[x, y] {
+        switch gameBoard[x, y].memory {
         case .Empty:
-            gameBoard[x, y] = Tile.Number(value)
+            gameBoard[x, y].memory = Tile.Number(value)
         case .Number:
             break
         }
     }
     
-    func processOneDimensionTiles(inout tiles: [Tile]) -> [OneDimensionAction] {
+    func processOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [OneDimensionAction] {
         var actions = mergeOneDimensionTiles(&tiles)
         actions.extend(condenseOneDimensionTiles(&tiles))
         return actions
@@ -224,7 +182,7 @@ extension Game2048 {
     
     :returns: Return a list of actions
     */
-    func mergeOneDimensionTiles(inout tiles: [Tile]) -> [OneDimensionAction] {
+    func mergeOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [OneDimensionAction] {
         
 //        for t in tiles {
 //            switch t {
@@ -239,7 +197,7 @@ extension Game2048 {
         let count = tiles.count
         for i in stride(from: count - 1, to: -1, by: -1) {
 //            print("i: \(i)  ")
-            switch tiles[i] {
+            switch tiles[i].memory {
             case .Empty:
 //                println("Empty")
                 continue
@@ -255,19 +213,19 @@ extension Game2048 {
 //                        println("Right is Empty")
                         // Right wall
                         // [2,_,_] -> [_,_,2]
-                        tiles[rightIndex - 1] = Tile.Number(tileNumber)
-                        tiles[i] = Tile.Empty
+                        tiles[rightIndex - 1].memory = Tile.Number(tileNumber)
+                        tiles[i].memory = Tile.Empty
                     case let .Number(rightTileNumber):
 //                        println("Right is \(rightTileNumber)")
                         // Exist rightTile
                         if tileNumber == rightTileNumber {
                             // Merge
-                            tiles[rightIndex] = Tile.Number(tileNumber * 2)
-                            tiles[i] = Tile.Number(0)
+                            tiles[rightIndex].memory = Tile.Number(tileNumber * 2)
+                            tiles[i].memory = Tile.Number(0)
                         } else if rightIndex > i + 1 {
                             // Move
-                            tiles[rightIndex - 1] = Tile.Number(tileNumber)
-                            tiles[i] = Tile.Empty
+                            tiles[rightIndex - 1].memory = Tile.Number(tileNumber)
+                            tiles[i].memory = Tile.Empty
                         }
                     }
                 }
@@ -296,7 +254,7 @@ extension Game2048 {
     
     :returns: a list of actions
     */
-    func condenseOneDimensionTiles(inout tiles: [Tile]) -> [OneDimensionAction] {
+    func condenseOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [OneDimensionAction] {
 //        for t in tiles {
 //            switch t {
 //            case .Empty:
@@ -310,14 +268,14 @@ extension Game2048 {
         let count = tiles.count
         for i in stride(from: count - 1, to: -1, by: -1) {
 //            print("i: \(i)  ")
-            switch tiles[i] {
+            switch tiles[i].memory {
             case .Empty:
 //                println("Empty")
                 continue
             case let .Number(tileNumber):
 //                println("tileNumber: \(tileNumber)")
                 if tileNumber == 0 {
-                    tiles[i] = Tile.Empty
+                    tiles[i].memory = Tile.Empty
                     continue
                 } else {
                     let (rightTile, rightIndex) = getFirstRightNonEmptyTileForIndex(i, inTiles: tiles)
@@ -328,16 +286,16 @@ extension Game2048 {
                         // [_,_,4] -> [_,_,4]
                         // [2,_,_] -> [_,_,2]
                         if rightIndex > i + 1 {
-                            tiles[rightIndex - 1] = Tile.Number(tileNumber)
-                            tiles[i] = Tile.Empty
+                            tiles[rightIndex - 1].memory = Tile.Number(tileNumber)
+                            tiles[i].memory = Tile.Empty
                         }
                     case let .Number(rightTileNumber):
 //                        println("Right is \(rightTileNumber)")
                         // Exist rightTile
                         if rightIndex > i + 1 {
                             // Move
-                            tiles[rightIndex - 1] = Tile.Number(tileNumber)
-                            tiles[i] = Tile.Empty
+                            tiles[rightIndex - 1].memory = Tile.Number(tileNumber)
+                            tiles[i].memory = Tile.Empty
                         }
                     }
                 }
@@ -367,30 +325,87 @@ extension Game2048 {
     
     :returns: (rightTile, rightIndex), if there's no right vaild tile, return .Empty
     */
-    func getFirstRightNonEmptyTileForIndex(index: Int, inTiles tiles: [Tile]) -> (Tile, Int) {
+    func getFirstRightNonEmptyTileForIndex(index: Int, inTiles tiles: [UnsafeMutablePointer<Tile>]) -> (Tile, Int) {
         let count = tiles.count
         for i in (index + 1) ..< count {
-            switch tiles[i] {
+            switch tiles[i].memory {
             case .Empty:
                 continue
             case .Number:
-                return (tiles[i], i)
+                return (tiles[i].memory, i)
             }
         }
         return (Tile.Empty, count)
     }
-    
-    func printGameModel() {
+}
+
+// MARK: Fundamental Helpers
+extension Game2048 {
+    /**
+    Allocate memory for game board and initialize it with .Empty
+    */
+    func allocateGameBoard() {
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                switch gameBoard[i, j] {
+                gameBoard[i, j] = UnsafeMutablePointer<Tile>.alloc(1)
+                gameBoard[i, j].initialize(Tile.Empty)
+            }
+        }
+    }
+    
+    /**
+    Set all values in game board to .Empty
+    PRE: gameboard memory is allocated
+    */
+    func emptyGameBoard() {
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                gameBoard[i, j].memory = Tile.Empty
+            }
+        }
+    }
+    
+    /**
+    Destory value in game board and deallocate memory
+    */
+    func deallocateGameBoard() {
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                gameBoard[i, j].destroy()
+                gameBoard[i, j].dealloc(1)
+            }
+        }
+    }
+}
+
+// MARK: Debug Methods
+extension Game2048 {
+    func printOutGameBoard() {
+        println("Game Board:")
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                switch gameBoard[i, j].memory {
                 case .Empty:
                     print("_\t")
                 case let .Number(num):
                     print("\(num)\t")
                 }
             }
-            print("\n")
+            println()
         }
+    }
+    
+    func printOutTilePointers(tilePointers: [UnsafeMutablePointer<Tile>]) {
+        println("Tile Pointers:")
+        for p in tilePointers {
+            switch p.memory {
+            case .Empty:
+                print("_\t")
+            case let .Number(num):
+                print("\(num)\t")
+            }
+        }
+        println()
+
     }
 }
