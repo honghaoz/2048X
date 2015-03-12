@@ -86,31 +86,53 @@ extension Game2048 {
     }
     
     func performMoveCommand(moveCommand: MoveCommand) -> [Action] {
+        var resultActions = [Action]()
         switch moveCommand.direction {
         case .Up:
             for i in 0 ..< dimension {
                 var tiles = gameBoard.getColumn(i, reversed: true)
-                processOneDimensionTiles(&tiles)
+                let actions = processOneDimensionTiles(&tiles)
+                for action in actions {
+                    let fromCoordinates = action.fromIndexs.map({ (self.dimension - 1 - $0, i) })
+                    let toCoordinate = (self.dimension - 1 - action.toIndex, i)
+                    resultActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
+                }
             }
         case .Down:
             for i in 0 ..< dimension {
                 var tiles = gameBoard.getColumn(i, reversed: false)
-                processOneDimensionTiles(&tiles)
+                let actions = processOneDimensionTiles(&tiles)
+                for action in actions {
+                    let fromCoordinates = action.fromIndexs.map({ ($0, i) })
+                    let toCoordinate = (action.toIndex, i)
+                    resultActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
+                }
             }
         case .Left:
             for i in 0 ..< dimension {
                 var tilePointers = gameBoard.getRow(i, reversed: true)
-                processOneDimensionTiles(&tilePointers)
+                let actions = processOneDimensionTiles(&tilePointers)
+                for action in actions {
+                    let fromCoordinates = action.fromIndexs.map({ (i, self.dimension - 1 - $0) })
+                    let toCoordinate = (i, self.dimension - 1 - action.toIndex)
+                    resultActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
+                }
             }
         case .Right:
             for i in 0 ..< dimension {
                 var tilePointers = gameBoard.getRow(i, reversed: false)
-                processOneDimensionTiles(&tilePointers)
+                let actions = processOneDimensionTiles(&tilePointers)
+                for action in actions {
+                    let fromCoordinates = action.fromIndexs.map({ (i, $0) })
+                    let toCoordinate = (i, action.toIndex)
+                    resultActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
+                }
             }
         }
         
-        // FIXME: Only insert when there's changes on board
-        insertTileAtRandomLocation(2)
+        if resultActions.count > 0 {
+            insertTileAtRandomLocation(2)
+        }
         printOutGameBoard()
         
         delegate?.game2048DidUpdate(self)
@@ -164,7 +186,7 @@ extension Game2048 {
         }
     }
     
-    func processOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [OneDimensionAction] {
+    func processOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [Action1D] {
         var actions = mergeOneDimensionTiles(&tiles)
         actions.extend(condenseOneDimensionTiles(&tiles))
         return actions
@@ -184,8 +206,8 @@ extension Game2048 {
     
     :returns: Return a list of actions
     */
-    func mergeOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [OneDimensionAction] {
-        
+    func mergeOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [Action1D] {
+        var resultActions = [Action1D]()
         let count = tiles.count
         for i in stride(from: count - 1, to: -1, by: -1) {
             switch tiles[i].memory {
@@ -203,23 +225,26 @@ extension Game2048 {
                         // [2,_,_] -> [_,_,2]
                         tiles[rightIndex - 1].memory = Tile.Number(tileNumber)
                         tiles[i].memory = Tile.Empty
+                        resultActions.append(Action1D(fromIndexs: [i], toIndex: rightIndex - 1))
                     case let .Number(rightTileNumber):
                         // Exist rightTile
                         if tileNumber == rightTileNumber {
                             // Merge
                             tiles[rightIndex].memory = Tile.Number(tileNumber * 2)
                             tiles[i].memory = Tile.Number(0)
+                            resultActions.append(Action1D(fromIndexs: [i, rightIndex], toIndex: rightIndex))
                         } else if rightIndex > i + 1 {
                             // Move
                             tiles[rightIndex - 1].memory = Tile.Number(tileNumber)
                             tiles[i].memory = Tile.Empty
+                            resultActions.append(Action1D(fromIndexs: [i], toIndex: rightIndex - 1))
                         }
                     }
                 }
             }
         }
         
-        return []
+        return resultActions
     }
     
     /**
@@ -231,8 +256,8 @@ extension Game2048 {
     
     :returns: a list of actions
     */
-    func condenseOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [OneDimensionAction] {
-        
+    func condenseOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [Action1D] {
+        var resultActions = [Action1D]()
         let count = tiles.count
         for i in stride(from: count - 1, to: -1, by: -1) {
             switch tiles[i].memory {
@@ -252,6 +277,7 @@ extension Game2048 {
                         if rightIndex > i + 1 {
                             tiles[rightIndex - 1].memory = Tile.Number(tileNumber)
                             tiles[i].memory = Tile.Empty
+                            resultActions.append(Action1D(fromIndexs: [i], toIndex: rightIndex - 1))
                         }
                     case let .Number(rightTileNumber):
                         // Exist rightTile
@@ -259,13 +285,14 @@ extension Game2048 {
                             // Move
                             tiles[rightIndex - 1].memory = Tile.Number(tileNumber)
                             tiles[i].memory = Tile.Empty
+                            resultActions.append(Action1D(fromIndexs: [i], toIndex: rightIndex - 1))
                         }
                     }
                 }
             }
         }
         
-        return []
+        return resultActions
     }
     
     /**

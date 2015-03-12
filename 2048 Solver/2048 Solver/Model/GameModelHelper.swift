@@ -49,12 +49,14 @@ struct InitAction: Action {
 
 struct MoveAction: Action {
     var actionType: ActionType = .Move
-    var fromCoordinates: [(Int, Int)] // Either 1 tile or 2 tiles
+    var fromCoordinates: [(Int, Int)] // Either 1 tile or 2 tiles, 2 tiles means merge
     var toCoordinate: (Int, Int)
 }
 
-// Private usage
-struct OneDimensionAction {
+// Private use
+struct Action1D {
+    // If fromIndexs contain two indexes, merge action
+    // Else, move action
     var fromIndexs: [Int]
     var toIndex: Int
 }
