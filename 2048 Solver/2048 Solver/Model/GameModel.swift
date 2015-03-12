@@ -10,7 +10,7 @@ import Foundation
 
 protocol Game2048Delegate: class {
     func game2048DidStartNewGame(game2048: Game2048)
-    func game2048DidUpdate(game2048: Game2048)
+    func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction])
     func game2048DidReset(game2048: Game2048)
 }
 
@@ -73,20 +73,24 @@ extension Game2048 {
     
     func start() {
         precondition(!gameboardFull(), "Game is not empty, before starting a new game, please reset a game")
+        
+        var resultInitActions = [InitAction]()
+        
         for i in 0 ..< 2 {
-            insertTileAtRandomLocation(2)
+            let insertedCoordinate = insertTileAtRandomLocation(2)
             // TODO: Could randomly insert 4
+            resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: 2))
         }
         
         printOutGameBoard()
         
         // TODO: Could issue Actions
         delegate?.game2048DidStartNewGame(self)
-        delegate?.game2048DidUpdate(self)
+        delegate?.game2048DidUpdate(self, moveActions: [], initActions: resultInitActions)
     }
     
-    func performMoveCommand(moveCommand: MoveCommand) -> [Action] {
-        var resultActions = [Action]()
+    func performMoveCommand(moveCommand: MoveCommand) {
+        var resultMoveActions = [MoveAction]()
         switch moveCommand.direction {
         case .Up:
             for i in 0 ..< dimension {
@@ -95,7 +99,7 @@ extension Game2048 {
                 for action in actions {
                     let fromCoordinates = action.fromIndexs.map({ (self.dimension - 1 - $0, i) })
                     let toCoordinate = (self.dimension - 1 - action.toIndex, i)
-                    resultActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
+                    resultMoveActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
                 }
             }
         case .Down:
@@ -105,7 +109,7 @@ extension Game2048 {
                 for action in actions {
                     let fromCoordinates = action.fromIndexs.map({ ($0, i) })
                     let toCoordinate = (action.toIndex, i)
-                    resultActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
+                    resultMoveActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
                 }
             }
         case .Left:
@@ -115,7 +119,7 @@ extension Game2048 {
                 for action in actions {
                     let fromCoordinates = action.fromIndexs.map({ (i, self.dimension - 1 - $0) })
                     let toCoordinate = (i, self.dimension - 1 - action.toIndex)
-                    resultActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
+                    resultMoveActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
                 }
             }
         case .Right:
@@ -125,18 +129,20 @@ extension Game2048 {
                 for action in actions {
                     let fromCoordinates = action.fromIndexs.map({ (i, $0) })
                     let toCoordinate = (i, action.toIndex)
-                    resultActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
+                    resultMoveActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
                 }
             }
         }
         
-        if resultActions.count > 0 {
-            insertTileAtRandomLocation(2)
-        }
-        printOutGameBoard()
+        var resultInitActions = [InitAction]()
         
-        delegate?.game2048DidUpdate(self)
-        return []
+        if resultMoveActions.count > 0 {
+            let insertedCoordinate = insertTileAtRandomLocation(2)
+            resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: 2))
+        }
+        
+        printOutGameBoard()
+        delegate?.game2048DidUpdate(self, moveActions: resultMoveActions, initActions: resultInitActions)
     }
 }
 
@@ -163,16 +169,17 @@ extension Game2048 {
     }
     
     /// Insert a tile with a given value at a random open position upon the gameboard.
-    func insertTileAtRandomLocation(value: Int) {
+    func insertTileAtRandomLocation(value: Int) -> (Int, Int) {
         let openSpots = gameboardEmptySpots()
         if openSpots.count == 0 {
             // No more open spots; don't even bother
-            return
+            return (-1, -1)
         }
         // Randomly select an open spot, and put a new tile there
         let idx = Int(arc4random_uniform(UInt32(openSpots.count - 1)))
         let (x, y) = openSpots[idx]
         insertTile((x, y), value: value)
+        return (x, y)
     }
     
     /// Insert a tile with a given value at a position upon the gameboard.
@@ -387,6 +394,12 @@ extension Game2048 {
             }
         }
         println()
+    }
+    
+    func printOutMoveActions(actions: [MoveAction]) {
+        for action in actions {
+            println("From: \(action.fromCoordinates) To:\(action.toCoordinate)")
+        }
     }
 }
 

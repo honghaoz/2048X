@@ -105,9 +105,11 @@ extension ViewController: Game2048Delegate {
         println("Started")
     }
     
-    func game2048DidUpdate(game2048: Game2048) {
+    func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction]) {
         println("Updated")
-        gameBoardView.updateTiles()
+        gameBoardView.updateWithMoveActions(moveActions, initActions: initActions)
+//        gameBoardView.updateWithInitActions(initActions)
+//        gameBoardView.updateTiles()
     }
     
     func game2048DidReset(game2048: Game2048) {

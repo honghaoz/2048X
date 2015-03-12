@@ -45,6 +45,7 @@ enum ActionType {
 struct InitAction: Action {
     var actionType: ActionType = .Init
     var initCoordinate: (Int, Int)
+    var initNumber: Int
 }
 
 struct MoveAction: Action {
