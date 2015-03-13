@@ -34,6 +34,7 @@ class ViewController: UIViewController {
         self.view.backgroundColor = SharedColors.BackgroundColor
 
         gameBoardView = GameBoardView(width: UIScreen.mainScreen().bounds.width * 0.9, dimension: 4)
+        gameBoardView.backgroundColor = view.backgroundColor
         gameBoardView.gameModel = gameModel
         gameBoardView.setTranslatesAutoresizingMaskIntoConstraints(false)
         
@@ -108,8 +109,6 @@ extension ViewController: Game2048Delegate {
     func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction]) {
         println("Updated")
         gameBoardView.updateWithMoveActions(moveActions, initActions: initActions)
-//        gameBoardView.updateWithInitActions(initActions)
-//        gameBoardView.updateTiles()
     }
     
     func game2048DidReset(game2048: Game2048) {

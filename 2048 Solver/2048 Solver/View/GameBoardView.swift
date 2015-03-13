@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import QuartzCore
 
 class GameBoardView: UIView {
     var dimension: Int = 4
@@ -22,6 +23,18 @@ class GameBoardView: UIView {
     var tilePadding: CGFloat = 3.0
     var tileWidth: CGFloat {
         return (width - padding * 2 - tilePadding * (CGFloat(dimension) - 1)) / CGFloat(dimension)
+    }
+    
+    override var backgroundColor: UIColor? {
+        didSet {
+            for i in 0 ..< dimension {
+                for j in 0 ..< dimension {
+                    if let tile = forgroundTiles[i][j] {
+                        tile.backgroundColor = backgroundColor
+                    }
+                }
+            }
+        }
     }
     
     var backgroundTiles = [[TileView]]()
@@ -113,29 +126,6 @@ class GameBoardView: UIView {
             }
             forgroundTiles.append(tiles)
         }
-
-//        var x: CGFloat = 0
-//        var y: CGFloat = 0
-//        let tileWidth = self.tileWidth
-//
-//        // Layout tiles
-//        for i in 0 ..< dimension {
-//            var tiles = [TileView]()
-//            for j in 0 ..< dimension {
-//                y = padding
-//                y += (tilePadding + tileWidth) * CGFloat(i)
-//                
-//                x = padding
-//                x += (tilePadding + tileWidth) * CGFloat(j)
-//                
-//                let frame = CGRectMake(x, y, tileWidth, tileWidth)
-//                let tile = TileView(frame: frame)
-//                tile.number = 0
-//                self.addSubview(tile)
-//                tiles.append(tile)
-//            }
-//            forgroundTiles.append(tiles)
-//        }
     }
     
     private func updateForgroundTileViews() {
@@ -160,24 +150,10 @@ class GameBoardView: UIView {
         }
     }
     
-//    func updateTiles() {
-//        for i in 0 ..< dimension {
-//            for j in 0 ..< dimension {
-//                if let tile = forgroundTiles[i][j] {
-//                    switch gameModel.gameBoard[i, j].memory {
-//                    case .Empty:
-//                        tile.number = 0
-//                    case let .Number(tileNumber):
-//                        tile.number = tileNumber
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
     func updateWithMoveActions(moveActions: [MoveAction], initActions: [InitAction]) {
-        updateWithMoveActions(moveActions)
-        updateWithInitActions(initActions)
+        updateWithMoveActions(moveActions, completion: {
+            self.updateWithInitActions(initActions)
+        })
     }
     
     func updateWithInitActions(initActions: [InitAction]) {
@@ -197,42 +173,65 @@ class GameBoardView: UIView {
             
             let frame = CGRectMake(x, y, tileWidth, tileWidth)
             let tile = TileView(frame: frame)
+            tile.backgroundColor = backgroundColor
             tile.number = number
             
             forgroundTiles[coordinate.0][coordinate.1] = tile
             self.addSubview(tile)
             
-            UIView.animateWithDuration(0.15, delay: 0.1, options: UIViewAnimationOptions.CurveEaseInOut | UIViewAnimationOptions.BeginFromCurrentState | UIViewAnimationOptions.Autoreverse | UIViewAnimationOptions.Repeat, animations: { () -> Void in
-                UIView.setAnimationRepeatCount(2)
-                tile.alpha = 0.0
-                }, completion: { (finish) -> Void in
-                    tile.alpha = 1.0
+            let animationDuration: NSTimeInterval = 0.15
+            
+            // Blink patter: 0 -> 1 -> 0 -> 1
+            tile.alpha = 0.0
+            UIView.animateWithDuration(animationDuration, animations: { () -> Void in
+                tile.alpha = 1.0
+                }, completion: { (finished) -> Void in
+                    UIView.animateWithDuration(animationDuration, animations: { () -> Void in
+                        tile.alpha = 0.0
+                        }, completion: { (finished) -> Void in
+                            UIView.animateWithDuration(animationDuration, animations: { () -> Void in
+                                tile.alpha = 1.0
+                                }, completion: { (finished) -> Void in
+                                    //
+                            })
+                    })
             })
         }
     }
     
-    func updateWithMoveActions(moveActions: [MoveAction]) {
+    func updateWithMoveActions(moveActions: [MoveAction], completion: (() -> ())? = nil) {
+        let count = moveActions.count
+        // If there's no MoveActions, execute completion closure
+        if count == 0 {
+            completion?()
+            return
+        }
+        
+        gameModel.printOutMoveActions(moveActions)
+        
         var x: CGFloat = 0
         var y: CGFloat = 0
         let tileWidth = self.tileWidth
         
-        gameModel.printOutMoveActions(moveActions)
-        
-        for action in moveActions {
+        for (index, action) in enumerate(moveActions) {
             if action.fromCoordinates.count == 1 {
                 // Move Action
                 let from = action.fromCoordinates[0]
                 let to = action.toCoordinate
                 
-                forgroundTiles[to.0][to.1] = forgroundTiles[from.0][from.1]
+                let fromView = forgroundTiles[from.0][from.1]!
+                forgroundTiles[to.0][to.1] = fromView
                 forgroundTiles[from.0][from.1] = nil
                 
                 y = padding + (tilePadding + tileWidth) * CGFloat(to.0)
                 x = padding + (tilePadding + tileWidth) * CGFloat(to.1)
+                
                 UIView.animateWithDuration(0.15, animations: { () -> Void in
-                    self.forgroundTiles[to.0][to.1]!.frame = CGRectMake(x, y, tileWidth, tileWidth)
+                    fromView.frame = CGRectMake(x, y, tileWidth, tileWidth)
                     }, completion: { (finished) -> Void in
-                    //
+                        if index == count - 1 {
+                            completion?()
+                        }
                 })
             } else {
                 // Merge Action
@@ -252,9 +251,30 @@ class GameBoardView: UIView {
                     fromTileView.frame = CGRectMake(x, y, tileWidth, tileWidth)
                     }, completion: { (finished) -> Void in
                         fromTileView.removeFromSuperview()
-                        toTileView.number *= 2
+                        
+                        toTileView.numberLabel.textColor = self.backgroundColor
+                        UIView.transitionWithView(toTileView.numberLabel, duration: 0.15, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                            toTileView.number *= 2
+                            toTileView.numberLabel.textColor = UIColor.blackColor()
+                        }, completion: nil)
+                        
+                        // Black flash tile
+                        toTileView.backgroundColor = UIColor.blackColor()
+                        UIView.animateWithDuration(0.15, animations: { () -> Void in
+                            toTileView.backgroundColor = self.backgroundColor
+                        }, completion: { (finished) -> Void in
+                            if index == count - 1 {
+                                completion?()
+                            }
+                        })
                 })
             }
         }
     }
 }
+
+//extension GameBoardView {
+//    func blinkView(view: UIView, withDuration duration: NSTimeInterval) {
+//        
+//    }
+//}

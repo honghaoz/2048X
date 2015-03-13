@@ -82,11 +82,11 @@ extension Game2048 {
             resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: 2))
         }
         
-        printOutGameBoard()
-        
         // TODO: Could issue Actions
         delegate?.game2048DidStartNewGame(self)
         delegate?.game2048DidUpdate(self, moveActions: [], initActions: resultInitActions)
+        
+        printOutGameBoard()
     }
     
     func performMoveCommand(moveCommand: MoveCommand) {
@@ -141,8 +141,8 @@ extension Game2048 {
             resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: 2))
         }
         
-        printOutGameBoard()
         delegate?.game2048DidUpdate(self, moveActions: resultMoveActions, initActions: resultInitActions)
+        printOutGameBoard()
     }
 }
 
