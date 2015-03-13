@@ -10,20 +10,25 @@ import UIKit
 import QuartzCore
 
 class GameBoardView: UIView {
-    var dimension: Int = 4
+    
+    var dimension: Int = 4 { didSet { updateTileWidth() } }
+    
     var width: CGFloat = UIScreen.mainScreen().bounds.width * 0.9 {
         didSet {
-            self.bounds = CGRectMake(0, 0, width, width)
-            self.updateBackgroundTileViews()
-            self.updateForgroundTileViews()
+            bounds = CGRectMake(0, 0, width, width)
+            updateBackgroundTileViews()
+            updateForgroundTileViews()
+            updateTileWidth()
         }
     }
     
-    var padding: CGFloat = 8.0
-    var tilePadding: CGFloat = 3.0
-    var tileWidth: CGFloat {
-        return (width - padding * 2 - tilePadding * (CGFloat(dimension) - 1)) / CGFloat(dimension)
-    }
+    /// padding: paddings around the board view
+    var padding: CGFloat = 8.0 { didSet { updateTileWidth() } }
+    /// paddings betwwen tiles
+    var tilePadding: CGFloat = 3.0 { didSet { updateTileWidth() } }
+    
+    // TileWidth is updated automatically
+    var tileWidth: CGFloat = 0.0
     
 //    override var backgroundColor: UIColor? {
 //        didSet {
@@ -37,9 +42,10 @@ class GameBoardView: UIView {
 //        }
 //    }
     
+    /// Background tiles provide a grid like background layout
     var backgroundTiles = [[TileView]]()
     
-    // Reason to store (TileView?, TileView?):
+    // Reason to use (TileView?, TileView?):
     // For animation convenience. When merging two tiles are followed by a condense action, both two tiles' frame need to be updated. Thus, the tuple.1 will store the tile underneath and provide the tile view
     var forgroundTiles = [[(TileView?, TileView?)]]()
     
@@ -70,28 +76,17 @@ class GameBoardView: UIView {
     private func setupViews() {
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 5.0
+        updateTileWidth()
         setupBackgroundTileViews()
         setupForgroundTileViews()
     }
     
     private func setupBackgroundTileViews() {
-        var x: CGFloat = 0
-        var y: CGFloat = 0
-        let tileWidth = self.tileWidth
-        
         // Layout tiles
         for i in 0 ..< dimension {
             var tiles = [TileView]()
             for j in 0 ..< dimension {
-                y = padding
-                y += (tilePadding + tileWidth) * CGFloat(i)
-                
-                x = padding
-                x += (tilePadding + tileWidth) * CGFloat(j)
-                
-                let frame = CGRectMake(x, y, tileWidth, tileWidth)
-                let tile = TileView(frame: frame)
-//                tile.borderColor = UIColor(white: 0.0, alpha: 0.15)
+                let tile = TileView(frame: tileFrameForCoordinate((i, j)))
                 tile.number = 0
                 self.addSubview(tile)
                 tiles.append(tile)
@@ -101,23 +96,10 @@ class GameBoardView: UIView {
     }
     
     private func updateBackgroundTileViews() {
-        var x: CGFloat = 0
-        var y: CGFloat = 0
-        let tileWidth = self.tileWidth
-        
-        // Layout tiles
+        // Update background tiles' frame
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                y = padding
-                y += (tilePadding + tileWidth) * CGFloat(i)
-                
-                x = padding
-                x += (tilePadding + tileWidth) * CGFloat(j)
-                
-                let frame = CGRectMake(x, y, tileWidth, tileWidth)
-
-                let tile = backgroundTiles[i][j]
-                tile.frame = frame
+                backgroundTiles[i][j].frame = tileFrameForCoordinate((i, j))
             }
         }
     }
@@ -133,22 +115,10 @@ class GameBoardView: UIView {
     }
     
     private func updateForgroundTileViews() {
-        var x: CGFloat = 0
-        var y: CGFloat = 0
-        let tileWidth = self.tileWidth
-        
-        // Layout tiles
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
                 if let tile = forgroundTiles[i][j].0 {
-                    y = padding
-                    y += (tilePadding + tileWidth) * CGFloat(i)
-                    
-                    x = padding
-                    x += (tilePadding + tileWidth) * CGFloat(j)
-                    
-                    let frame = CGRectMake(x, y, tileWidth, tileWidth)
-                    tile.frame = frame
+                    tile.frame = tileFrameForCoordinate((i, j))
                 }
             }
         }
@@ -161,22 +131,11 @@ class GameBoardView: UIView {
     }
     
     func updateWithInitActions(initActions: [InitAction]) {
-        var x: CGFloat = 0
-        var y: CGFloat = 0
-        let tileWidth = self.tileWidth
-        
         for action in initActions {
             let coordinate = action.initCoordinate
             let number = action.initNumber
             
-            y = padding
-            y += (tilePadding + tileWidth) * CGFloat(coordinate.0)
-            
-            x = padding
-            x += (tilePadding + tileWidth) * CGFloat(coordinate.1)
-            
-            let frame = CGRectMake(x, y, tileWidth, tileWidth)
-            let tile = TileView(frame: frame)
+            let tile = TileView(frame: tileFrameForCoordinate(coordinate))
             tile.number = number
             
             forgroundTiles[coordinate.0][coordinate.1].0 = tile
@@ -200,10 +159,6 @@ class GameBoardView: UIView {
         
         gameModel.printOutMoveActions(moveActions)
         
-        var x: CGFloat = 0
-        var y: CGFloat = 0
-        let tileWidth = self.tileWidth
-        
         for (index, action) in enumerate(moveActions) {
             if action.fromCoordinates.count == 1 {
                 // Move Action
@@ -216,13 +171,10 @@ class GameBoardView: UIView {
                 
                 forgroundTiles[to.0][to.1] = forgroundTiles[from.0][from.1]
                 forgroundTiles[from.0][from.1] = (nil, nil)
-                
-                y = padding + (tilePadding + tileWidth) * CGFloat(to.0)
-                x = padding + (tilePadding + tileWidth) * CGFloat(to.1)
-                
+
                 UIView.animateWithDuration(sharedAnimationDuration, animations: { () -> Void in
-                    fromView.frame = CGRectMake(x, y, tileWidth, tileWidth)
-                    fromUnderneath?.frame = CGRectMake(x, y, tileWidth, tileWidth)
+                    fromView.frame = self.tileFrameForCoordinate(to)
+                    fromUnderneath?.frame = fromView.frame
                     }, completion: { (finished) -> Void in
                         if index == count - 1 {
                             completion?()
@@ -233,9 +185,6 @@ class GameBoardView: UIView {
                 let from1 = action.fromCoordinates[0]
                 let from2 = action.fromCoordinates[1]
                 let to = action.toCoordinate
-                
-                y = padding + (tilePadding + tileWidth) * CGFloat(to.0)
-                x = padding + (tilePadding + tileWidth) * CGFloat(to.1)
                 
                 self.insertSubview(forgroundTiles[from1.0][from1.1].0!, belowSubview: forgroundTiles[from2.0][from2.1].0!)
                 
@@ -248,7 +197,7 @@ class GameBoardView: UIView {
                 forgroundTiles[to.0][to.1] = (toTileView, fromTileView)
                 
                 UIView.animateWithDuration(sharedAnimationDuration, animations: { () -> Void in
-                    fromTileView.frame = CGRectMake(x, y, tileWidth, tileWidth)
+                    fromTileView.frame = self.tileFrameForCoordinate(to)
                     }, completion: { (finished) -> Void in
                         fromTileView.removeFromSuperview()
                         toTileView.number *= 2
@@ -264,5 +213,21 @@ class GameBoardView: UIView {
                 })
             }
         }
+    }
+}
+
+// MARK: Property helpers
+extension GameBoardView {
+    func updateTileWidth() {
+        tileWidth = (width - padding * 2 - tilePadding * (CGFloat(dimension) - 1)) / CGFloat(dimension)
+    }
+}
+
+// MARK: Generic helpers
+extension GameBoardView {
+    func tileFrameForCoordinate(coordinate: (Int, Int)) -> CGRect {
+        let y = padding + (tilePadding + tileWidth) * CGFloat(coordinate.0)
+        let x = padding + (tilePadding + tileWidth) * CGFloat(coordinate.1)
+        return CGRectMake(x, y, tileWidth, tileWidth)
     }
 }
