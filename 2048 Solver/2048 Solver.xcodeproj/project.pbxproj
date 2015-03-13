@@ -170,8 +170,8 @@
 		FF5C5DD81AAF77C600CE6981 /* AI */ = {
 			isa = PBXGroup;
 			children = (
-				FF5C5DDB1AAF7E7A00CE6981 /* GameBoardAssistant.swift */,
 				FF5C5DD91AAF782A00CE6981 /* AI.swift */,
+				FF5C5DDB1AAF7E7A00CE6981 /* GameBoardAssistant.swift */,
 			);
 			path = AI;
 			sourceTree = "<group>";

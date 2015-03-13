@@ -109,10 +109,31 @@ extension ViewController: Game2048Delegate {
     
     func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction]) {
         println("Updated")
+        
         gameBoardView.updateWithMoveActions(moveActions, initActions: initActions)
     }
     
     func game2048DidReset(game2048: Game2048) {
         println("Reseted")
     }
+}
+
+extension ViewController {
+//    func playSoundEffect() {
+//        // Play sound effect
+//        let path = NSBundle.mainBundle().pathForResource("move", ofType: "wav")
+//        if let existedPath = path {
+//            let pathURL = NSURL.fileURLWithPath(existedPath)
+//            var audioEffect: SystemSoundID = 0
+//            AudioServicesCreateSystemSoundID(pathURL, &audioEffect)
+//            // Play
+//            AudioServicesPlaySystemSound(audioEffect)
+//            
+//            // Using GCD, we can use a block to dispose of the audio effect without using a NSTimer or something else to figure out when it'll be finished playing.
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
+//                Int64(2 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
+//                    AudioServicesDisposeSystemSoundID(audioEffect)
+//            })
+//        }
+//    }
 }

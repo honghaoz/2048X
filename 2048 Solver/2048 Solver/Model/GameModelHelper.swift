@@ -32,6 +32,7 @@ struct MoveCommand {
 }
 
 // MARK: Action Related
+// Action is for 2D board
 /**
 *  Action is issued from game model to view controller, view controller use Actions to animate game board
 */
@@ -48,13 +49,19 @@ struct InitAction: Action {
     var initNumber: Int
 }
 
+/**
+*  MoveAction stands for merging or moving
+*  If fromCoordinates has only one tile, e.g. [(0, 1)] and toCoordinate is (0, 2), this is a Move action, (0, 1) -> (0, 2)
+*  If fromCoordinates has two tiles, e.g. [(0, 1), (0, 2)], and toCoordinate is (0, 2), this means it's a merge action, (0, 1), (0, 2) -> (0, 2)
+*/
 struct MoveAction: Action {
     var actionType: ActionType = .Move
     var fromCoordinates: [(Int, Int)] // Either 1 tile or 2 tiles, 2 tiles means merge
     var toCoordinate: (Int, Int)
 }
 
-// Private use
+// Private Use
+// This is for 1D array
 struct Action1D {
     // If fromIndexs contain two indexes, merge action
     // Else, move action

@@ -16,18 +16,24 @@ protocol Game2048Delegate: class {
 
 class Game2048: NSObject {
     let dimension: Int
-    let target: Int
     
+    /// Target score to win
+    var targetScore: Int = 0
+    
+    /// Current score
     var score: Int = 0
-    // Store pointers to Tiles, this will give a chance to modify in place
+    
+    // Store pointers to Tiles, this will give a chance to modify tiles in place
     var gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>
     
+    /// A queue which will store upcomming commands, this queue if helpful for delaying too fast operation
     var moveCommandsQueue = [MoveCommand]()
+    var commandQueueSize = 3
+    
+    /// A timer to fire next command
     var timer: NSTimer
     
-    let queueSize = 3
-    let queueDelay = 0.3
-    
+    /// Game delegate, normally this shoudl be the controller
     weak var delegate: Game2048Delegate?
     
     /**
@@ -39,23 +45,20 @@ class Game2048: NSObject {
     :returns: an initialized Game2048
     */
     init(dimension d: Int, target t: Int) {
-        
         dimension = d
-        if t == 0 {
-            target = Int.max
-        } else {
-            target = t
-        }
+        targetScore = t
+        
         timer = NSTimer()
         
-        // Initialize gameBoard, alloc memory and initialize it
+        // Initialize gameBoard
         gameBoard =  SquareGameBoard(dimension: d, initialValue: nil)
         super.init()
-        
+        // Allocate memory and initialize it
         allocateGameBoard()
     }
     
     deinit {
+        // Be sure to deallocate memory
         deallocateGameBoard()
     }
 }
@@ -72,13 +75,13 @@ extension Game2048 {
     }
     
     func start() {
-        precondition(!gameboardFull(), "Game is not empty, before starting a new game, please reset a game")
+        precondition(!gameBoardFull(), "Game is not empty, before starting a new game, please reset a game")
         
         var resultInitActions = [InitAction]()
         
+        // TODO: Different dimension could insert different numbers of tiles
         for i in 0 ..< 2 {
             let insertedCoordinate = insertTileAtRandomLocation(2)
-            // TODO: Could randomly insert 4
             resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: 2))
         }
         
@@ -142,75 +145,21 @@ extension Game2048 {
             resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: initNumber))
         }
         
-        // Play sound effect
-//        let path = NSBundle.mainBundle().pathForResource("move", ofType: "wav")
-//        if let existedPath = path {
-//            let pathURL = NSURL.fileURLWithPath(existedPath)
-//            var audioEffect: SystemSoundID = 0
-//            AudioServicesCreateSystemSoundID(pathURL, &audioEffect)
-//            // Play
-//            AudioServicesPlaySystemSound(audioEffect)
-//            
-//            // Using GCD, we can use a block to dispose of the audio effect without using a NSTimer or something else to figure out when it'll be finished playing.
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
-//                Int64(2 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
-//                AudioServicesDisposeSystemSoundID(audioEffect)
-//            })
-//        }
-        
         delegate?.game2048DidUpdate(self, moveActions: resultMoveActions, initActions: resultInitActions)
         printOutGameBoard()
     }
 }
 
-// MARK: Game Helpers
+// MARK: Game Logic Helper
 extension Game2048 {
-    /// Return a list of tuples describing the coordinates of empty spots remaining on the gameboard.
-    func gameboardEmptySpots() -> [(Int, Int)] {
-        var buffer = Array<(Int, Int)>()
-        for i in 0..<dimension {
-            for j in 0..<dimension {
-                switch gameBoard[i, j].memory {
-                case .Empty:
-                    buffer += [(i, j)]
-                case .Number:
-                    break
-                }
-            }
-        }
-        return buffer
-    }
+    /**
+    Process a list of tiles, for a 2048 board game, commands with any directions will eventually go into an one dimension array whihc can be processed in same way
     
-    func gameboardFull() -> Bool {
-        return gameboardEmptySpots().count == 0
-    }
+    :param: tiles a list of tile pointers
     
-    /// Insert a tile with a given value at a random open position upon the gameboard.
-    func insertTileAtRandomLocation(value: Int) -> (Int, Int) {
-        let openSpots = gameboardEmptySpots()
-        if openSpots.count == 0 {
-            // No more open spots; don't even bother
-            return (-1, -1)
-        }
-        // Randomly select an open spot, and put a new tile there
-        let idx = Int(arc4random_uniform(UInt32(openSpots.count - 1)))
-        let (x, y) = openSpots[idx]
-        insertTile((x, y), value: value)
-        return (x, y)
-    }
-    
-    /// Insert a tile with a given value at a position upon the gameboard.
-    func insertTile(pos: (Int, Int), value: Int) {
-        let (x, y) = pos
-        switch gameBoard[x, y].memory {
-        case .Empty:
-            gameBoard[x, y].memory = Tile.Number(value)
-        case .Number:
-            break
-        }
-    }
-    
-    func processOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [Action1D] {
+    :returns: result 1D actions
+    */
+    private func processOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [Action1D] {
         var actions = mergeOneDimensionTiles(&tiles)
         actions.extend(condenseOneDimensionTiles(&tiles))
         return actions
@@ -220,17 +169,17 @@ extension Game2048 {
     Merge a list of Tiles to right
     E.g. [2,2,4,4] -> [_,_,4,8], [4,2,2,2] -> [_,4,2,4]
     More detailed examples:
-         [2,2,2,_] -> [2,2,_,2] -> [2,_,_,4] -> [_,_,2,4] (Move leave it as an empty tile)
-         [2,_,2,2] -> [2,_,2,2] -> [2,_,0,4] -> [_,2,0,4] -> [_,_,2,4] (Merge creates 0 tile)
-         [_,4,2,2] -> [_,4,2,2] -> [_,4,0,4] -> [_,4,0,4] -> [_,_,4,4] (Last step is condense, not include in this method)
-         [4,2,_,2,_] -> [4,2,_,_,2] -> [4,0,_,_,4] -(condense)-> [_,_,_,4,4]
+    [2,2,2,_] -> [2,2,_,2] -> [2,_,_,4] -> [_,_,2,4] (Move leave it as an empty tile)
+    [2,_,2,2] -> [2,_,2,2] -> [2,_,0,4] -> [_,2,0,4] -> [_,_,2,4] (Merge creates 0 tile)
+    [_,4,2,2] -> [_,4,2,2] -> [_,4,0,4] -> [_,4,0,4] -> [_,_,4,4] (Last step is condense, not include in this method)
+    [4,2,_,2,_] -> [4,2,_,_,2] -> [4,0,_,_,4] -(condense)-> [_,_,_,4,4]
     Note: Tiles will be mutated
     
     :param: tiles the reference of an array of references of Tiles
     
     :returns: Return a list of actions
     */
-    func mergeOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [Action1D] {
+    private func mergeOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [Action1D] {
         var resultActions = [Action1D]()
         let count = tiles.count
         for i in stride(from: count - 1, to: -1, by: -1) {
@@ -274,13 +223,13 @@ extension Game2048 {
     /**
     Condense tiles, remove .Empty tiles and .0 tiles, and generate associated Actions
     E.g. [_,2,_,2] -> [_,_,2,2]
-         [0,2,_,_] -> [_,_,_,2]
+    [0,2,_,_] -> [_,_,_,2]
     
     :param: tiles the reference of an array of references of Tiles
     
     :returns: a list of actions
     */
-    func condenseOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [Action1D] {
+    private func condenseOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [Action1D] {
         var resultActions = [Action1D]()
         let count = tiles.count
         for i in stride(from: count - 1, to: -1, by: -1) {
@@ -322,7 +271,7 @@ extension Game2048 {
     /**
     Get the first valid right tile
     E.g. tiles: [_,4,_,2,_]
-                   1
+    1
     return 3
     
     :param: index current index
@@ -341,6 +290,74 @@ extension Game2048 {
             }
         }
         return (Tile.Empty, count)
+    }
+}
+
+// MARK: Game Helpers
+extension Game2048 {
+    /**
+    Return a list of tuples describing the coordinates of empty spots remaining on the gameboard.
+    
+    :returns: coordinates for empty spots
+    */
+    func gameBoardEmptySpots() -> [(Int, Int)] {
+        var buffer = Array<(Int, Int)>()
+        for i in 0..<dimension {
+            for j in 0..<dimension {
+                switch gameBoard[i, j].memory {
+                case .Empty:
+                    buffer += [(i, j)]
+                case .Number:
+                    break
+                }
+            }
+        }
+        return buffer
+    }
+    
+    /**
+    Get whether game board is full
+    
+    :returns: true is game board is full
+    */
+    func gameBoardFull() -> Bool {
+        return gameBoardEmptySpots().count == 0
+    }
+    
+    /**
+    Insert a tile with a given value at a random open position upon the game board.
+    
+    :param: value new number value to be inserted
+    
+    :returns: inserted coordinate, if game board is full, return (-1, -1)
+    */
+    func insertTileAtRandomLocation(value: Int) -> (Int, Int) {
+        let openSpots = gameBoardEmptySpots()
+        if openSpots.count == 0 {
+            // No more open spots; don't even bother
+            return (-1, -1)
+        }
+        // Randomly select an open spot, and put a new tile there
+        let idx = Int(arc4random_uniform(UInt32(openSpots.count - 1)))
+        let (x, y) = openSpots[idx]
+        insertTile((x, y), value: value)
+        return (x, y)
+    }
+    
+    /**
+    Insert a tile with a given value at a position upon the game board.
+    
+    :param: pos   insert position/ coordinate
+    :param: value new inserted value
+    */
+    func insertTile(pos: (Int, Int), value: Int) {
+        let (x, y) = pos
+        switch gameBoard[x, y].memory {
+        case .Empty:
+            gameBoard[x, y].memory = Tile.Number(value)
+        case .Number:
+            break
+        }
     }
 }
 
@@ -379,43 +396,6 @@ extension Game2048 {
                 gameBoard[i, j].destroy()
                 gameBoard[i, j].dealloc(1)
             }
-        }
-    }
-}
-
-// MARK: Debug Methods
-extension Game2048 {
-    func printOutGameBoard() {
-        println("Game Board:")
-        for i in 0 ..< dimension {
-            for j in 0 ..< dimension {
-                switch gameBoard[i, j].memory {
-                case .Empty:
-                    print("_\t")
-                case let .Number(num):
-                    print("\(num)\t")
-                }
-            }
-            println()
-        }
-    }
-    
-    func printOutTilePointers(tilePointers: [UnsafeMutablePointer<Tile>]) {
-        println("Tile Pointers:")
-        for p in tilePointers {
-            switch p.memory {
-            case .Empty:
-                print("_\t")
-            case let .Number(num):
-                print("\(num)\t")
-            }
-        }
-        println()
-    }
-    
-    func printOutMoveActions(actions: [MoveAction]) {
-        for action in actions {
-            println("From: \(action.fromCoordinates) To:\(action.toCoordinate)")
         }
     }
 }
@@ -464,5 +444,42 @@ extension Game2048 {
 //            }
 //        }
         return []
+    }
+}
+
+// MARK: Debug Methods
+extension Game2048 {
+    func printOutGameBoard() {
+        println("Game Board:")
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                switch gameBoard[i, j].memory {
+                case .Empty:
+                    print("_\t")
+                case let .Number(num):
+                    print("\(num)\t")
+                }
+            }
+            println()
+        }
+    }
+    
+    func printOutTilePointers(tilePointers: [UnsafeMutablePointer<Tile>]) {
+        println("Tile Pointers:")
+        for p in tilePointers {
+            switch p.memory {
+            case .Empty:
+                print("_\t")
+            case let .Number(num):
+                print("\(num)\t")
+            }
+        }
+        println()
+    }
+    
+    func printOutMoveActions(actions: [MoveAction]) {
+        for action in actions {
+            println("From: \(action.fromCoordinates) To:\(action.toCoordinate)")
+        }
     }
 }
