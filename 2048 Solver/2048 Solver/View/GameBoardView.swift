@@ -29,7 +29,7 @@ class GameBoardView: UIView {
         didSet {
             for i in 0 ..< dimension {
                 for j in 0 ..< dimension {
-                    if let tile = forgroundTiles[i][j] {
+                    if let tile = forgroundTiles[i][j].0 {
                         tile.backgroundColor = backgroundColor
                     }
                 }
@@ -38,7 +38,10 @@ class GameBoardView: UIView {
     }
     
     var backgroundTiles = [[TileView]]()
-    var forgroundTiles = [[TileView?]]()
+    
+    // Reason to store (TileView?, TileView?):
+    // For animation convenience. When merging two tiles are followed by a condense action, both two tiles' frame need to be updated. Thus, the tuple.1 will store the tile underneath and provide the tile view
+    var forgroundTiles = [[(TileView?, TileView?)]]()
     
     var gameModel: Game2048!
     
@@ -120,9 +123,9 @@ class GameBoardView: UIView {
     
     private func setupForgroundTileViews() {
         for i in 0 ..< dimension {
-            var tiles = [TileView?]()
+            var tiles = [(TileView?, TileView?)]()
             for j in 0 ..< dimension {
-                tiles.append(nil)
+                tiles.append((nil, nil))
             }
             forgroundTiles.append(tiles)
         }
@@ -136,7 +139,7 @@ class GameBoardView: UIView {
         // Layout tiles
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                if let tile = forgroundTiles[i][j] {
+                if let tile = forgroundTiles[i][j].0 {
                     y = padding
                     y += (tilePadding + tileWidth) * CGFloat(i)
                     
@@ -176,12 +179,12 @@ class GameBoardView: UIView {
             tile.backgroundColor = backgroundColor
             tile.number = number
             
-            forgroundTiles[coordinate.0][coordinate.1] = tile
+            forgroundTiles[coordinate.0][coordinate.1].0 = tile
             self.addSubview(tile)
             
             let animationDuration: NSTimeInterval = 0.15
             
-            // Blink patter: 0 -> 1 -> 0 -> 1
+            // Blink pattern: 0 -> 1 -> 0 -> 1
             tile.alpha = 0.0
             UIView.animateWithDuration(animationDuration, animations: { () -> Void in
                 tile.alpha = 1.0
@@ -219,15 +222,19 @@ class GameBoardView: UIView {
                 let from = action.fromCoordinates[0]
                 let to = action.toCoordinate
                 
-                let fromView = forgroundTiles[from.0][from.1]!
-                forgroundTiles[to.0][to.1] = fromView
-                forgroundTiles[from.0][from.1] = nil
+                let fromView = forgroundTiles[from.0][from.1].0!
+                // There may exist an underneath tile
+                let fromUnderneath = forgroundTiles[from.0][from.1].1
+                
+                forgroundTiles[to.0][to.1] = forgroundTiles[from.0][from.1]
+                forgroundTiles[from.0][from.1] = (nil, nil)
                 
                 y = padding + (tilePadding + tileWidth) * CGFloat(to.0)
                 x = padding + (tilePadding + tileWidth) * CGFloat(to.1)
                 
                 UIView.animateWithDuration(0.15, animations: { () -> Void in
                     fromView.frame = CGRectMake(x, y, tileWidth, tileWidth)
+                    fromUnderneath?.frame = CGRectMake(x, y, tileWidth, tileWidth)
                     }, completion: { (finished) -> Void in
                         if index == count - 1 {
                             completion?()
@@ -242,11 +249,16 @@ class GameBoardView: UIView {
                 y = padding + (tilePadding + tileWidth) * CGFloat(to.0)
                 x = padding + (tilePadding + tileWidth) * CGFloat(to.1)
                 
-                self.insertSubview(forgroundTiles[from1.0][from1.1]!, belowSubview: forgroundTiles[from2.0][from2.1]!)
+                self.insertSubview(forgroundTiles[from1.0][from1.1].0!, belowSubview: forgroundTiles[from2.0][from2.1].0!)
                 
-                let fromTileView = self.forgroundTiles[from1.0][from1.1]!
-                self.forgroundTiles[from1.0][from1.1] = nil
-                let toTileView = self.forgroundTiles[to.0][to.1]!
+                let fromTileView = forgroundTiles[from1.0][from1.1].0!
+                let toTileView = self.forgroundTiles[to.0][to.1].0!
+                
+                forgroundTiles[from1.0][from1.1] = (nil, nil)
+                
+                // Put fromTileView underneath toTileView
+                forgroundTiles[to.0][to.1] = (toTileView, fromTileView)
+                
                 UIView.animateWithDuration(0.15, animations: { () -> Void in
                     fromTileView.frame = CGRectMake(x, y, tileWidth, tileWidth)
                     }, completion: { (finished) -> Void in
@@ -272,9 +284,3 @@ class GameBoardView: UIView {
         }
     }
 }
-
-//extension GameBoardView {
-//    func blinkView(view: UIView, withDuration duration: NSTimeInterval) {
-//        
-//    }
-//}
