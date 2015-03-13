@@ -159,6 +159,8 @@ extension Game2048 {
         delegate?.game2048DidUpdate(self, moveActions: resultMoveActions, initActions: resultInitActions)
         printOutGameBoard()
     }
+    
+//    private func checkGameStopped
 }
 
 // MARK: Game Logic Helper

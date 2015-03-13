@@ -40,7 +40,6 @@ struct SharedColors {
         case 2048:
             return UIColor(red:32/255.0, green:33/255.0, blue:29/255.0, alpha:255/255.0)
         default:
-            precondition(number < 2048, "Invalid number")
             return UIColor(red:15/255.0, green:16/255.0, blue:14/255.0, alpha:255/255.0)
         }
     }

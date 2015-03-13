@@ -29,6 +29,22 @@ class ViewController: UIViewController {
         setupSwipeGestures()
         
         gameModel.start()
+        
+        sharedAnimationDuration = 0.05
+        NSTimer.scheduledTimerWithTimeInterval(sharedAnimationDuration, target: self, selector: "play", userInfo: nil, repeats: true)
+    }
+    
+    func play() {
+        let seed = Int(arc4random_uniform(UInt32(100)))
+        if seed < 25 {
+            queueCommand(MoveCommand(direction: MoveDirection.Up))
+        } else if seed < 50 {
+            queueCommand(MoveCommand(direction: MoveDirection.Down))
+        } else if seed < 75 {
+            queueCommand(MoveCommand(direction: MoveDirection.Left))
+        } else {
+            queueCommand(MoveCommand(direction: MoveDirection.Right))
+        }
     }
     
     func setupGameModel() {
