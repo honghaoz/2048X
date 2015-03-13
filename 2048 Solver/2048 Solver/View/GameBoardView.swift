@@ -182,21 +182,11 @@ class GameBoardView: UIView {
             forgroundTiles[coordinate.0][coordinate.1].0 = tile
             self.addSubview(tile)
             
-            // Blink pattern: 0 -> 1 -> 0 -> 1
+            // Blink pattern: 0 -> 1
             tile.alpha = 0.0
             UIView.animateWithDuration(sharedAnimationDuration * 2, animations: { () -> Void in
                 tile.alpha = 1.0
-                }, completion: { (finished) -> Void in
-//                    UIView.animateWithDuration(sharedAnimationDuration, animations: { () -> Void in
-//                        tile.alpha = 0.0
-//                        }, completion: { (finished) -> Void in
-//                            UIView.animateWithDuration(sharedAnimationDuration, animations: { () -> Void in
-//                                tile.alpha = 1.0
-//                                }, completion: { (finished) -> Void in
-//                                    //
-//                            })
-//                    })
-            })
+            }, completion: nil)
         }
     }
     

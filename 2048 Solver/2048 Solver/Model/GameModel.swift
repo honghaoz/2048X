@@ -7,7 +7,6 @@
 //
 
 import Foundation
-//import AVFoundation
 
 protocol Game2048Delegate: class {
     func game2048DidStartNewGame(game2048: Game2048)
@@ -83,7 +82,6 @@ extension Game2048 {
             resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: 2))
         }
         
-        // TODO: Could issue Actions
         delegate?.game2048DidStartNewGame(self)
         delegate?.game2048DidUpdate(self, moveActions: [], initActions: resultInitActions)
         
@@ -139,8 +137,9 @@ extension Game2048 {
         
         if resultMoveActions.count > 0 {
             let seed = Int(arc4random_uniform(UInt32(100)))
-            let insertedCoordinate = insertTileAtRandomLocation(seed < 20 ? 4 : 2)
-            resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: 2))
+            let initNumber: Int = seed < 20 ? 4 : 2
+            let insertedCoordinate = insertTileAtRandomLocation(initNumber)
+            resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: initNumber))
         }
         
         // Play sound effect

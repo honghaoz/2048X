@@ -7,6 +7,7 @@
 //
 
 import UIKit
+//import AVFoundation
 
 class ViewController: UIViewController {
 
@@ -26,14 +27,14 @@ class ViewController: UIViewController {
     }
     
     func setupGameModel() {
-        gameModel = Game2048(dimension: 4, target: 0)
+        gameModel = Game2048(dimension: 5, target: 0)
         gameModel.delegate = self
     }
     
     func setupViews() {
         self.view.backgroundColor = SharedColors.BackgroundColor
 
-        gameBoardView = GameBoardView(width: UIScreen.mainScreen().bounds.width * 0.9, dimension: 4)
+        gameBoardView = GameBoardView(width: UIScreen.mainScreen().bounds.width * 0.9, dimension: 5)
         gameBoardView.backgroundColor = view.backgroundColor
         gameBoardView.gameModel = gameModel
         gameBoardView.setTranslatesAutoresizingMaskIntoConstraints(false)
