@@ -19,7 +19,7 @@
 		023EDE8A1AAA325100F5B9C5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE881AAA325100F5B9C5 /* LaunchScreen.xib */; };
 		023EDE961AAA325100F5B9C5 /* _048_SolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */; };
 		028159611AAD07E500C795D9 /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028159601AAD07E500C795D9 /* TileView.swift */; };
-		02DBF57E1AB24A70007EE133 /* TaskQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DBF57D1AB24A70007EE133 /* TaskQueue.swift */; };
+		02DBF5811AB269E7007EE133 /* move.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02DBF5801AB269E7007EE133 /* move.wav */; };
 		FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5C5DD91AAF782A00CE6981 /* AI.swift */; };
 		FF5C5DDC1AAF7E7A00CE6981 /* GameBoardAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5C5DDB1AAF7E7A00CE6981 /* GameBoardAssistant.swift */; };
 /* End PBXBuildFile section */
@@ -51,7 +51,7 @@
 		023EDE941AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _048_SolverTests.swift; sourceTree = "<group>"; };
 		028159601AAD07E500C795D9 /* TileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileView.swift; sourceTree = "<group>"; };
-		02DBF57D1AB24A70007EE133 /* TaskQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskQueue.swift; sourceTree = "<group>"; };
+		02DBF5801AB269E7007EE133 /* move.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = move.wav; sourceTree = "<group>"; };
 		FF5C5DD91AAF782A00CE6981 /* AI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AI.swift; sourceTree = "<group>"; };
 		FF5C5DDB1AAF7E7A00CE6981 /* GameBoardAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoardAssistant.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -98,8 +98,8 @@
 		023EDE711AAA325100F5B9C5 = {
 			isa = PBXGroup;
 			children = (
-				02DBF57C1AB24A70007EE133 /* TaskQueue */,
 				023EDE7C1AAA325100F5B9C5 /* 2048 Solver */,
+				02DBF57F1AB269E7007EE133 /* Resource */,
 				023EDE921AAA325100F5B9C5 /* 2048 SolverTests */,
 				023EDE7B1AAA325100F5B9C5 /* Products */,
 			);
@@ -155,12 +155,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		02DBF57C1AB24A70007EE133 /* TaskQueue */ = {
+		02DBF57F1AB269E7007EE133 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				02DBF57D1AB24A70007EE133 /* TaskQueue.swift */,
+				02DBF5801AB269E7007EE133 /* move.wav */,
 			);
-			path = TaskQueue;
+			name = Resource;
+			path = "2048 Solver/Resource";
 			sourceTree = "<group>";
 		};
 		FF5C5DD81AAF77C600CE6981 /* AI */ = {
@@ -254,6 +255,7 @@
 				023EDE851AAA325100F5B9C5 /* Main.storyboard in Resources */,
 				023EDE8A1AAA325100F5B9C5 /* LaunchScreen.xib in Resources */,
 				023EDE871AAA325100F5B9C5 /* Images.xcassets in Resources */,
+				02DBF5811AB269E7007EE133 /* move.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,7 +278,6 @@
 				FF5C5DDC1AAF7E7A00CE6981 /* GameBoardAssistant.swift in Sources */,
 				FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */,
 				02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */,
-				02DBF57E1AB24A70007EE133 /* TaskQueue.swift in Sources */,
 				02107CA11AAD244A00CFF8FF /* GameModelHelper.swift in Sources */,
 				023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */,
 				028159611AAD07E500C795D9 /* TileView.swift in Sources */,

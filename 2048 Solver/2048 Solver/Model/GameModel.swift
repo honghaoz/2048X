@@ -7,6 +7,7 @@
 //
 
 import Foundation
+//import AVFoundation
 
 protocol Game2048Delegate: class {
     func game2048DidStartNewGame(game2048: Game2048)
@@ -140,6 +141,22 @@ extension Game2048 {
             let insertedCoordinate = insertTileAtRandomLocation(2)
             resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: 2))
         }
+        
+        // Play sound effect 
+//        let path = NSBundle.mainBundle().pathForResource("move", ofType: "wav")
+//        if let existedPath = path {
+//            let pathURL = NSURL.fileURLWithPath(existedPath)
+//            var audioEffect: SystemSoundID = 0
+//            AudioServicesCreateSystemSoundID(pathURL, &audioEffect)
+//            // Play
+//            AudioServicesPlaySystemSound(audioEffect)
+//            
+//            // Using GCD, we can use a block to dispose of the audio effect without using a NSTimer or something else to figure out when it'll be finished playing.
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
+//                Int64(2 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
+//                AudioServicesDisposeSystemSoundID(audioEffect)
+//            })
+//        }
         
         delegate?.game2048DidUpdate(self, moveActions: resultMoveActions, initActions: resultInitActions)
         printOutGameBoard()
