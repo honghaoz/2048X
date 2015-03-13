@@ -14,6 +14,11 @@ class ViewController: UIViewController {
     var gameModel: Game2048!
     var gameBoardView: GameBoardView!
     
+    var commandQueue = [MoveCommand]()
+    var kCommandQueueSize: Int = 2
+    
+    var isAnimating: Bool = false
+    
     var metrics = [String: CGFloat]()
     var views = [String: UIView]()
     
@@ -80,25 +85,48 @@ extension ViewController {
     @objc(up:)
     func upCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
-        gameModel.performMoveCommand(MoveCommand(direction: MoveDirection.Up))
+        queueCommand(MoveCommand(direction: MoveDirection.Up))
     }
     
     @objc(down:)
     func downCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
-        gameModel.performMoveCommand(MoveCommand(direction: MoveDirection.Down))
+        queueCommand(MoveCommand(direction: MoveDirection.Down))
     }
     
     @objc(left:)
     func leftCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
-        gameModel.performMoveCommand(MoveCommand(direction: MoveDirection.Left))
+        queueCommand(MoveCommand(direction: MoveDirection.Left))
     }
     
     @objc(right:)
     func rightCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
-        gameModel.performMoveCommand(MoveCommand(direction: MoveDirection.Right))
+        queueCommand(MoveCommand(direction: MoveDirection.Right))
+    }
+}
+
+// MARK: Command Queue
+extension ViewController {
+    func queueCommand(command: MoveCommand) {
+        if commandQueue.count > kCommandQueueSize {
+            return
+        }
+        commandQueue.append(command)
+        executeCommandQueue()
+    }
+    
+    func executeCommandQueue() {
+        if isAnimating {
+            return
+        }
+        if commandQueue.count > 0 {
+            let command = commandQueue[0]
+            commandQueue.removeAtIndex(0)
+            isAnimating = true
+            gameModel.playWithCommand(command)
+        }
     }
 }
 
@@ -110,7 +138,10 @@ extension ViewController: Game2048Delegate {
     func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction]) {
         println("Updated")
         
-        gameBoardView.updateWithMoveActions(moveActions, initActions: initActions)
+        gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
+            self.isAnimating = false
+            self.executeCommandQueue()
+        })
     }
     
     func game2048DidReset(game2048: Game2048) {

@@ -27,11 +27,8 @@ class Game2048: NSObject {
     var gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>
     
     /// A queue which will store upcomming commands, this queue if helpful for delaying too fast operation
-    var moveCommandsQueue = [MoveCommand]()
-    var commandQueueSize = 3
-    
-    /// A timer to fire next command
-    var timer: NSTimer
+    var commandQueue = [MoveCommand]()
+    var commandQueueSize = 5
     
     /// Game delegate, normally this shoudl be the controller
     weak var delegate: Game2048Delegate?
@@ -47,8 +44,6 @@ class Game2048: NSObject {
     init(dimension d: Int, target t: Int) {
         dimension = d
         targetScore = t
-        
-        timer = NSTimer()
         
         // Initialize gameBoard
         gameBoard =  SquareGameBoard(dimension: d, initialValue: nil)
@@ -68,8 +63,7 @@ extension Game2048 {
     func reset() {
         score = 0
         emptyGameBoard()
-        moveCommandsQueue.removeAll(keepCapacity: true)
-        timer.invalidate()
+        commandQueue.removeAll(keepCapacity: true)
         
         delegate?.game2048DidReset(self)
     }
@@ -91,7 +85,24 @@ extension Game2048 {
         printOutGameBoard()
     }
     
-    func performMoveCommand(moveCommand: MoveCommand) {
+    func playWithCommand(command: MoveCommand) {
+        if commandQueue.count > commandQueueSize {
+            // Queue is wedged. This should actually never happen in practice.
+            return
+        }
+        commandQueue.append(command)
+        executeCommandQueue()
+    }
+    
+    private func executeCommandQueue() {
+        while commandQueue.count > 0 {
+            let command = commandQueue[0]
+            commandQueue.removeAtIndex(0)
+            performMoveCommand(command)
+        }
+    }
+    
+    private func performMoveCommand(moveCommand: MoveCommand) {
         var resultMoveActions = [MoveAction]()
         switch moveCommand.direction {
         case .Up:

@@ -124,9 +124,11 @@ extension GameBoardView {
     :param: moveActions a list of actions which specify how tiles are merged or moved
     :param: initActions a list of actions which specify how new tiles are inserted
     */
-    func updateWithMoveActions(moveActions: [MoveAction], initActions: [InitAction]) {
+    func updateWithMoveActions(moveActions: [MoveAction], initActions: [InitAction], completion: (() -> ())? = nil) {
         updateWithMoveActions(moveActions, completion: {
-            self.updateWithInitActions(initActions)
+            self.updateWithInitActions(initActions, completion: {
+                completion?()
+            })
         })
     }
     
@@ -135,8 +137,14 @@ extension GameBoardView {
     
     :param: initActions a list of actions which specify how new tiles are inserted
     */
-    private func updateWithInitActions(initActions: [InitAction]) {
-        for action in initActions {
+    private func updateWithInitActions(initActions: [InitAction], completion: (() -> ())? = nil) {
+        let count = initActions.count
+        if count == 0 {
+            completion?()
+            return
+        }
+        
+        for (index, action) in enumerate(initActions) {
             let initCoordinate = action.initCoordinate
             let number = action.initNumber
             
@@ -153,6 +161,7 @@ extension GameBoardView {
                 tile.alpha = 1.0
                 }, completion: nil)
         }
+        completion?()
     }
     
     /**
