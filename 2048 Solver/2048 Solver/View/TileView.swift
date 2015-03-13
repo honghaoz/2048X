@@ -15,12 +15,16 @@ class TileView: UIView {
             if number <= 0 {
                 numberLabel?.text = ""
                 self.layer.borderColor = UIColor.clearColor().CGColor
-            } else {
+            }
+            else {
                 numberLabel?.text = String(number)
                 self.layer.borderColor = borderColor.CGColor
             }
+            self.tileBackgroundColor = SharedColors.tileBackgrounColorForNumber(number)
+            self.tileNumberColor = SharedColors.tileLabelTextColorForNumber(number)
         }
     }
+    
     var numberLabel: UILabel!
     
     var padding: CGFloat = 5.0
@@ -28,6 +32,17 @@ class TileView: UIView {
     var borderColor: UIColor = UIColor.blackColor() {
         didSet {
             self.layer.borderColor = borderColor.CGColor
+        }
+    }
+    
+    var tileNumberColor: UIColor = UIColor.blackColor() {
+        didSet {
+            self.numberLabel.textColor = tileNumberColor
+        }
+    }
+    var tileBackgroundColor: UIColor = UIColor.clearColor() {
+        didSet {
+            self.backgroundColor = tileBackgroundColor
         }
     }
     
@@ -82,5 +97,21 @@ class TileView: UIView {
         
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(>=padding)-[numberLabel]-(>=padding)-|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(>=padding)-[numberLabel]-(>=padding)-|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
+    }
+    
+    func flashTile() {
+//        numberLabel.textColor = self.backgroundColor
+//        UIView.transitionWithView(numberLabel, duration: sharedAnimationDuration * 2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+//            self.numberLabel?.text = String(self.number)
+//            self.numberLabel.textColor = UIColor.blackColor()
+//            }, completion: nil)
+        
+        // Black flash tile
+        backgroundColor = UIColor.blackColor()
+        UIView.animateWithDuration(sharedAnimationDuration * 2, animations: { () -> Void in
+            self.backgroundColor = self.tileBackgroundColor
+            }, completion: { (finished) -> Void in
+                //
+        })
     }
 }

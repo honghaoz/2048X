@@ -138,11 +138,12 @@ extension Game2048 {
         var resultInitActions = [InitAction]()
         
         if resultMoveActions.count > 0 {
-            let insertedCoordinate = insertTileAtRandomLocation(2)
+            let seed = Int(arc4random_uniform(UInt32(100)))
+            let insertedCoordinate = insertTileAtRandomLocation(seed < 20 ? 4 : 2)
             resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: 2))
         }
         
-        // Play sound effect 
+        // Play sound effect
 //        let path = NSBundle.mainBundle().pathForResource("move", ofType: "wav")
 //        if let existedPath = path {
 //            let pathURL = NSURL.fileURLWithPath(existedPath)

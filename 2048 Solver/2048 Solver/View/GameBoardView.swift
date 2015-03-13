@@ -25,17 +25,17 @@ class GameBoardView: UIView {
         return (width - padding * 2 - tilePadding * (CGFloat(dimension) - 1)) / CGFloat(dimension)
     }
     
-    override var backgroundColor: UIColor? {
-        didSet {
-            for i in 0 ..< dimension {
-                for j in 0 ..< dimension {
-                    if let tile = forgroundTiles[i][j].0 {
-                        tile.backgroundColor = backgroundColor
-                    }
-                }
-            }
-        }
-    }
+//    override var backgroundColor: UIColor? {
+//        didSet {
+//            for i in 0 ..< dimension {
+//                for j in 0 ..< dimension {
+//                    if let tile = forgroundTiles[i][j].0 {
+//                        tile.backgroundColor = backgroundColor
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     var backgroundTiles = [[TileView]]()
     
@@ -91,7 +91,8 @@ class GameBoardView: UIView {
                 
                 let frame = CGRectMake(x, y, tileWidth, tileWidth)
                 let tile = TileView(frame: frame)
-                tile.borderColor = UIColor(white: 0.0, alpha: 0.2)
+//                tile.borderColor = UIColor(white: 0.0, alpha: 0.15)
+                tile.number = 0
                 self.addSubview(tile)
                 tiles.append(tile)
             }
@@ -176,28 +177,25 @@ class GameBoardView: UIView {
             
             let frame = CGRectMake(x, y, tileWidth, tileWidth)
             let tile = TileView(frame: frame)
-            tile.backgroundColor = backgroundColor
             tile.number = number
             
             forgroundTiles[coordinate.0][coordinate.1].0 = tile
             self.addSubview(tile)
             
-            let animationDuration: NSTimeInterval = 0.15
-            
             // Blink pattern: 0 -> 1 -> 0 -> 1
             tile.alpha = 0.0
-            UIView.animateWithDuration(animationDuration, animations: { () -> Void in
+            UIView.animateWithDuration(sharedAnimationDuration * 2, animations: { () -> Void in
                 tile.alpha = 1.0
                 }, completion: { (finished) -> Void in
-                    UIView.animateWithDuration(animationDuration, animations: { () -> Void in
-                        tile.alpha = 0.0
-                        }, completion: { (finished) -> Void in
-                            UIView.animateWithDuration(animationDuration, animations: { () -> Void in
-                                tile.alpha = 1.0
-                                }, completion: { (finished) -> Void in
-                                    //
-                            })
-                    })
+//                    UIView.animateWithDuration(sharedAnimationDuration, animations: { () -> Void in
+//                        tile.alpha = 0.0
+//                        }, completion: { (finished) -> Void in
+//                            UIView.animateWithDuration(sharedAnimationDuration, animations: { () -> Void in
+//                                tile.alpha = 1.0
+//                                }, completion: { (finished) -> Void in
+//                                    //
+//                            })
+//                    })
             })
         }
     }
@@ -232,7 +230,7 @@ class GameBoardView: UIView {
                 y = padding + (tilePadding + tileWidth) * CGFloat(to.0)
                 x = padding + (tilePadding + tileWidth) * CGFloat(to.1)
                 
-                UIView.animateWithDuration(0.15, animations: { () -> Void in
+                UIView.animateWithDuration(sharedAnimationDuration, animations: { () -> Void in
                     fromView.frame = CGRectMake(x, y, tileWidth, tileWidth)
                     fromUnderneath?.frame = CGRectMake(x, y, tileWidth, tileWidth)
                     }, completion: { (finished) -> Void in
@@ -259,26 +257,20 @@ class GameBoardView: UIView {
                 // Put fromTileView underneath toTileView
                 forgroundTiles[to.0][to.1] = (toTileView, fromTileView)
                 
-                UIView.animateWithDuration(0.15, animations: { () -> Void in
+                UIView.animateWithDuration(sharedAnimationDuration, animations: { () -> Void in
                     fromTileView.frame = CGRectMake(x, y, tileWidth, tileWidth)
                     }, completion: { (finished) -> Void in
                         fromTileView.removeFromSuperview()
-                        
-                        toTileView.numberLabel.textColor = self.backgroundColor
-                        UIView.transitionWithView(toTileView.numberLabel, duration: 0.15, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                            toTileView.number *= 2
-                            toTileView.numberLabel.textColor = UIColor.blackColor()
-                        }, completion: nil)
-                        
-                        // Black flash tile
-                        toTileView.backgroundColor = UIColor.blackColor()
-                        UIView.animateWithDuration(0.15, animations: { () -> Void in
-                            toTileView.backgroundColor = self.backgroundColor
-                        }, completion: { (finished) -> Void in
-                            if index == count - 1 {
-                                completion?()
-                            }
-                        })
+                        toTileView.number *= 2
+                        toTileView.flashTile()
+                                                
+                        if index == count - 1 {
+                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
+                                Int64(sharedAnimationDuration * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
+                                    completion?()
+
+                            })
+                        }
                 })
             }
         }
