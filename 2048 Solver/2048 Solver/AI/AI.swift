@@ -26,14 +26,20 @@ class AI {
     }
     
     /// Calculate next optimal movement using Progess Recursion Heuristic
-    func nextMoveUsingProgressRecursion(curState: [[Int]], searchDepth: Int = 3) -> MoveCommand? {
+    func nextMoveUsingMonoHeuristic(curState: [[Int]], searchDepth: Int = 3) -> MoveCommand? {
         var gameBoardAssistant = GameBoardAssistant(cells: curState)
-        let (direction, score) = nextMoveWithRecur(gameBoardAssistant, curDepth: searchDepth, searchDepth: searchDepth)
+        let (direction, score) = monoHeuristicRecursion(gameBoardAssistant, curDepth: searchDepth, searchDepth: searchDepth)
         return direction
     }
     
-    /// Calculate optimal movement with recursion
-    private func nextMoveWithRecur(gameBoardAssistant: GameBoardAssistant, curDepth: Int, searchDepth: Int, ratio: Double = 0.9) -> (MoveCommand?, Double) {
+    func nextMoveUsingCombinedStrategy(curState: [[Int]], searchDepth: Int = 3) -> MoveCommand? {
+        var gameBoardAssistant = GameBoardAssistant(cells: curState)
+        let (direction, score) = combinedHeuristicRecursion(gameBoardAssistant, curDepth: searchDepth, searchDepth: searchDepth)
+        return direction
+    }
+    
+    /// Calculate optimal movement for method "monotonic heuristic" using recursion
+    private func monoHeuristicRecursion(gameBoardAssistant: GameBoardAssistant, curDepth: Int, searchDepth: Int, ratio: Double = 0.9) -> (MoveCommand?, Double) {
         var bestScore = 0.0
         var bestMove: MoveDirection? = nil
         
@@ -44,10 +50,10 @@ class AI {
             if gameBoardAssistant.isMoveValid(dir) {
                 var newAssistant = gameBoardAssistant.copy()
                 newAssistant.makeMove(dir, toAddNewTile: false)
-                var (evaluateVal, initialTile) = evaluateCurBoard(newAssistant.cell)
+                var (evaluateVal, initialTile) = evaluateUsingMonoHeuristic(newAssistant.cell)
                 newAssistant.setCell(initialTile.0, y: initialTile.1, val: 2)
                 if curDepth != 0 {
-                    let (nextM, nextEvaluateVal) = nextMoveWithRecur(newAssistant, curDepth: curDepth - 1, searchDepth: searchDepth)
+                    let (nextM, nextEvaluateVal) = monoHeuristicRecursion(newAssistant, curDepth: curDepth - 1, searchDepth: searchDepth)
                     if (nextM != nil) {
                         evaluateVal = evaluateVal + nextEvaluateVal * pow(ratio, Double(searchDepth - curDepth + 1))
                     }
@@ -65,10 +71,77 @@ class AI {
         return (MoveCommand(direction: bestMove!), bestScore)
     }
     
-    /// Evaluate the current board for choosing further steps, the default progress ratio is 0.25.
-    /// Return the evaluation result as next optimal movement and the localtion of tile which should
+    /// Calculate optimal movement for method "combined heuristic" using recursion
+    private func combinedHeuristicRecursion(gameBoardAssistant: GameBoardAssistant, curDepth: Int, searchDepth: Int) -> (MoveCommand?, Double) {
+        var bestScore = 0.0
+        var bestMove: MoveDirection? = nil
+        
+        // Try each direction
+        for i in 0...3 {
+            let dir = rawValToDirection[i]!.direction
+            // Current direction is valid
+            if gameBoardAssistant.isMoveValid(dir) {
+                var newAssistant = gameBoardAssistant.copy()
+                newAssistant.makeMove(dir)
+                var evaluateVal = evaluateUsingCombinedHeuristic(newAssistant.cell)
+                if curDepth != 0 {
+                    let (nextM, nextEvaluateVal) = combinedHeuristicRecursion(newAssistant, curDepth: curDepth - 1, searchDepth: searchDepth)
+                    if (nextM != nil) {
+                        evaluateVal += nextEvaluateVal                    }
+                }
+                if evaluateVal > bestScore {
+                    bestScore = evaluateVal
+                    bestMove = dir
+                }
+            }
+        }
+        
+        if bestMove == nil {
+            return (nil, bestScore)
+        }
+        return (MoveCommand(direction: bestMove!), bestScore)
+    }
+    
+    /// Evaluate the current board using combined heuristic.
+    /// Return the evaluation result of current state and the (x, y) localtion of tile which should
     /// be assigned with 2.
-    private func evaluateCurBoard(gameBoard: [[Int]], ratio: Double = 0.25) -> (Double, (Int, Int)) {
+    private func evaluateUsingCombinedHeuristic(gameBoard: [[Int]]) -> Double {
+        // Weight value for different heuristic strategy
+        let weightForOpenSquares = 0.2
+        let weightForLargeTileOnEdge = 0.4
+        let weightForNumOfAdjMerge = 0.4
+        // The size of the board
+        let size = gameBoard[0].count
+        
+        var score: Double = 0.0
+        var numOfEmptyCells = 0
+        var numOfAdjMerge = 0
+        var edgeTiles = [Int]()
+        
+        for row in 0..<size {
+            for col in 0..<size {
+                // Count empty cell
+                numOfEmptyCells += gameBoard[row][col] == 0 ? 1 : 0
+                // Determine if this cell is located on the edge
+                if row == 0 || row == size - 1 || col == 0 || col == size - 1 {
+                    edgeTiles.append(gameBoard[row][col])
+                }
+                numOfAdjMerge += (row + 1 < size && gameBoard[row][col] == gameBoard[row + 1][col]) ? 1 : 0
+                numOfAdjMerge += (col + 1 < size && gameBoard[row][col] == gameBoard[row][col + 1]) ? 1 : 0
+            }
+        }
+        
+        let squareSize = Double(size * size)
+        score += (weightForOpenSquares * Double(numOfEmptyCells) / squareSize + weightForNumOfAdjMerge * Double(numOfAdjMerge) / squareSize + weightForLargeTileOnEdge * edgeTiles.map({ (element) -> Double in
+            Double(element) / 2048.0}).sum())
+    
+        return score
+    }
+    
+    /// Evaluate the current board using "monotonic heuristic", the default progress ratio is 0.25.
+    /// Return the evaluation result of current state and the (x, y) localtion of tile which should
+    /// be assigned with 2.
+    private func evaluateUsingMonoHeuristic(gameBoard: [[Int]], ratio: Double = 0.25) -> (Double, (Int, Int)) {
         let yRange = (0...gameBoard.count - 1).map{$0}
         let yRangeReverse = (0...gameBoard.count - 1).map{$0}.reverse()
         let xRange = yRange
@@ -83,8 +156,8 @@ class AI {
         var reverse = false
         var weight = 1.0
         for j in yRange {
+            let jCopy = j
             for i in xRange {
-                let jCopy = j
                 let iCopy = !reverse ? i : size - i - 1
                 let curVal = gameBoard[jCopy][iCopy]
                 if curVal == 0 && initialTile == (-1, -1) {
@@ -104,8 +177,8 @@ class AI {
         reverse = false
         weight = 1.0
         for j in yRange {
+            let jCopy = j
             for i in xRangeReverse {
-                let jCopy = j
                 let iCopy = !reverse ? i : size - i - 1
                 let curVal = gameBoard[jCopy][iCopy]
                 if curVal == 0 && initialTile == (-1, -1) {
@@ -125,9 +198,9 @@ class AI {
         reverse = false
         weight = 1.0
         for i in xRange {
+            let iCopy = i
             for j in yRange {
                 let jCopy = !reverse ? j : size - j - 1
-                let iCopy = i
                 let curVal = gameBoard[jCopy][iCopy]
                 if curVal == 0 && initialTile == (-1, -1) {
                     initialTile = (iCopy, jCopy)
@@ -146,9 +219,9 @@ class AI {
         reverse = false
         weight = 1.0
         for i in xRange {
+            let iCopy = i
             for j in yRangeReverse {
                 let jCopy = !reverse ? j : size - j - 1
-                let iCopy = i
                 let curVal = gameBoard[jCopy][iCopy]
                 if curVal == 0 && initialTile == (-1, -1) {
                     initialTile = (iCopy, jCopy)
@@ -167,8 +240,8 @@ class AI {
         reverse = false
         weight = 1.0
         for j in yRangeReverse {
+            let jCopy = j
             for i in xRangeReverse {
-                let jCopy = j
                 let iCopy = !reverse ? i : size - i - 1
                 let curVal = gameBoard[jCopy][iCopy]
                 if curVal == 0 && initialTile == (-1, -1) {
@@ -188,8 +261,8 @@ class AI {
         reverse = false
         weight = 1.0
         for j in yRangeReverse {
+            let jCopy = j
             for i in xRange {
-                let jCopy = j
                 let iCopy = !reverse ? i : size - i - 1
                 let curVal = gameBoard[jCopy][iCopy]
                 if curVal == 0 && initialTile == (-1, -1) {
@@ -209,9 +282,9 @@ class AI {
         reverse = false
         weight = 1.0
         for i in xRangeReverse {
+            let iCopy = i
             for j in yRange {
                 let jCopy = !reverse ? j : size - j - 1
-                let iCopy = i
                 let curVal = gameBoard[jCopy][iCopy]
                 if curVal == 0 && initialTile == (-1, -1) {
                     initialTile = (iCopy, jCopy)
@@ -230,9 +303,9 @@ class AI {
         reverse = false
         weight = 1.0
         for i in xRangeReverse {
+            let iCopy = i
             for j in yRangeReverse {
                 let jCopy = !reverse ? j : size - j - 1
-                let iCopy = i
                 let curVal = gameBoard[jCopy][iCopy]
                 if curVal == 0 && initialTile == (-1, -1) {
                     initialTile = (iCopy, jCopy)
@@ -251,6 +324,7 @@ class AI {
     }
 }
 
+// MARK: extension
 extension Array {
     func findMaxIndex() -> Int {
         var maxEle = -1.0
@@ -263,5 +337,14 @@ extension Array {
         }
         
         return maxIndex
+    }
+    
+    func sum() -> Double {
+        var total = 0.0
+        for i in 0..<self.count {
+            total += self[i] as! Double
+        }
+        
+        return total
     }
 }
