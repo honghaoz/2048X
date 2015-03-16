@@ -22,7 +22,7 @@
 		02D1339F1AB2A0BA00CE8ADA /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D1339E1AB2A0BA00CE8ADA /* AVKit.framework */; };
 		02DBF5811AB269E7007EE133 /* move.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02DBF5801AB269E7007EE133 /* move.wav */; };
 		FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5C5DD91AAF782A00CE6981 /* AI.swift */; };
-		FF5C5DDC1AAF7E7A00CE6981 /* GameBoardAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5C5DDB1AAF7E7A00CE6981 /* GameBoardAssistant.swift */; };
+		FF5C5DDC1AAF7E7A00CE6981 /* GameboardAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5C5DDB1AAF7E7A00CE6981 /* GameboardAssistant.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +55,7 @@
 		02D1339E1AB2A0BA00CE8ADA /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		02DBF5801AB269E7007EE133 /* move.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = move.wav; sourceTree = "<group>"; };
 		FF5C5DD91AAF782A00CE6981 /* AI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AI.swift; sourceTree = "<group>"; };
-		FF5C5DDB1AAF7E7A00CE6981 /* GameBoardAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoardAssistant.swift; sourceTree = "<group>"; };
+		FF5C5DDB1AAF7E7A00CE6981 /* GameboardAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameboardAssistant.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,7 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				FF5C5DD91AAF782A00CE6981 /* AI.swift */,
-				FF5C5DDB1AAF7E7A00CE6981 /* GameBoardAssistant.swift */,
+				FF5C5DDB1AAF7E7A00CE6981 /* GameboardAssistant.swift */,
 			);
 			path = AI;
 			sourceTree = "<group>";
@@ -279,7 +279,7 @@
 			files = (
 				023EDE821AAA325100F5B9C5 /* ViewController.swift in Sources */,
 				02107C9C1AAD220800CFF8FF /* Appearance.swift in Sources */,
-				FF5C5DDC1AAF7E7A00CE6981 /* GameBoardAssistant.swift in Sources */,
+				FF5C5DDC1AAF7E7A00CE6981 /* GameboardAssistant.swift in Sources */,
 				FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */,
 				02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */,
 				02107CA11AAD244A00CFF8FF /* GameModelHelper.swift in Sources */,
