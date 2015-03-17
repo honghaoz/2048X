@@ -30,8 +30,8 @@ class ViewController: UIViewController {
         
         gameModel.start()
         
-        sharedAnimationDuration = 0.05
-        NSTimer.scheduledTimerWithTimeInterval(sharedAnimationDuration, target: self, selector: "play", userInfo: nil, repeats: true)
+        sharedAnimationDuration = 0.12
+//        NSTimer.scheduledTimerWithTimeInterval(sharedAnimationDuration, target: self, selector: "play", userInfo: nil, repeats: true)
     }
     
     func play() {
@@ -48,28 +48,31 @@ class ViewController: UIViewController {
     }
     
     func setupGameModel() {
-        gameModel = Game2048(dimension: 5, target: 0)
+        gameModel = Game2048(dimension: 4, target: 0)
         gameModel.delegate = self
     }
     
     func setupViews() {
-        self.view.backgroundColor = SharedColors.BackgroundColor
+        view.backgroundColor = SharedColors.BackgroundColor
 
-        gameBoardView = GameBoardView(width: UIScreen.mainScreen().bounds.width * 0.9, dimension: 5)
+        gameBoardView = GameBoardView()
         gameBoardView.backgroundColor = view.backgroundColor
         gameBoardView.gameModel = gameModel
+        
         gameBoardView.setTranslatesAutoresizingMaskIntoConstraints(false)
-        
         views["gameBoard"] = gameBoardView
-        self.view.addSubview(gameBoardView)
+        view.addSubview(gameBoardView)
         
-        metrics["width"] = gameBoardView.width
+        let gameBoardWidth = UIScreen.mainScreen().bounds.width * 0.9
         
-        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 0.0, constant: gameBoardView.width))
-        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 0.0, constant: gameBoardView.width))
+        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 0.0, constant: gameBoardWidth))
+        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 0.0, constant: gameBoardWidth))
         
-        self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0.0))
-        self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0))
+        
+        // Must call this before start game
+        view.layoutIfNeeded()
     }
     
     func setupSwipeGestures() {
