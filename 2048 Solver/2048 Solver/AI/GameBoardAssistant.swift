@@ -88,6 +88,7 @@ class GameboardAssistant: Printable {
     // MARK: Deep copy
     func copy() -> GameboardAssistant {
         return GameboardAssistant(cells: _cell)
+<<<<<<< HEAD
     }
     
     /// Get the location of all empty cells
@@ -102,6 +103,8 @@ class GameboardAssistant: Printable {
         }
         
         return emptyCells
+=======
+>>>>>>> origin/master
     }
     
     // MARK: Public methods
@@ -201,6 +204,23 @@ class GameboardAssistant: Printable {
         return getAllEmptyCells().count == 0;
     }
     
+<<<<<<< HEAD
+=======
+    /// Get the location of all empty cells
+    func getAllEmptyCells() -> [(x: Int, y: Int)] {
+        var emptyCells: [(x: Int, y: Int)] = []
+        for i in 0..<_size {
+            for j in 0..<_size {
+                if _cell[j][i] == 0 {
+                    emptyCells.append(x: i, y: j)
+                }
+            }
+        }
+        
+        return emptyCells
+    }
+    
+>>>>>>> origin/master
     /// Get a copy of certain row
     private func getRow(x: Int) -> [Int] {
         return _cell[x]

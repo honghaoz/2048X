@@ -11,16 +11,8 @@ import QuartzCore
 
 class GameBoardView: UIView {
     
-    var dimension: Int = 4 { didSet { updateTileWidth() } }
-    
-    var width: CGFloat = UIScreen.mainScreen().bounds.width * 0.9 {
-        didSet {
-            bounds = CGRectMake(0, 0, width, width)
-            updateBackgroundTileViews()
-            updateForgroundTileViews()
-            updateTileWidth()
-        }
-    }
+    /// GameModel dimension
+    var dimension: Int { return gameModel.dimension }
     
     /// padding: paddings around the board view
     var padding: CGFloat = 8.0 { didSet { updateTileWidth() } }
@@ -37,6 +29,7 @@ class GameBoardView: UIView {
     // For animation convenience. When merging two tiles are followed by a condense action, both two tiles' frame need to be updated. Thus, the tuple.1 will store the tile underneath and provide the tile view
     var forgroundTiles = [[(TileView?, TileView?)]]()
     
+    /// GameModel for GameBoardView
     var gameModel: Game2048!
     
     // MARK:- Init Methods
@@ -50,26 +43,33 @@ class GameBoardView: UIView {
     }
     
     override init(frame: CGRect) {
-        super.init(frame: CGRectMake(frame.origin.x, frame.origin.y, width, width))
+        super.init(frame: frame)
         setupViews()
     }
     
-    init(width: CGFloat, dimension: Int) {
-        super.init(frame: CGRectMake(0, 0, width, width))
-        self.width = width
-        self.dimension = dimension
-        setupViews()
+    override var bounds: CGRect {
+        didSet {
+            // If views are not set up, set up first then update
+            if backgroundTiles.count == 0 {
+                setupBackgroundTileViews()
+                setupForgroundTileViews()
+            }
+            // If bounds changed, update tile views
+            updateTileWidth()
+            updateBackgroundTileViews()
+            updateForgroundTileViews()
+        }
     }
     
     private func setupViews() {
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 5.0
-        updateTileWidth()
-        setupBackgroundTileViews()
-        setupForgroundTileViews()
     }
     
     private func setupBackgroundTileViews() {
+        precondition(gameModel != nil, "GameModel must not be nil")
+        // Remove old ones
+        backgroundTiles.map{ $0.map { $0.removeFromSuperview() }}
         // Layout tiles
         for i in 0 ..< dimension {
             var tiles = [TileView]()
@@ -83,16 +83,11 @@ class GameBoardView: UIView {
         }
     }
     
-    private func updateBackgroundTileViews() {
-        // Update background tiles' frame
-        for i in 0 ..< dimension {
-            for j in 0 ..< dimension {
-                backgroundTiles[i][j].frame = tileFrameForCoordinate((i, j))
-            }
-        }
-    }
-    
     private func setupForgroundTileViews() {
+        precondition(gameModel != nil, "GameModel must not be nil")
+        forgroundTiles.map { $0.map { $0.0?.removeFromSuperview() } }
+        forgroundTiles.map { $0.map { $0.1?.removeFromSuperview() } }
+        
         for i in 0 ..< dimension {
             var tiles = [(TileView?, TileView?)]()
             for j in 0 ..< dimension {
@@ -102,7 +97,18 @@ class GameBoardView: UIView {
         }
     }
     
+    private func updateBackgroundTileViews() {
+        precondition(gameModel != nil, "GameModel must not be nil")
+        // Update background tiles' frame
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                backgroundTiles[i][j].frame = tileFrameForCoordinate((i, j))
+            }
+        }
+    }
+    
     private func updateForgroundTileViews() {
+        precondition(gameModel != nil, "GameModel must not be nil")
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
                 if let tile = forgroundTiles[i][j].0 {
@@ -111,8 +117,6 @@ class GameBoardView: UIView {
             }
         }
     }
-    
-    
 }
 
 // MARK: Update View Actions
@@ -251,7 +255,7 @@ extension GameBoardView {
     Update tileWidth when related properties are modified
     */
     func updateTileWidth() {
-        tileWidth = (width - padding * 2 - tilePadding * (CGFloat(dimension) - 1)) / CGFloat(dimension)
+        tileWidth = (self.bounds.width - padding * 2 - tilePadding * (CGFloat(dimension) - 1)) / CGFloat(dimension)
     }
 }
 
