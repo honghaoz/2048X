@@ -8,7 +8,7 @@
 
 import Foundation
 
-class GameBoardAssistant: Printable {
+class GameboardAssistant: Printable {
     private let _goal:Int = 2048
     
     private var _won:Bool = false
@@ -86,8 +86,8 @@ class GameBoardAssistant: Printable {
     }
     
     // MARK: Deep copy
-    func copy() -> GameBoardAssistant {
-        return GameBoardAssistant(cells: _cell)
+    func copy() -> GameboardAssistant {
+        return GameboardAssistant(cells: _cell)
     }
     
     // MARK: Public methods
@@ -188,7 +188,7 @@ class GameBoardAssistant: Printable {
     }
     
     /// Get the location of all empty cells
-    private func getAllEmptyCells() -> [(x: Int, y: Int)] {
+    func getAllEmptyCells() -> [(x: Int, y: Int)] {
         var emptyCells: [(x: Int, y: Int)] = []
         for i in 0..<_size {
             for j in 0..<_size {
