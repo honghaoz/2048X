@@ -35,7 +35,7 @@ class ViewController: UIViewController {
         gameModel.start()
         
         sharedAnimationDuration = 0.12
-        NSTimer.scheduledTimerWithTimeInterval(sharedAnimationDuration, target: self, selector: "play", userInfo: nil, repeats: true)
+//        NSTimer.scheduledTimerWithTimeInterval(sharedAnimationDuration, target: self, selector: "play", userInfo: nil, repeats: true)
     }
     
     func play() {
@@ -75,8 +75,8 @@ class ViewController: UIViewController {
         gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 0.0, constant: gameBoardWidth))
         gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 0.0, constant: gameBoardWidth))
         
-        view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0))
         
         // ScoreView
         scoreView = ScoreView()
@@ -109,6 +109,7 @@ class ViewController: UIViewController {
         targetView.titleLabel.text = "TARGET"
         targetView.numberLabelMaxFontSize = 38
         targetView.number = 2048
+//        targetView.numberLabel.text = "∞"
         
         metrics["targetViewHeight"] = gameBoardWidth / 3.0
         targetView.addConstraint(NSLayoutConstraint(item: targetView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: targetView, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0.0))
@@ -199,6 +200,7 @@ extension ViewController {
     }
 }
 
+// MARK: Game 2048 Delegate
 extension ViewController: Game2048Delegate {
     func game2048DidStartNewGame(game2048: Game2048) {
         println("Started")
@@ -219,6 +221,7 @@ extension ViewController: Game2048Delegate {
     }
 }
 
+// MARK: AI
 extension ViewController {
 //    func playSoundEffect() {
 //        // Play sound effect
