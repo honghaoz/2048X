@@ -104,46 +104,51 @@ extension Game2048 {
     
     private func performMoveCommand(moveCommand: MoveCommand) {
         var resultMoveActions = [MoveAction]()
+        var increasedScore: Int = 0
         switch moveCommand.direction {
         case .Up:
             for i in 0 ..< dimension {
                 var tiles = gameBoard.getColumn(i, reversed: true)
-                let actions = processOneDimensionTiles(&tiles)
+                let (actions, score) = processOneDimensionTiles(&tiles)
                 for action in actions {
                     let fromCoordinates = action.fromIndexs.map({ (self.dimension - 1 - $0, i) })
                     let toCoordinate = (self.dimension - 1 - action.toIndex, i)
                     resultMoveActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
                 }
+                increasedScore += score
             }
         case .Down:
             for i in 0 ..< dimension {
                 var tiles = gameBoard.getColumn(i, reversed: false)
-                let actions = processOneDimensionTiles(&tiles)
+                let (actions, score) = processOneDimensionTiles(&tiles)
                 for action in actions {
                     let fromCoordinates = action.fromIndexs.map({ ($0, i) })
                     let toCoordinate = (action.toIndex, i)
                     resultMoveActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
                 }
+                increasedScore += score
             }
         case .Left:
             for i in 0 ..< dimension {
                 var tilePointers = gameBoard.getRow(i, reversed: true)
-                let actions = processOneDimensionTiles(&tilePointers)
+                let (actions, score) = processOneDimensionTiles(&tilePointers)
                 for action in actions {
                     let fromCoordinates = action.fromIndexs.map({ (i, self.dimension - 1 - $0) })
                     let toCoordinate = (i, self.dimension - 1 - action.toIndex)
                     resultMoveActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
                 }
+                increasedScore += score
             }
         case .Right:
             for i in 0 ..< dimension {
                 var tilePointers = gameBoard.getRow(i, reversed: false)
-                let actions = processOneDimensionTiles(&tilePointers)
+                let (actions, score) = processOneDimensionTiles(&tilePointers)
                 for action in actions {
                     let fromCoordinates = action.fromIndexs.map({ (i, $0) })
                     let toCoordinate = (i, action.toIndex)
                     resultMoveActions.append(MoveAction(actionType: .Move, fromCoordinates: fromCoordinates, toCoordinate: toCoordinate))
                 }
+                increasedScore += score
             }
         }
         
@@ -155,6 +160,8 @@ extension Game2048 {
             let insertedCoordinate = insertTileAtRandomLocation(initNumber)
             resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: initNumber))
         }
+        
+        self.score += increasedScore
         
         delegate?.game2048DidUpdate(self, moveActions: resultMoveActions, initActions: resultInitActions)
         printOutGameBoard()
@@ -172,10 +179,10 @@ extension Game2048 {
     
     :returns: result 1D actions
     */
-    private func processOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [Action1D] {
-        var actions = mergeOneDimensionTiles(&tiles)
+    private func processOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> ([Action1D], Int) {
+        var (actions, increasedScore) = mergeOneDimensionTiles(&tiles)
         actions.extend(condenseOneDimensionTiles(&tiles))
-        return actions
+        return (actions, increasedScore)
     }
     
     /**
@@ -192,8 +199,9 @@ extension Game2048 {
     
     :returns: Return a list of actions
     */
-    private func mergeOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [Action1D] {
+    private func mergeOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> ([Action1D], Int) {
         var resultActions = [Action1D]()
+        var increasedScore: Int = 0
         let count = tiles.count
         for i in stride(from: count - 1, to: -1, by: -1) {
             switch tiles[i].memory {
@@ -217,6 +225,7 @@ extension Game2048 {
                         if tileNumber == rightTileNumber {
                             // Merge
                             tiles[rightIndex].memory = Tile.Number(tileNumber * 2)
+                            increasedScore += tileNumber * 2
                             tiles[i].memory = Tile.Number(0)
                             resultActions.append(Action1D(fromIndexs: [i, rightIndex], toIndex: rightIndex))
                         } else if rightIndex > i + 1 {
@@ -230,7 +239,7 @@ extension Game2048 {
             }
         }
         
-        return resultActions
+        return (resultActions, increasedScore)
     }
     
     /**

@@ -49,12 +49,12 @@ class TileView: UIView {
     var views = [String: UIView]()
     var metrics = [String: CGFloat]()
     
+    // MARK:- Init Methods
     override func awakeFromNib() {
         super.awakeFromNib()
         setupViews()
     }
     
-    // MARK:- Init Methods
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupViews()
@@ -99,7 +99,7 @@ class TileView: UIView {
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(>=padding)-[numberLabel]-(>=padding)-|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
     }
     
-    func flashTile() {
+    func flashTile(completion: ((Bool) -> Void)? = nil) {
 //        numberLabel.textColor = self.backgroundColor
 //        UIView.transitionWithView(numberLabel, duration: sharedAnimationDuration * 2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
 //            self.numberLabel?.text = String(self.number)
@@ -111,7 +111,7 @@ class TileView: UIView {
         UIView.animateWithDuration(sharedAnimationDuration * 2, animations: { () -> Void in
             self.backgroundColor = self.tileBackgroundColor
             }, completion: { (finished) -> Void in
-                //
+                completion?(finished)
         })
     }
 }

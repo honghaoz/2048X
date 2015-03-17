@@ -11,16 +11,20 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    var gameModel: Game2048!
+    var scoreView: ScoreView!
+    var bestScoreView: ScoreView!
+    var targetView: ScoreView!
+    
     var gameBoardView: GameBoardView!
     
+    var gameModel: Game2048!
     var commandQueue = [MoveCommand]()
     var kCommandQueueSize: Int = 2
     
     var isAnimating: Bool = false
     
-    var metrics = [String: CGFloat]()
     var views = [String: UIView]()
+    var metrics = [String: CGFloat]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +35,7 @@ class ViewController: UIViewController {
         gameModel.start()
         
         sharedAnimationDuration = 0.12
-//        NSTimer.scheduledTimerWithTimeInterval(sharedAnimationDuration, target: self, selector: "play", userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(sharedAnimationDuration, target: self, selector: "play", userInfo: nil, repeats: true)
     }
     
     func play() {
@@ -55,12 +59,15 @@ class ViewController: UIViewController {
     func setupViews() {
         view.backgroundColor = SharedColors.BackgroundColor
 
+        metrics["padding"] = 5.0
+        
+        // GameBoardView
         gameBoardView = GameBoardView()
         gameBoardView.backgroundColor = view.backgroundColor
         gameBoardView.gameModel = gameModel
         
         gameBoardView.setTranslatesAutoresizingMaskIntoConstraints(false)
-        views["gameBoard"] = gameBoardView
+        views["gameBoardView"] = gameBoardView
         view.addSubview(gameBoardView)
         
         let gameBoardWidth = UIScreen.mainScreen().bounds.width * 0.9
@@ -70,6 +77,49 @@ class ViewController: UIViewController {
         
         view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0))
+        
+        // ScoreView
+        scoreView = ScoreView()
+        scoreView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        views["scoreView"] = scoreView
+        view.addSubview(scoreView)
+        
+        scoreView.titleLabel.text = "SCORE"
+        scoreView.numberLabelMaxFontSize = 28
+        scoreView.numberLabel.textAlignment = .Right
+        scoreView.number = 0
+        
+        // BestScoreView
+        bestScoreView = ScoreView()
+        bestScoreView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        views["bestScoreView"] = bestScoreView
+        view.addSubview(bestScoreView)
+        
+        bestScoreView.titleLabel.text = "BEST"
+        bestScoreView.numberLabelMaxFontSize = 28
+        bestScoreView.numberLabel.textAlignment = .Right
+        bestScoreView.number = 23543 // TODO: Record best score
+        
+        // TargetView
+        targetView = ScoreView()
+        targetView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        views["targetView"] = targetView
+        view.addSubview(targetView)
+        
+        targetView.titleLabel.text = "TARGET"
+        targetView.numberLabelMaxFontSize = 38
+        targetView.number = 2048
+        
+        metrics["targetViewHeight"] = gameBoardWidth / 3.0
+        targetView.addConstraint(NSLayoutConstraint(item: targetView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: targetView, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0.0))
+        
+        // H
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[scoreView]-padding-[targetView]", options: NSLayoutFormatOptions.AlignAllTop, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[bestScoreView]-padding-[targetView]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
+        
+        // V
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[scoreView]-padding-[bestScoreView(==scoreView)]-padding-[gameBoardView]", options: NSLayoutFormatOptions.AlignAllLeading, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[targetView(targetViewHeight)]-padding-[gameBoardView]", options: NSLayoutFormatOptions.AlignAllTrailing, metrics: metrics, views: views))
         
         // Must call this before start game
         view.layoutIfNeeded()
@@ -157,6 +207,7 @@ extension ViewController: Game2048Delegate {
     func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction]) {
         println("Updated")
         
+        scoreView.number = game2048.score
         gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
             self.isAnimating = false
             self.executeCommandQueue()
