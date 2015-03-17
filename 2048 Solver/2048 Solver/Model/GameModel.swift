@@ -9,9 +9,10 @@
 import Foundation
 
 protocol Game2048Delegate: class {
+    func game2048DidReset(game2048: Game2048)
     func game2048DidStartNewGame(game2048: Game2048)
     func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction])
-    func game2048DidReset(game2048: Game2048)
+    func game2048DidEnd(game2048: Game2048)
 }
 
 class Game2048: NSObject {

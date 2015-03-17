@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     
     var gameModel: Game2048!
     var commandQueue = [MoveCommand]()
-    var kCommandQueueSize: Int = 2
+    var kCommandQueueSize: Int = 3
     
     var isAnimating: Bool = false
     
@@ -70,10 +70,11 @@ class ViewController: UIViewController {
         views["gameBoardView"] = gameBoardView
         view.addSubview(gameBoardView)
         
-        let gameBoardWidth = UIScreen.mainScreen().bounds.width * 0.9
+        let gameBoardWidth = screenWidth * 0.9
         
         gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 0.0, constant: gameBoardWidth))
-        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 0.0, constant: gameBoardWidth))
+        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.Height, multiplier: 1.0, constant: 0.0))
+        // FIXME: On iPhone 4s, layout issues
         
         view.addConstraint(NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0))
@@ -85,7 +86,7 @@ class ViewController: UIViewController {
         view.addSubview(scoreView)
         
         scoreView.titleLabel.text = "SCORE"
-        scoreView.numberLabelMaxFontSize = 28
+        scoreView.numberLabelMaxFontSize = is3_5InchScreen ? 20 : 28
         scoreView.numberLabel.textAlignment = .Right
         scoreView.number = 0
         
@@ -96,7 +97,7 @@ class ViewController: UIViewController {
         view.addSubview(bestScoreView)
         
         bestScoreView.titleLabel.text = "BEST"
-        bestScoreView.numberLabelMaxFontSize = 28
+        bestScoreView.numberLabelMaxFontSize = is3_5InchScreen ? 20 : 28
         bestScoreView.numberLabel.textAlignment = .Right
         bestScoreView.number = 23543 // TODO: Record best score
         
@@ -121,6 +122,8 @@ class ViewController: UIViewController {
         // V
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[scoreView]-padding-[bestScoreView(==scoreView)]-padding-[gameBoardView]", options: NSLayoutFormatOptions.AlignAllLeading, metrics: metrics, views: views))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[targetView(targetViewHeight)]-padding-[gameBoardView]", options: NSLayoutFormatOptions.AlignAllTrailing, metrics: metrics, views: views))
+        
+        view.addConstraint(NSLayoutConstraint(item: targetView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 22))
         
         // Must call this before start game
         view.layoutIfNeeded()
@@ -202,6 +205,10 @@ extension ViewController {
 
 // MARK: Game 2048 Delegate
 extension ViewController: Game2048Delegate {
+    func game2048DidReset(game2048: Game2048) {
+        println("Reseted")
+    }
+    
     func game2048DidStartNewGame(game2048: Game2048) {
         println("Started")
     }
@@ -216,8 +223,8 @@ extension ViewController: Game2048Delegate {
         })
     }
     
-    func game2048DidReset(game2048: Game2048) {
-        println("Reseted")
+    func game2048DidEnd(game2048: Game2048) {
+        println("Ended")
     }
 }
 
