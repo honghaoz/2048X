@@ -90,6 +90,20 @@ class GameboardAssistant: Printable {
         return GameboardAssistant(cells: _cell)
     }
     
+    /// Get the location of all empty cells
+    func getAllEmptyCells() -> [(x: Int, y: Int)] {
+        var emptyCells: [(x: Int, y: Int)] = []
+        for i in 0..<_size {
+            for j in 0..<_size {
+                if _cell[j][i] == 0 {
+                    emptyCells.append(x: i, y: j)
+                }
+            }
+        }
+        
+        return emptyCells
+    }
+    
     // MARK: Public methods
     /// Test if a move to certain directino is valid
     func isMoveValid(dir: MoveDirection) -> Bool {
@@ -185,20 +199,6 @@ class GameboardAssistant: Printable {
     /// See if every cell has a value
     private func allCellFull() -> Bool {
         return getAllEmptyCells().count == 0;
-    }
-    
-    /// Get the location of all empty cells
-    func getAllEmptyCells() -> [(x: Int, y: Int)] {
-        var emptyCells: [(x: Int, y: Int)] = []
-        for i in 0..<_size {
-            for j in 0..<_size {
-                if _cell[j][i] == 0 {
-                    emptyCells.append(x: i, y: j)
-                }
-            }
-        }
-        
-        return emptyCells
     }
     
     /// Get a copy of certain row

@@ -333,9 +333,20 @@ class AI {
     /// Calculate optimal movement for method "minimax alpha-beta pruning"
     func nextMoveUsingAlphaBetaPruning(curState: [[Int]], depth: Int = 10) -> MoveCommand? {
         var gameboardAssistant = GameboardAssistant(cells: curState)
-        let bestMove = minimaxAlphaBetaPruning(gameboardAssistant, curDepth: 10, player: .Max, alpha: -10000, beta: 10000, lastPositions: 0, lastCutoffs: 0)
         
-        return bestMove.bestDirection == nil ? nil : MoveCommand(direction: bestMove.bestDirection!)
+        var bestDirection: MoveDirection?
+        
+        for depth in 0...3 {
+            let tempBestResult = minimaxAlphaBetaPruning(gameboardAssistant, curDepth: depth, player: .Max, alpha: -10000, beta: 10000, lastPositions: 0, lastCutoffs: 0)
+            if tempBestResult.bestDirection == nil {
+                break
+            }
+            else {
+                bestDirection = tempBestResult.bestDirection
+            }
+        }
+        
+        return bestDirection == nil ? nil : MoveCommand(direction: bestDirection!)
     }
     
     /// Calculate optimal movement for method "minimax alpha-beta pruning" using recursion
@@ -354,8 +365,9 @@ class AI {
                 bestScore = alpha
                 for i in 0..<size {
                     let nextDirection = rawValToDirection[i]!.direction
-                    var newAssistant = gameboardAssistant.copy()
-                    if newAssistant.isMoveValid(nextDirection) {
+                    if gameboardAssistant.isMoveValid(nextDirection) {
+                        var newAssistant = gameboardAssistant.copy()
+                        newAssistant.makeMove(nextDirection, toAddNewTile: false)
                         lastPositions++
                         if curDepth == 0 {
                             tempResult = (nextDirection, evaluateUsingSmoothnessAndMonotonicity(newAssistant), lastPositions, lastCutoffs)
@@ -609,9 +621,9 @@ extension Array {
     func maxVal() -> Double {
         var maxEle = Double(Int.min)
         for i in 0..<self.count {
-            if let curEle = self[i] as? Double {
-                if curEle > maxEle {
-                    maxEle = curEle
+            if let curVal = (self[i] as? (pos: (row: Int, col: Int), val: Double))?.val {
+                if curVal > maxEle {
+                    maxEle = curVal
                 }
             }
         }
