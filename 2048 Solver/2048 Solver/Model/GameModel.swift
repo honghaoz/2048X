@@ -109,8 +109,8 @@ extension Game2048 {
         switch moveCommand.direction {
         case .Up:
             for i in 0 ..< dimension {
-                var tiles = gameBoard.getColumn(i, reversed: true)
-                let (actions, score) = processOneDimensionTiles(&tiles)
+                var tilePointers = gameBoard.getColumn(i, reversed: true)
+                let (actions, score) = processOneDimensionTiles(&tilePointers)
                 for action in actions {
                     let fromCoordinates = action.fromIndexs.map({ (self.dimension - 1 - $0, i) })
                     let toCoordinate = (self.dimension - 1 - action.toIndex, i)
@@ -120,8 +120,8 @@ extension Game2048 {
             }
         case .Down:
             for i in 0 ..< dimension {
-                var tiles = gameBoard.getColumn(i, reversed: false)
-                let (actions, score) = processOneDimensionTiles(&tiles)
+                var tilePointers = gameBoard.getColumn(i, reversed: false)
+                let (actions, score) = processOneDimensionTiles(&tilePointers)
                 for action in actions {
                     let fromCoordinates = action.fromIndexs.map({ ($0, i) })
                     let toCoordinate = (action.toIndex, i)
@@ -425,7 +425,11 @@ extension Game2048 {
 
 // MARK: Expose to AI
 extension Game2048 {
-    // Return a copy of gameBoard (a 2d matrix contains integers, 0 stands for .Empty)
+    /**
+    Return a copy of gameBoard (a 2d matrix contains integers, 0 stands for .Empty)
+    
+    :returns: 2d array of Int
+    */
     func currentGameBoard() -> [[Int]] {
         var result = [[Int]]()
         for i in 0 ..< dimension {
@@ -443,30 +447,84 @@ extension Game2048 {
         return result
     }
     
-    func nextStateFromGameBoard(gameBoard: [[Int]], withCommand command: MoveCommand) -> [[Int]] {
-//        switch command.direction {
-//        case .Up:
-//            for i in 0 ..< dimension {
-//                var tiles = gameBoard.getColumn(i, reversed: true)
-//                processOneDimensionTiles(&tiles)
-//            }
-//        case .Down:
-//            for i in 0 ..< dimension {
-//                var tiles = gameBoard.getColumn(i, reversed: false)
-//                processOneDimensionTiles(&tiles)
-//            }
-//        case .Left:
-//            for i in 0 ..< dimension {
-//                var tilePointers = gameBoard.getRow(i, reversed: true)
-//                processOneDimensionTiles(&tilePointers)
-//            }
-//        case .Right:
-//            for i in 0 ..< dimension {
-//                var tilePointers = gameBoard.getRow(i, reversed: false)
-//                processOneDimensionTiles(&tilePointers)
-//            }
-//        }
-        return []
+    /**
+    Get next state for a game board
+    
+    :param: gameBoard 2d array with Int type, representation for a game board
+    :param: command   a valid command
+    
+    :returns: next game board and increased scores
+    */
+    func nextStateFromGameBoard(gameBoard: [[Int]], withCommand command: MoveCommand) -> ([[Int]], Int) {
+        precondition(gameBoard.count == dimension, "dimension must be equal")
+        // Init a temp game board
+        var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = SquareGameBoard(dimension: dimension, initialValue: nil)
+        
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                tempGameBoard[i, j] = UnsafeMutablePointer<Tile>.alloc(1)
+                if gameBoard[i][j] == 0 {
+                    tempGameBoard[i, j].initialize(Tile.Empty)
+                } else {
+                    tempGameBoard[i, j].initialize(Tile.Number(gameBoard[i][j]))
+                }
+            }
+        }
+        
+        var increasedScore: Int = 0
+        
+        // Mutate tempGameBoard
+        switch command.direction {
+        case .Up:
+            for i in 0 ..< dimension {
+                var tilePointers = tempGameBoard.getColumn(i, reversed: true)
+                let (actions, score) = processOneDimensionTiles(&tilePointers)
+                increasedScore += score
+            }
+        case .Down:
+            for i in 0 ..< dimension {
+                var tilePointers = tempGameBoard.getColumn(i, reversed: false)
+                let (actions, score) = processOneDimensionTiles(&tilePointers)
+                increasedScore += score
+            }
+        case .Left:
+            for i in 0 ..< dimension {
+                var tilePointers = tempGameBoard.getRow(i, reversed: true)
+                let (actions, score) = processOneDimensionTiles(&tilePointers)
+                increasedScore += score
+            }
+        case .Right:
+            for i in 0 ..< dimension {
+                var tilePointers = tempGameBoard.getRow(i, reversed: false)
+                let (actions, score) = processOneDimensionTiles(&tilePointers)
+                increasedScore += score
+            }
+        }
+        
+        // Create a new game board: [[Int]]
+        var resultBoard = [[Int]]()
+        for i in 0 ..< dimension {
+            var row = [Int]()
+            for j in 0 ..< dimension {
+                switch tempGameBoard[i, j].memory {
+                case .Empty:
+                    row.append(0)
+                case let .Number(tileNumber):
+                    row.append(tileNumber)
+                }
+            }
+            resultBoard.append(row)
+        }
+        
+        // Dealloc temp memory
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                tempGameBoard[i, j].destroy()
+                tempGameBoard[i, j].dealloc(1)
+            }
+        }
+        
+        return (resultBoard, increasedScore)
     }
 }
 
