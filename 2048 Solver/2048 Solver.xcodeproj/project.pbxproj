@@ -15,6 +15,7 @@
 		0225A2421AB7D74500EA72C8 /* GameBoardAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A2411AB7D74500EA72C8 /* GameBoardAssistant.swift */; };
 		0225A2491AB7DD9000EA72C8 /* ZHLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A2481AB7DD9000EA72C8 /* ZHLogger.swift */; };
 		0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A24A1AB8A6E300EA72C8 /* Extension.swift */; };
+		0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */; };
 		023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */; };
 		023EDE821AAA325100F5B9C5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE811AAA325100F5B9C5 /* ViewController.swift */; };
 		023EDE851AAA325100F5B9C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE831AAA325100F5B9C5 /* Main.storyboard */; };
@@ -46,6 +47,7 @@
 		0225A2411AB7D74500EA72C8 /* GameBoardAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoardAssistant.swift; sourceTree = "<group>"; };
 		0225A2481AB7DD9000EA72C8 /* ZHLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZHLogger.swift; sourceTree = "<group>"; };
 		0225A24A1AB8A6E300EA72C8 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AI-Random.swift"; sourceTree = "<group>"; };
 		023EDE7A1AAA325100F5B9C5 /* 2048 Solver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2048 Solver.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023EDE7E1AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 			children = (
 				FF5C5DD91AAF782A00CE6981 /* AI.swift */,
 				0225A2411AB7D74500EA72C8 /* GameBoardAssistant.swift */,
+				0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */,
 			);
 			path = AI;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 				FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */,
 				0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */,
 				02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */,
+				0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */,
 				02107CA11AAD244A00CFF8FF /* GameModelHelper.swift in Sources */,
 				023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */,
 				028159611AAD07E500C795D9 /* TileView.swift in Sources */,

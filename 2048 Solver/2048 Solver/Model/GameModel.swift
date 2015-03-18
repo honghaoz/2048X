@@ -70,20 +70,18 @@ extension Game2048 {
     }
     
     func start() {
-        precondition(!gameBoardFull(), "Game is not empty, before starting a new game, please reset a game")
+        precondition(!gameBoardFull(gameBoard), "Game is not empty, before starting a new game, please reset a game")
         
         var resultInitActions = [InitAction]()
         
         // TODO: Different dimension could insert different numbers of tiles
         for i in 0 ..< 2 {
-            let insertedCoordinate = insertTileAtRandomLocation(2)
+            let insertedCoordinate = insertTileAtRandomLocation(gameBoard, value: 2)
             resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: 2))
         }
         
         delegate?.game2048DidStartNewGame(self)
         delegate?.game2048DidUpdate(self, moveActions: [], initActions: resultInitActions)
-        
-        printOutGameBoard()
     }
     
     func playWithCommand(command: MoveCommand) {
@@ -156,16 +154,23 @@ extension Game2048 {
         var resultInitActions = [InitAction]()
         
         if resultMoveActions.count > 0 {
-            let seed = Int(arc4random_uniform(UInt32(100)))
-            let initNumber: Int = seed < 20 ? 4 : 2
-            let insertedCoordinate = insertTileAtRandomLocation(initNumber)
+            let (initNumber, insertedCoordinate) = insertTileAtRandomLocation(gameBoard)
             resultInitActions.append(InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: initNumber))
         }
         
         self.score += increasedScore
-        
         delegate?.game2048DidUpdate(self, moveActions: resultMoveActions, initActions: resultInitActions)
-        printOutGameBoard()
+        
+        if isGameEnded(gameBoard) {
+            delegate?.game2048DidEnd(self)
+        }
+    }
+    
+    private func insertTileAtRandomLocation(gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> (Int, (Int, Int)) {
+        let seed = Int(arc4random_uniform(UInt32(100)))
+        let initNumber: Int = seed < 0 ? 4 : 2
+        let insertedCoordinate = insertTileAtRandomLocation(gameBoard, value: initNumber)
+        return (initNumber, insertedCoordinate)
     }
     
 //    private func checkGameStopped
@@ -323,7 +328,7 @@ extension Game2048 {
     
     :returns: coordinates for empty spots
     */
-    func gameBoardEmptySpots() -> [(Int, Int)] {
+    func gameBoardEmptySpots(gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> [(Int, Int)] {
         var buffer = Array<(Int, Int)>()
         for i in 0..<dimension {
             for j in 0..<dimension {
@@ -343,8 +348,9 @@ extension Game2048 {
     
     :returns: true is game board is full
     */
-    func gameBoardFull() -> Bool {
-        return gameBoardEmptySpots().count == 0
+    func gameBoardFull(gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
+        precondition(gameBoard.dimension == dimension, "dimension must be equal")
+        return gameBoardEmptySpots(gameBoard).count == 0
     }
     
     /**
@@ -354,8 +360,8 @@ extension Game2048 {
     
     :returns: inserted coordinate, if game board is full, return (-1, -1)
     */
-    func insertTileAtRandomLocation(value: Int) -> (Int, Int) {
-        let openSpots = gameBoardEmptySpots()
+    func insertTileAtRandomLocation(gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, value: Int) -> (Int, Int) {
+        let openSpots = gameBoardEmptySpots(gameBoard)
         if openSpots.count == 0 {
             // No more open spots; don't even bother
             return (-1, -1)
@@ -363,7 +369,7 @@ extension Game2048 {
         // Randomly select an open spot, and put a new tile there
         let idx = Int(arc4random_uniform(UInt32(openSpots.count - 1)))
         let (x, y) = openSpots[idx]
-        insertTile((x, y), value: value)
+        insertTile(gameBoard, pos: (x, y), value: value)
         return (x, y)
     }
     
@@ -373,13 +379,65 @@ extension Game2048 {
     :param: pos   insert position/ coordinate
     :param: value new inserted value
     */
-    func insertTile(pos: (Int, Int), value: Int) {
+    func insertTile(gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, pos: (Int, Int), value: Int) {
         let (x, y) = pos
         switch gameBoard[x, y].memory {
         case .Empty:
             gameBoard[x, y].memory = Tile.Number(value)
         case .Number:
             break
+        }
+    }
+    
+    func isGameEnded(gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
+        precondition(gameBoard.dimension == dimension, "dimension must be equal")
+        if !gameBoardFull(gameBoard) {
+            return false
+        }
+        
+        // Init a temp game board
+        var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = SquareGameBoard(dimension: dimension, initialValue: nil)
+        // Alloc memory
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                tempGameBoard[i, j] = UnsafeMutablePointer<Tile>.alloc(1)
+                switch gameBoard[i, j].memory {
+                case .Empty:
+                    tempGameBoard[i, j].initialize(Tile.Empty)
+                case let .Number(tileNumber):
+                    tempGameBoard[i, j].initialize(gameBoard[i, j].memory)
+                }
+            }
+        }
+        
+//        logDebug("GOD1")
+//        printOutGameBoard(tempGameBoard)
+        
+        var resultActions = [Action1D]()
+        for i in 0 ..< dimension {
+            // UP
+            var upMoveTilePointers = tempGameBoard.getColumn(i, reversed: true)
+            let (upMoveActions, _) = processOneDimensionTiles(&upMoveTilePointers)
+            resultActions.extend(upMoveActions)
+            
+            // Left
+            var leftMoveTilePointers = tempGameBoard.getRow(i, reversed: true)
+            let (leftMoveActions, _) = processOneDimensionTiles(&leftMoveTilePointers)
+            resultActions.extend(leftMoveActions)
+        }
+        
+//        logDebug("GOD2")
+//        printOutGameBoard(tempGameBoard)
+        
+        // Dealloc temp memory
+        deAllocGameBoard(&tempGameBoard)
+        
+        if resultActions.count == 0 {
+//            logDebug("GOD")
+//            printOutGameBoard(gameBoard)
+            return true
+        } else {
+            return false
         }
     }
 }
@@ -455,21 +513,15 @@ extension Game2048 {
     
     :returns: next game board and increased scores
     */
-    func nextStateFromGameBoard(gameBoard: [[Int]], withCommand command: MoveCommand) -> ([[Int]], Int) {
+    func nextStateFromGameBoard(gameBoard: [[Int]], withCommand command: MoveCommand, shouldCheckGameEnd: Bool = false, shouldInsertNewTile: Bool = false) -> ([[Int]], Int) {
         precondition(gameBoard.count == dimension, "dimension must be equal")
         // Init a temp game board
         var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = SquareGameBoard(dimension: dimension, initialValue: nil)
         
-        for i in 0 ..< dimension {
-            for j in 0 ..< dimension {
-                tempGameBoard[i, j] = UnsafeMutablePointer<Tile>.alloc(1)
-                if gameBoard[i][j] == 0 {
-                    tempGameBoard[i, j].initialize(Tile.Empty)
-                } else {
-                    tempGameBoard[i, j].initialize(Tile.Number(gameBoard[i][j]))
-                }
-            }
-        }
+        // Alloc memory
+        allocInitGameBoard(&tempGameBoard, withGameBoard: gameBoard)
+        
+//        printOutGameBoard(tempGameBoard)
         
         var increasedScore: Int = 0
         
@@ -501,6 +553,10 @@ extension Game2048 {
             }
         }
         
+        if shouldInsertNewTile {
+            insertTileAtRandomLocation(tempGameBoard)
+        }
+        
         // Create a new game board: [[Int]]
         var resultBoard = [[Int]]()
         for i in 0 ..< dimension {
@@ -517,20 +573,70 @@ extension Game2048 {
         }
         
         // Dealloc temp memory
+        deAllocGameBoard(&tempGameBoard)
+        
+//        logDebug("increasedScore: \(increasedScore)")
+        return (resultBoard, increasedScore)
+    }
+    
+    func isGameBoardEnded(gameBoard: [[Int]]) -> Bool {
+        precondition(gameBoard.count == dimension, "dimension must be equal")
+        
+        // PreCheck
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                tempGameBoard[i, j].destroy()
-                tempGameBoard[i, j].dealloc(1)
+                if gameBoard[i][j] == 0 {
+                    return false
+                }
             }
         }
         
-        return (resultBoard, increasedScore)
+        // Init a temp game board
+        var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = SquareGameBoard(dimension: dimension, initialValue: nil)
+        
+        // Alloc memory
+        allocInitGameBoard(&tempGameBoard, withGameBoard: gameBoard)
+        
+        let result = isGameEnded(tempGameBoard)
+        
+        // Dealloc temp memory
+        deAllocGameBoard(&tempGameBoard)
+        
+        return result
+    }
+    
+    private func allocInitGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, withGameBoard intGameBoard: [[Int]]) {
+        // Alloc memory
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                gameBoard[i, j] = UnsafeMutablePointer<Tile>.alloc(1)
+                if intGameBoard[i][j] == 0 {
+                    gameBoard[i, j].initialize(Tile.Empty)
+                } else {
+                    gameBoard[i, j].initialize(Tile.Number(intGameBoard[i][j]))
+                }
+            }
+        }
+    }
+    
+    private func deAllocGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) {
+        // Dealloc temp memory
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                gameBoard[i, j].destroy()
+                gameBoard[i, j].dealloc(1)
+            }
+        }
     }
 }
 
 // MARK: Debug Methods
 extension Game2048 {
     func printOutGameBoard() {
+        printOutGameBoard(self.gameBoard)
+    }
+    
+    func printOutGameBoard(gameboard: SquareGameBoard<UnsafeMutablePointer<Tile>>) {
         println("Game Board:")
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
@@ -556,11 +662,5 @@ extension Game2048 {
             }
         }
         println()
-    }
-    
-    func printOutMoveActions(actions: [MoveAction]) {
-        for action in actions {
-            println("From: \(action.fromCoordinates) To:\(action.toCoordinate)")
-        }
     }
 }

@@ -26,16 +26,34 @@ class ViewController: UIViewController {
     var views = [String: UIView]()
     var metrics = [String: CGFloat]()
     
+    var aiRandom: AIRandom!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupGameModel()
         setupViews()
         setupSwipeGestures()
         
+        aiRandom = AIRandom(gameModel: gameModel)
+        
+        
         gameModel.start()
         
-        sharedAnimationDuration = 0.12
+        sharedAnimationDuration = 0.0
+        
 //        NSTimer.scheduledTimerWithTimeInterval(sharedAnimationDuration, target: self, selector: "play", userInfo: nil, repeats: true)
+        
+        let tap = UITapGestureRecognizer(target: self, action: "tap")
+        gameBoardView.addGestureRecognizer(tap)
+    }
+    
+    func tap() {
+        let nextCommand = self.aiRandom.nextStepWithCurrentState(gameModel.currentGameBoard())
+        if nextCommand == nil {
+            logDebug("next: nil")
+        } else {
+            queueCommand(nextCommand!)
+        }
     }
     
     func play() {
@@ -198,6 +216,7 @@ extension ViewController {
             let command = commandQueue[0]
             commandQueue.removeAtIndex(0)
             isAnimating = true
+            logDebug("Next Step")
             gameModel.playWithCommand(command)
         }
     }
@@ -206,29 +225,43 @@ extension ViewController {
 // MARK: Game 2048 Delegate
 extension ViewController: Game2048Delegate {
     func game2048DidReset(game2048: Game2048) {
-        println("Reseted")
+        logDebug("Reseted")
     }
     
     func game2048DidStartNewGame(game2048: Game2048) {
-        println("Started")
+        logDebug("Started")
+        game2048.printOutGameBoard()
     }
     
     func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction]) {
-        println("Updated")
+        logDebug("Updated")
+        game2048.printOutGameBoard()
         
-        scoreView.number = game2048.score
-        gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
-            self.isAnimating = false
-            self.executeCommandQueue()
-        })
+        let nextCommand = self.aiRandom.nextStepWithCurrentState(game2048.currentGameBoard())
+        if nextCommand == nil {
+            logDebug("next: nil")
+            scoreView.number = game2048.score
+            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
+                self.isAnimating = false
+                self.executeCommandQueue()
+            })
+        } else {
+            scoreView.number = game2048.score
+            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
+                self.isAnimating = false
+                self.queueCommand(nextCommand!)
+                self.executeCommandQueue()
+            })
+        }
     }
     
     func game2048DidEnd(game2048: Game2048) {
-        println("Ended")
+        game2048.printOutGameBoard()
+        logDebug("Ended")
     }
 }
 
-// MARK: AI
+// MARK: Others
 extension ViewController {
 //    func playSoundEffect() {
 //        // Play sound effect
