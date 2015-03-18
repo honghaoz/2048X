@@ -168,7 +168,7 @@ extension Game2048 {
     
     private func insertTileAtRandomLocation(gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> (Int, (Int, Int)) {
         let seed = Int(arc4random_uniform(UInt32(100)))
-        let initNumber: Int = seed < 0 ? 4 : 2
+        let initNumber: Int = seed < 15 ? 4 : 2
         let insertedCoordinate = insertTileAtRandomLocation(gameBoard, value: initNumber)
         return (initNumber, insertedCoordinate)
     }
