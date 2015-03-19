@@ -67,17 +67,17 @@ struct GameModelHelper {
     
     // * Game board is not mutated
     static func isGameEnded(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
-        let dimension = gameBoard.dimension
         if !gameBoardFull(&gameBoard) {
             return false
         }
         
+        let dimension = gameBoard.dimension
         let canMove = (moveCommand(MoveCommand(direction: .Up), isValidInGameBoard: &gameBoard) || moveCommand(MoveCommand(direction: .Left), isValidInGameBoard: &gameBoard))
         
         return !canMove
     }
     
-    static func fullMoveCommands(shuffle: Bool = false) -> [MoveCommand] {
+    static func moveCommands(shuffle: Bool = false) -> [MoveCommand] {
         var commands = [MoveCommand]()
         commands.append(MoveCommand(direction: MoveDirection.Up))
         commands.append(MoveCommand(direction: MoveDirection.Left))
@@ -105,7 +105,7 @@ struct GameModelHelper {
     
     // * Game board is not mutated
     static func validMoveCommandsInGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, shuffle: Bool = false) -> [MoveCommand] {
-        var commands = fullMoveCommands(shuffle: false)
+        var commands = moveCommands(shuffle: false)
         for command in commands {
             if moveCommand(command, isValidInGameBoard: &gameBoard) {
                 commands.append(command)
@@ -238,14 +238,18 @@ extension GameModelHelper {
 extension GameModelHelper {
     
     // * Game board is MUTATED
-    static func performMoveCommand(moveCommand: MoveCommand, inout onGameBoard  gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, shouldInsertNewTiles: Bool) -> Int {
+    static func performMoveCommand(moveCommand: MoveCommand, inout onGameBoard  gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, shouldInsertNewTiles: Bool) -> (Bool, Int) {
         let (moveActions, increasedScore) = performMoveCommand(moveCommand, onGameBoard: &gameBoard)
+        
+        if moveActions.count == 0 {
+            return (false, increasedScore)
+        }
         
         if shouldInsertNewTiles && moveActions.count > 0 {
             performInsertCommand(&gameBoard)
         }
         
-        return increasedScore
+        return (true, increasedScore)
     }
     
     // * Game board is MUTATED
@@ -550,6 +554,23 @@ extension GameModelHelper {
 
 // MARK: Debug Helper
 extension GameModelHelper {
+    static func printOutGameBoard(gameBoard: [[Int]]) {
+        logDebug("Game Board:")
+        let dimension = gameBoard.count
+        var buffer = ""
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                if gameBoard[i][j] == 0 {
+                    buffer += "_\t"
+                } else {
+                    buffer += "\(gameBoard[i][j])\t"
+                }
+            }
+            buffer += "\n"
+        }
+        logDebug(buffer)
+    }
+    
     static func printOutGameBoard(gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) {
         logDebug("Game Board:")
         let dimension = gameBoard.dimension

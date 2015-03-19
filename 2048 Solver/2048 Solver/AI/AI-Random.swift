@@ -12,104 +12,84 @@ import Foundation
 // My Thoughts: Not sure how this works, it's purely randomizing, what a stupid AI it is
 
 class AIRandom {
-    var runsPerMove: Int = 2
+    var runsPerMove: Int = 50
     weak var gameModel: Game2048!
     
     init(gameModel: Game2048) {
         self.gameModel = gameModel
     }
     
-    func nextStepWithCurrentState(gameBoard: [[Int]]) -> MoveCommand? {
-        if gameModel.isGameBoardEnded(gameBoard) {
+    func nextCommand() -> MoveCommand? {
+        if GameModelHelper.isGameEnded(&gameModel.gameBoard) {
             return nil
         }
         
-        var choosedMoveCommand: MoveCommand?
+        var bestScore: Float = 0.0
+        var choosenCommand: MoveCommand!
         
-        var commands = [MoveCommand]()
-        commands.append(MoveCommand(direction: MoveDirection.Up))
-        commands.append(MoveCommand(direction: MoveDirection.Down))
-        commands.append(MoveCommand(direction: MoveDirection.Left))
-        commands.append(MoveCommand(direction: MoveDirection.Right))
-//
-//        var currentMaxAverageScore: Float = -1
-//        for command in commands {
-//            var totalScore = 0
-//            var moveCount = 0
-//            
-//            var increasedScores = 0
-//            
-//            // Run certain times for a MoveCommand
-//            for i in 0 ..< runsPerMove {
-//                var currentState = gameBoard
-////                logDebug("Run \(i) time")
-//                // Every run, clean moveCount, totalScoreThisRun
-//                var totalScoreThisRun = 0
-//                moveCount = 0
-//                while true {
-//                    if moveCount == 0 {
-//                        (currentState, increasedScores) = gameModel.nextStateFromGameBoard(currentState, withCommand: command, shouldInsertNewTile: true)
-//                    } else {
-//                        (currentState, increasedScores) = gameModel.nextStateFromGameBoard(currentState, withCommand: randomMoveCommand(), shouldInsertNewTile: true)
-//                    }
-//                    
-//                    moveCount += 1
-//                    totalScoreThisRun += increasedScores
-//                    
-//                    if gameModel.isGameBoardEnded(currentState) {
-//                        break
-//                    }
-//                }
-////                logDebug("TotalScore this run \(totalScoreThisRun)")
-//                totalScore += totalScoreThisRun
-//            }
-//            
-//            let averageScore = Float(totalScore) / Float(runsPerMove)
-////            logDebug("average score: \(averageScore)")
-//            if averageScore > currentMaxAverageScore {
-//                currentMaxAverageScore = averageScore
-//                choosedMoveCommand = command
-//            }
-//        }
-        
-        //
-        
-//        var maxIncreasedScores = -1
-//        
-//        for command in commands {
-//            var increasedScores = 0
-//            var currentState = gameBoard
-//            
-//            (currentState, increasedScores) = gameModel.nextStateFromGameBoard(currentState, withCommand: command, shouldInsertNewTile: false)
-//            if increasedScores > maxIncreasedScores {
-//                choosedMoveCommand = command
-//            }
-//        }
-//        
-//        assert(choosedMoveCommand != nil, "choosedMoveCommand Shouldn't be nil")
-//        return choosedMoveCommand
-        
-        return GameModelHelper.randomMoveCommand()
-    }
-}
-
-extension AIRandom {
-    func printOutGameBoard(gameBoard: [[Int]]) {
-        logDebug("Game Board:")
-        let dimension = gameBoard.count
-        var buffer = ""
-        for i in 0 ..< dimension {
-            for j in 0 ..< dimension {
-                if gameBoard[i][j] == 0 {
-                    buffer += "_\t"
-//                    print("_\t")
-                } else {
-                    buffer += "\(gameBoard[i][j])\t"
-//                    print("\(gameBoard[i][j])\t")
-                }
+        let commands = GameModelHelper.moveCommands()
+        for command in commands {
+            var (averageScore, averageMoves) = multipleRandomRun(&gameModel.gameBoard, withCommand: command, runTimes: runsPerMove)
+            if averageScore > bestScore {
+                bestScore = averageScore
+                choosenCommand = command
             }
-            buffer += "\n"
         }
-        logDebug(buffer)
+        
+        assert(choosenCommand != nil, "Impossible")
+        return choosenCommand
+    }
+    
+    private func multipleRandomRun(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, withCommand command: MoveCommand, runTimes: Int) -> (Float, Float) {
+        var total: Float = 0.0
+        var totalMoves = 0
+        
+        for i in 0 ..< runTimes {
+            let (score, moves) = randomRun(&gameBoard, withCommand: command)
+            if score == -1 {
+                return (-1, 0)
+            }
+            
+            total += Float(score)
+            totalMoves += moves
+        }
+        
+        let average: Float = total / Float(runTimes)
+        let averageMoves: Float = Float(totalMoves) / Float(runTimes)
+        
+        return (average, averageMoves)
+    }
+    
+    private func randomRun(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, withCommand command: MoveCommand) -> (Int, Int) {
+        var gameBoardCopy = GameModelHelper.copyGameBoard(&gameBoard)
+        var score = 0
+        
+        let (moved, increasedScore) = GameModelHelper.performMoveCommand(command, onGameBoard: &gameBoardCopy, shouldInsertNewTiles: true)
+        if !moved {
+            GameModelHelper.deallocGameBoard(&gameBoardCopy)
+            return (-1, 0)
+        }
+        
+        score += increasedScore
+        
+        // Run till we can't
+        var moves = 1
+        while true {
+            if GameModelHelper.isGameEnded(&gameBoardCopy) {
+                break
+            }
+            
+            let (moved, increasedScore) = GameModelHelper.performMoveCommand(GameModelHelper.randomMoveCommand(), onGameBoard: &gameBoardCopy, shouldInsertNewTiles: true)
+            if !moved {
+                continue
+            }
+            
+            score += increasedScore
+            moves++
+        }
+        
+        // Done
+        GameModelHelper.deallocGameBoard(&gameBoardCopy)
+        return (score, moves)
     }
 }

@@ -60,12 +60,12 @@ class ViewController: UIViewController {
     }
     
     func tap() {
-        let nextCommand = self.aiRandom.nextStepWithCurrentState(gameModel.currentGameBoard())
-        if nextCommand == nil {
-            logDebug("next: nil")
-        } else {
-            queueCommand(nextCommand!)
-        }
+//        let nextCommand = self.aiRandom.nextStepWithCurrentState(gameModel.currentGameBoard())
+//        if nextCommand == nil {
+//            logDebug("next: nil")
+//        } else {
+//            queueCommand(nextCommand!)
+//        }
     }
     
     func play() {
@@ -258,20 +258,22 @@ extension ViewController: Game2048Delegate {
 //        })
         
         // AI
-        if !isGameEnd {
-//            let nextCommand = ai.nextMoveUsingMonoHeuristic(gameModel.currentGameBoard())
-            
-            let nextCommand = ai.nextMoveUsingAlphaBetaPruning(gameModel.currentGameBoard())
-            
-            scoreView.number = game2048.score
-            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
-                self.isAnimating = false
-                if let nextCommand = nextCommand {
-                    self.queueCommand(nextCommand)
-                }
-                self.executeCommandQueue()
-            })
-        }
+//        if !isGameEnd {
+////            let nextCommand = ai.nextMoveUsingMonoHeuristic(gameModel.currentGameBoard())
+//            
+////            let nextCommand = ai.nextMoveUsingAlphaBetaPruning(gameModel.currentGameBoard())
+//            
+//            let nextCommand = ai.nextMoveUsingCombinedStrategy(gameModel.currentGameBoard())
+//            
+//            scoreView.number = game2048.score
+//            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
+//                self.isAnimating = false
+//                if let nextCommand = nextCommand {
+//                    self.queueCommand(nextCommand)
+//                }
+//                self.executeCommandQueue()
+//            })
+//        }
         
         // Greedy AI
 //        if !isGameEnd {
@@ -284,24 +286,18 @@ extension ViewController: Game2048Delegate {
 //            })
 //        }
         
-        // Stupid AI
-        
-//        let nextCommand = self.aiRandom.nextStepWithCurrentState(game2048.currentGameBoard())
-//        if nextCommand == nil {
-//            logDebug("next: nil")
-//            scoreView.number = game2048.score
-//            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
-//                self.isAnimating = false
-//                self.executeCommandQueue()
-//            })
-//        } else {
-//            scoreView.number = game2048.score
-//            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
-//                self.isAnimating = false
-//                self.queueCommand(nextCommand!)
-//                self.executeCommandQueue()
-//            })
-//        }
+        // Random AI
+        if !isGameEnd {
+            let nextCommand = aiRandom.nextCommand()
+            scoreView.number = game2048.score
+            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
+                self.isAnimating = false
+                if let nextCommand = nextCommand {
+                    self.queueCommand(nextCommand)
+                }
+                self.executeCommandQueue()
+            })
+        }
     }
     
     func game2048DidEnd(game2048: Game2048) {
