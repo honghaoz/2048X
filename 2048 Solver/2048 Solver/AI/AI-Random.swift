@@ -19,19 +19,6 @@ class AIRandom {
         self.gameModel = gameModel
     }
     
-    func randomMoveCommand() -> MoveCommand {
-        let seed = Int(arc4random_uniform(UInt32(100)))
-        if seed < 25 {
-            return MoveCommand(direction: MoveDirection.Up)
-        } else if seed < 50 {
-            return MoveCommand(direction: MoveDirection.Down)
-        } else if seed < 75 {
-            return MoveCommand(direction: MoveDirection.Left)
-        } else {
-            return MoveCommand(direction: MoveDirection.Right)
-        }
-    }
-    
     func nextStepWithCurrentState(gameBoard: [[Int]]) -> MoveCommand? {
         if gameModel.isGameBoardEnded(gameBoard) {
             return nil
@@ -102,7 +89,7 @@ class AIRandom {
 //        assert(choosedMoveCommand != nil, "choosedMoveCommand Shouldn't be nil")
 //        return choosedMoveCommand
         
-        return randomMoveCommand()
+        return GameModelHelper.randomMoveCommand()
     }
 }
 

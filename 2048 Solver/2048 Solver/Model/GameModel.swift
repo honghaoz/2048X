@@ -72,12 +72,8 @@ extension Game2048 {
     func start() {
         precondition(!GameModelHelper.gameBoardFull(&gameBoard), "Game is not empty, before starting a new game, please reset a game")
         
-        var resultInitActions = [InitAction]()
-        
         // TODO: Different dimension could insert different numbers of tiles
-        for i in 0 ..< 2 {
-            resultInitActions.append(GameModelHelper.performInsertCommand(&gameBoard))
-        }
+        var resultInitActions = GameModelHelper.performInsertCommand(&gameBoard, multipleTimes: 2)
         
         delegate?.game2048DidStartNewGame(self)
         delegate?.game2048DidUpdate(self, moveActions: [], initActions: resultInitActions)
@@ -101,7 +97,7 @@ extension Game2048 {
     }
     
     private func performMoveCommand(moveCommand: MoveCommand) {
-        let (resultMoveActions, increasedScores) = GameModelHelper.performMoveCommand(&gameBoard, moveCommand: moveCommand)
+        let (resultMoveActions, increasedScores) = GameModelHelper.performMoveCommand(moveCommand, onGameBoard: &gameBoard)
         
         var resultInitActions = [InitAction]()
         if resultMoveActions.count > 0 {

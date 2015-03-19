@@ -88,8 +88,94 @@ struct GameModelHelper {
             return false
         }
     }
+    
+    static func fullMoveCommands(shuffle: Bool = false) -> [MoveCommand] {
+        var commands = [MoveCommand]()
+        commands.append(MoveCommand(direction: MoveDirection.Up))
+        commands.append(MoveCommand(direction: MoveDirection.Left))
+        commands.append(MoveCommand(direction: MoveDirection.Down))
+        commands.append(MoveCommand(direction: MoveDirection.Right))
+        
+        if shuffle {
+            commands.shuffle()
+        }
+        return commands
+    }
+    
+    static func randomMoveCommand() -> MoveCommand {
+        let seed = Int(arc4random_uniform(UInt32(100)))
+        if seed < 25 {
+            return MoveCommand(direction: MoveDirection.Up)
+        } else if seed < 50 {
+            return MoveCommand(direction: MoveDirection.Down)
+        } else if seed < 75 {
+            return MoveCommand(direction: MoveDirection.Left)
+        } else {
+            return MoveCommand(direction: MoveDirection.Right)
+        }
+    }
+    
+    static func validMoveCommandsInGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, shuffle: Bool = false) -> [MoveCommand] {
+        var commands = fullMoveCommands(shuffle: false)
+        for command in commands {
+            if moveCommand(command, isValidInGameBoard: &gameBoard) {
+                commands.append(command)
+            }
+        }
+        
+        if shuffle {
+            commands.shuffle()
+        }
+        return commands
+    }
+    
+    static func randomValidMoveCommandInGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> MoveCommand? {
+        let validCommands = validMoveCommandsInGameBoard(&gameBoard, shuffle: true)
+        if validCommands.count > 0 {
+            return validCommands[0]
+        } else {
+            return nil
+        }
+    }
+    
+    static func moveCommand(moveCommand: MoveCommand, inout isValidInGameBoard gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
+        let dimension = gameBoard.dimension
+        switch moveCommand.direction {
+        case .Up:
+            for i in 0 ..< dimension {
+                var tilePointers = gameBoard.getColumn(i, reversed: true)
+                if oneDimensionTilesCanMove(&tilePointers) {
+                    return true
+                }
+            }
+        case .Down:
+            for i in 0 ..< dimension {
+                var tilePointers = gameBoard.getColumn(i, reversed: false)
+                if oneDimensionTilesCanMove(&tilePointers) {
+                    return true
+                }
+            }
+        case .Left:
+            for i in 0 ..< dimension {
+                var tilePointers = gameBoard.getRow(i, reversed: true)
+                if oneDimensionTilesCanMove(&tilePointers) {
+                    return true
+                }
+            }
+        case .Right:
+            for i in 0 ..< dimension {
+                var tilePointers = gameBoard.getRow(i, reversed: false)
+                if oneDimensionTilesCanMove(&tilePointers) {
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
 }
 
+// MARK: Memory Management
 extension GameModelHelper {
     static func allocInitGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) {
         let dimension = gameBoard.dimension
@@ -160,12 +246,33 @@ extension GameModelHelper {
 // MARK: Game Logic
 extension GameModelHelper {
     
+    static func performMoveCommand(moveCommand: MoveCommand, inout onGameBoard  gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, shouldInsertNewTiles: Bool) -> Int {
+        let (moveActions, increasedScore) = performMoveCommand(moveCommand, onGameBoard: &gameBoard)
+        
+        if shouldInsertNewTiles && moveActions.count > 0 {
+            performInsertCommand(&gameBoard)
+        }
+        
+        return increasedScore
+    }
+    
     static func performInsertCommand(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> InitAction {
         let (initNumber, insertedCoordinate) = insertTileAtRandomLocation(&gameBoard)
         return InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: initNumber)
     }
     
-    static func performMoveCommand(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, moveCommand: MoveCommand) -> ([MoveAction], Int) {
+    static func performInsertCommand(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, multipleTimes times: Int) -> [InitAction] {
+        precondition(times > 0, "Times must be greater than 0")
+        var resultInitActions = [InitAction]()
+        
+        for i in 0 ..< times {
+            resultInitActions.append(GameModelHelper.performInsertCommand(&gameBoard))
+        }
+        
+        return resultInitActions
+    }
+    
+    static func performMoveCommand(moveCommand: MoveCommand, inout onGameBoard gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> ([MoveAction], Int) {
         let dimension = gameBoard.dimension
         var resultMoveActions = [MoveAction]()
         var increasedScore: Int = 0
@@ -341,6 +448,40 @@ extension GameModelHelper {
         return resultActions
     }
     
+    static func oneDimensionTilesCanMove(inout tiles: [UnsafeMutablePointer<Tile>]) -> Bool {
+        let count = tiles.count
+        for i in stride(from: count - 1, to: -1, by: -1) {
+            switch tiles[i].memory {
+            case .Empty:
+                continue
+            case let .Number(tileNumber):
+                // Right most tile
+                if i == count - 1 {
+                    continue
+                } else {
+                    let (rightTile, rightIndex) = getFirstRightNonEmptyTileForIndex(i, inTiles: tiles)
+                    switch rightTile {
+                    case .Empty:
+                        // Right wall
+                        // [2,_,_] -> [_,_,2]
+                        return true
+                    case let .Number(rightTileNumber):
+                        // Exist rightTile
+                        if tileNumber == rightTileNumber {
+                            // Merge
+                            return true
+                        } else if rightIndex > i + 1 {
+                            // Move
+                            return true
+                        }
+                    }
+                }
+            }
+        }
+        
+        return false
+    }
+    
     /**
     Get the first valid right tile
     E.g. tiles: [_,4,_,2,_]
@@ -459,20 +600,5 @@ extension GameModelHelper {
         for action in actions {
             println("From: \(action.fromCoordinates) To:\(action.toCoordinate)")
         }
-    }
-}
-
-extension GameModelHelper {
-    static func fullCommands(shuffle: Bool = false) -> [MoveCommand] {
-        var commands = [MoveCommand]()
-        commands.append(MoveCommand(direction: MoveDirection.Up))
-        commands.append(MoveCommand(direction: MoveDirection.Left))
-        commands.append(MoveCommand(direction: MoveDirection.Down))
-        commands.append(MoveCommand(direction: MoveDirection.Right))
-        
-        if shuffle {
-            commands.shuffle()
-        }
-        return commands
     }
 }

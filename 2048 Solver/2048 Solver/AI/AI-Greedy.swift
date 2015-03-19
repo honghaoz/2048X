@@ -18,12 +18,12 @@ class AIGreedy {
         var choosenCommand: MoveCommand!
         var max = -1
         
-        let commands = GameModelHelper.fullCommands(shuffle: true)
+        let commands = GameModelHelper.fullMoveCommands(shuffle: true)
         for command in commands {
             GameModelHelper.printOutCommand(command)
             var copy = GameModelHelper.copyGameBoard(&gameModel.gameBoard)
             let beforeEmptyCount = GameModelHelper.gameBoardEmptySpots(&copy).count
-            let (_, score) = GameModelHelper.performMoveCommand(&copy, moveCommand: command)
+            let (_, score) = GameModelHelper.performMoveCommand(command, onGameBoard: &copy)
             let afterEmptyCount = GameModelHelper.gameBoardEmptySpots(&copy).count
             let reducedCount = afterEmptyCount - beforeEmptyCount + score
             if reducedCount > max {
