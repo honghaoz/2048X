@@ -9,9 +9,10 @@
 import Foundation
 
 // Reference: http://stackoverflow.com/a/23853848/3164091
+// My Thoughts: Not sure how this works, it's purely randomizing, what a stupid AI it is
 
 class AIRandom {
-    var runsPerMove: Int = 50
+    var runsPerMove: Int = 2
     weak var gameModel: Game2048!
     
     init(gameModel: Game2048) {
@@ -43,53 +44,65 @@ class AIRandom {
         commands.append(MoveCommand(direction: MoveDirection.Down))
         commands.append(MoveCommand(direction: MoveDirection.Left))
         commands.append(MoveCommand(direction: MoveDirection.Right))
+//
+//        var currentMaxAverageScore: Float = -1
+//        for command in commands {
+//            var totalScore = 0
+//            var moveCount = 0
+//            
+//            var increasedScores = 0
+//            
+//            // Run certain times for a MoveCommand
+//            for i in 0 ..< runsPerMove {
+//                var currentState = gameBoard
+////                logDebug("Run \(i) time")
+//                // Every run, clean moveCount, totalScoreThisRun
+//                var totalScoreThisRun = 0
+//                moveCount = 0
+//                while true {
+//                    if moveCount == 0 {
+//                        (currentState, increasedScores) = gameModel.nextStateFromGameBoard(currentState, withCommand: command, shouldInsertNewTile: true)
+//                    } else {
+//                        (currentState, increasedScores) = gameModel.nextStateFromGameBoard(currentState, withCommand: randomMoveCommand(), shouldInsertNewTile: true)
+//                    }
+//                    
+//                    moveCount += 1
+//                    totalScoreThisRun += increasedScores
+//                    
+//                    if gameModel.isGameBoardEnded(currentState) {
+//                        break
+//                    }
+//                }
+////                logDebug("TotalScore this run \(totalScoreThisRun)")
+//                totalScore += totalScoreThisRun
+//            }
+//            
+//            let averageScore = Float(totalScore) / Float(runsPerMove)
+////            logDebug("average score: \(averageScore)")
+//            if averageScore > currentMaxAverageScore {
+//                currentMaxAverageScore = averageScore
+//                choosedMoveCommand = command
+//            }
+//        }
         
-        var currentMaxAverageScore: Float = -1
-        for command in commands {
-//            printOutCommand(command)
-            var currentState = gameBoard
-            var totalScore = 0
-            var moveCounts = 0
-            for i in 0 ..< runsPerMove {
-                moveCounts += 1
-//                printOutGameBoard(currentState)
-                
-                var increasedScores = 0
-                if i == 0 {
-                    (currentState, increasedScores) = gameModel.nextStateFromGameBoard(currentState, withCommand: command, shouldInsertNewTile: true)
-                } else {
-                    (currentState, increasedScores) = gameModel.nextStateFromGameBoard(currentState, withCommand: randomMoveCommand(), shouldInsertNewTile: true)
-                }
-                
-                totalScore += increasedScores
-//                logDebug("total score: \(totalScore)")
-                
-                // If game is ended, calculate average score
-                if gameModel.isGameBoardEnded(currentState) {
-                    let averageScore = Float(totalScore) / Float(moveCounts)
-//                    logDebug("average score: \(averageScore)")
-                    if averageScore > currentMaxAverageScore {
-                        currentMaxAverageScore = averageScore
-                        choosedMoveCommand = command
-                    }
-                    break
-                }
-            }
-            
-            logDebug("moveCounts: \(moveCounts)")
-            
-            if moveCounts == runsPerMove {
-                let averageScore = Float(totalScore) / Float(moveCounts)
-                logDebug("average score: \(averageScore)")
-                if averageScore > currentMaxAverageScore {
-                    currentMaxAverageScore = averageScore
-                    choosedMoveCommand = command
-                }
-            }
-        }
+        //
         
-        assert(choosedMoveCommand != nil, "choosedMoveCommand Shouldn't be nil")
-        return choosedMoveCommand
+//        var maxIncreasedScores = -1
+//        
+//        for command in commands {
+//            var increasedScores = 0
+//            var currentState = gameBoard
+//            
+//            (currentState, increasedScores) = gameModel.nextStateFromGameBoard(currentState, withCommand: command, shouldInsertNewTile: false)
+//            if increasedScores > maxIncreasedScores {
+//                choosedMoveCommand = command
+//            }
+//        }
+//        
+//        assert(choosedMoveCommand != nil, "choosedMoveCommand Shouldn't be nil")
+//        return choosedMoveCommand
+        
+        return randomMoveCommand()
     }
 }
 

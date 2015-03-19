@@ -42,8 +42,8 @@ class GameboardAssistant: Printable {
             var maxVal: Int = Int.min
             for i in 0..<_size {
                 for j in 0..<_size {
-                    if _cell[j][i] > maxVal {
-                        maxVal = _cell[j][i]
+                    if _cell[i][j] > maxVal {
+                        maxVal = _cell[i][j]
                     }
                 }
             }
@@ -54,9 +54,9 @@ class GameboardAssistant: Printable {
     // MARK: Printable
     var description: String {
         var board:String = String()
-        for j in 0..<_size {
-            for i in 0..<_size {
-                board += String(format: "%d ", _cell[j][i])
+        for i in 0..<_size {
+            for j in 0..<_size {
+                board += String(format: "%d\t", _cell[i][j])
             }
             board += "\n"
         }

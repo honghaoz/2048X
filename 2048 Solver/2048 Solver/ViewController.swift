@@ -39,7 +39,7 @@ class ViewController: UIViewController {
         
         gameModel.start()
         
-        sharedAnimationDuration = 0.0
+        sharedAnimationDuration = 0.12
         
 //        NSTimer.scheduledTimerWithTimeInterval(sharedAnimationDuration, target: self, selector: "play", userInfo: nil, repeats: true)
         
@@ -230,33 +230,39 @@ extension ViewController: Game2048Delegate {
     
     func game2048DidStartNewGame(game2048: Game2048) {
         logDebug("Started")
-        game2048.printOutGameBoard()
+        game2048.printOutGameState()
     }
     
     func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction]) {
         logDebug("Updated")
-        game2048.printOutGameBoard()
+        game2048.printOutGameState()
         
-        let nextCommand = self.aiRandom.nextStepWithCurrentState(game2048.currentGameBoard())
-        if nextCommand == nil {
-            logDebug("next: nil")
-            scoreView.number = game2048.score
-            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
-                self.isAnimating = false
-                self.executeCommandQueue()
-            })
-        } else {
-            scoreView.number = game2048.score
-            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
-                self.isAnimating = false
-                self.queueCommand(nextCommand!)
-                self.executeCommandQueue()
-            })
-        }
+        scoreView.number = game2048.score
+        gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
+            self.isAnimating = false
+            self.executeCommandQueue()
+        })
+        
+//        let nextCommand = self.aiRandom.nextStepWithCurrentState(game2048.currentGameBoard())
+//        if nextCommand == nil {
+//            logDebug("next: nil")
+//            scoreView.number = game2048.score
+//            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
+//                self.isAnimating = false
+//                self.executeCommandQueue()
+//            })
+//        } else {
+//            scoreView.number = game2048.score
+//            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
+//                self.isAnimating = false
+//                self.queueCommand(nextCommand!)
+//                self.executeCommandQueue()
+//            })
+//        }
     }
     
     func game2048DidEnd(game2048: Game2048) {
-        game2048.printOutGameBoard()
+        game2048.printOutGameState()
         logDebug("Ended")
     }
 }

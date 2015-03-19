@@ -15,7 +15,12 @@ enum Player: Int {
 
 /// MARK: AI
 class AI {
-    private let rawValToDirection: [Int : MoveCommand] = [0 : MoveCommand(direction: .Up), 1 : MoveCommand(direction: .Down), 2 : MoveCommand(direction: .Left), 3 : MoveCommand(direction: .Right)]
+    private let rawValToDirection: [Int : MoveCommand] = [
+        0 : MoveCommand(direction: .Up),
+        1 : MoveCommand(direction: .Down),
+        2 : MoveCommand(direction: .Left),
+        3 : MoveCommand(direction: .Right)
+    ]
     
     private static var _ai: AI = AI()
     
