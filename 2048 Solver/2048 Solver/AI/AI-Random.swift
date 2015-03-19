@@ -12,7 +12,7 @@ import Foundation
 // My Thoughts: Not sure how this works, it's purely randomizing, what a stupid AI it is
 
 class AIRandom {
-    var runsPerMove: Int = 10
+    var runsPerMove: Int = 20
     weak var gameModel: Game2048!
     
     init(gameModel: Game2048) {
@@ -20,11 +20,12 @@ class AIRandom {
     }
     
     func nextCommand() -> MoveCommand? {
+        logDebug("Calculate next step")
         if GameModelHelper.isGameEnded(&gameModel.gameBoard) {
             return nil
         }
         
-        var bestScore: Float = 0.0
+        var bestScore: Float = -1.0
         var choosenCommand: MoveCommand!
         
         let commands = GameModelHelper.moveCommands()
