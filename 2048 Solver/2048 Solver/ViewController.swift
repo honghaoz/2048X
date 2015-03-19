@@ -19,16 +19,17 @@ class ViewController: UIViewController {
     
     var gameModel: Game2048!
     var commandQueue = [MoveCommand]()
-    var kCommandQueueSize: Int = 3
     
-    var aiCommandQueue = [MoveCommand]()
+    typealias ActionTuple = (moveActions: [MoveAction], initActions: [InitAction], score: Int)
+    var actionQueue = [ActionTuple]()
+    
+    var kUserCommandQueueSize: Int = 3
     var kAiCommandQueueSize: Int = 10000
-    // TODO:
     
     var isGameEnd: Bool = false
     
     var isAnimating: Bool = false
-    
+    var isAiRunning: Bool = false
     
     var views = [String: UIView]()
     var metrics = [String: CGFloat]()
@@ -39,7 +40,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        logLevel = .Off
+//        logLevel = .Off
         
         setupGameModel()
         setupViews()
@@ -51,7 +52,7 @@ class ViewController: UIViewController {
         
         gameModel.start()
         
-        sharedAnimationDuration = 0.0
+        sharedAnimationDuration = 0.1
         
 //        NSTimer.scheduledTimerWithTimeInterval(sharedAnimationDuration, target: self, selector: "play", userInfo: nil, repeats: true)
         
@@ -68,22 +69,10 @@ class ViewController: UIViewController {
 //        }
     }
     
-    func play() {
-        let seed = Int(arc4random_uniform(UInt32(100)))
-        if seed < 25 {
-            queueCommand(MoveCommand(direction: MoveDirection.Up))
-        } else if seed < 50 {
-            queueCommand(MoveCommand(direction: MoveDirection.Down))
-        } else if seed < 75 {
-            queueCommand(MoveCommand(direction: MoveDirection.Left))
-        } else {
-            queueCommand(MoveCommand(direction: MoveDirection.Right))
-        }
-    }
-    
     func setupGameModel() {
         gameModel = Game2048(dimension: 4, target: 0)
         gameModel.delegate = self
+        gameModel.commandQueueSize = kAiCommandQueueSize
     }
     
     func setupViews() {
@@ -210,26 +199,86 @@ extension ViewController {
     }
 }
 
+extension ViewController {
+    func runAI() {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+            if let nextCommand = self.ai.nextMoveUsingAlphaBetaPruning(self.gameModel.currentGameBoard()) {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.queueCommand(nextCommand)
+                })
+            }
+        })
+        
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+//            if let nextCommand = self.aiRandom.nextCommand() {
+//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                    self.queueCommand(nextCommand)
+//                })
+//            }
+//        })
+    }
+}
+
 // MARK: Command Queue
 extension ViewController {
     func queueCommand(command: MoveCommand) {
-        if commandQueue.count > kCommandQueueSize {
+        logDebug("Called")
+        let size = isAiRunning ? kAiCommandQueueSize : kUserCommandQueueSize
+        if actionQueue.count >= size || commandQueue.count >= size {
+            if actionQueue.count >= size {
+                logDebug("ActionQueue is Full")
+            }
+            
+            if commandQueue.count >= size {
+                logDebug("CommandQueue is Full")
+            }
             return
         }
+        logDebug("Enqueue")
         commandQueue.append(command)
         executeCommandQueue()
     }
     
     func executeCommandQueue() {
-        if isAnimating {
-            return
-        }
+        logDebug("Called")
         if commandQueue.count > 0 {
+            logDebug("Dequeue and Execute")
             let command = commandQueue[0]
             commandQueue.removeAtIndex(0)
-            isAnimating = true
-            logDebug("Next Step")
             gameModel.playWithCommand(command)
+        }
+    }
+    
+    func queueAction(action: ActionTuple) {
+        logDebug("Called")
+        let size = isAiRunning ? kAiCommandQueueSize : kUserCommandQueueSize
+        if actionQueue.count > size {
+            logDebug("ActionQueue is Full")
+            return
+        }
+        logDebug("Enqueue")
+        actionQueue.append(action)
+        executeActionQueue()
+    }
+    
+    func executeActionQueue() {
+        logDebug("Called")
+        if isAnimating {
+            logDebug("is Animating")
+            return
+        }
+        if actionQueue.count > 0 {
+            logDebug("Dequeue and Execute")
+            let actionTuple = actionQueue[0]
+            actionQueue.removeAtIndex(0)
+            
+            // Update UIs
+            self.isAnimating = true
+            scoreView.number = actionTuple.score
+            gameBoardView.updateWithMoveActions(actionTuple.moveActions, initActions: actionTuple.initActions, completion: {
+                self.isAnimating = false
+                self.executeActionQueue()
+            })
         }
     }
 }
@@ -244,11 +293,15 @@ extension ViewController: Game2048Delegate {
         logDebug("Started")
         game2048.printOutGameState()
         isGameEnd = false
+        
+        isAiRunning = true
     }
     
-    func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction]) {
+    func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction], score: Int) {
         logDebug("Updated")
-        game2048.printOutGameState()
+//        game2048.printOutGameState()
+        runAI()
+        queueAction((moveActions, initActions, score))
         
         // Manual
 //        scoreView.number = game2048.score
@@ -261,8 +314,8 @@ extension ViewController: Game2048Delegate {
 //        if !isGameEnd {
 ////            let nextCommand = ai.nextMoveUsingMonoHeuristic(gameModel.currentGameBoard())
 //            
-////            let nextCommand = ai.nextMoveUsingAlphaBetaPruning(gameModel.currentGameBoard())
-//            
+//            let nextCommand = ai.nextMoveUsingAlphaBetaPruning(gameModel.currentGameBoard())
+//
 //            let nextCommand = ai.nextMoveUsingCombinedStrategy(gameModel.currentGameBoard())
 //            
 //            scoreView.number = game2048.score
@@ -287,17 +340,17 @@ extension ViewController: Game2048Delegate {
 //        }
         
         // Random AI
-        if !isGameEnd {
-            let nextCommand = aiRandom.nextCommand()
-            scoreView.number = game2048.score
-            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
-                self.isAnimating = false
-                if let nextCommand = nextCommand {
-                    self.queueCommand(nextCommand)
-                }
-                self.executeCommandQueue()
-            })
-        }
+//        if !isGameEnd {
+//            let nextCommand = aiRandom.nextCommand()
+//            scoreView.number = game2048.score
+//            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
+//                self.isAnimating = false
+//                if let nextCommand = nextCommand {
+//                    self.queueCommand(nextCommand)
+//                }
+//                self.executeCommandQueue()
+//            })
+//        }
     }
     
     func game2048DidEnd(game2048: Game2048) {

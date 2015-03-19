@@ -11,7 +11,7 @@ import Foundation
 protocol Game2048Delegate: class {
     func game2048DidReset(game2048: Game2048)
     func game2048DidStartNewGame(game2048: Game2048)
-    func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction])
+    func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction], score: Int)
     func game2048DidEnd(game2048: Game2048)
 }
 
@@ -29,7 +29,7 @@ class Game2048: NSObject {
     
     /// A queue which will store upcomming commands, this queue if helpful for delaying too fast operation
     var commandQueue = [MoveCommand]()
-    var commandQueueSize = 5
+    var commandQueueSize = 100
     
     /// Game delegate, normally this shoudl be the controller
     weak var delegate: Game2048Delegate?
@@ -76,7 +76,7 @@ extension Game2048 {
         var resultInitActions = GameModelHelper.performInsertCommand(&gameBoard, multipleTimes: 2)
         
         delegate?.game2048DidStartNewGame(self)
-        delegate?.game2048DidUpdate(self, moveActions: [], initActions: resultInitActions)
+        delegate?.game2048DidUpdate(self, moveActions: [], initActions: resultInitActions, score: self.score)
     }
     
     func playWithCommand(command: MoveCommand) {
@@ -106,7 +106,7 @@ extension Game2048 {
         
         // Update
         self.score += increasedScores
-        delegate?.game2048DidUpdate(self, moveActions: resultMoveActions, initActions: resultInitActions)
+        delegate?.game2048DidUpdate(self, moveActions: resultMoveActions, initActions: resultInitActions, score: self.score)
         
         // Check end state
         if GameModelHelper.isGameEnded(&gameBoard) {

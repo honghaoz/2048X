@@ -12,7 +12,7 @@ import Foundation
 // My Thoughts: Not sure how this works, it's purely randomizing, what a stupid AI it is
 
 class AIRandom {
-    var runsPerMove: Int = 50
+    var runsPerMove: Int = 10
     weak var gameModel: Game2048!
     
     init(gameModel: Game2048) {
