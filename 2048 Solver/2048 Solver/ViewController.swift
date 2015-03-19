@@ -21,6 +21,10 @@ class ViewController: UIViewController {
     var commandQueue = [MoveCommand]()
     var kCommandQueueSize: Int = 3
     
+    var aiCommandQueue = [MoveCommand]()
+    var kAiCommandQueueSize: Int = 10000
+    // TODO:
+    
     var isGameEnd: Bool = false
     
     var isAnimating: Bool = false
@@ -29,21 +33,25 @@ class ViewController: UIViewController {
     var views = [String: UIView]()
     var metrics = [String: CGFloat]()
     
+    var ai: AI!
     var aiRandom: AIRandom!
     var aiGreedy: AIGreedy!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        logLevel = .Off
+        
         setupGameModel()
         setupViews()
         setupSwipeGestures()
         
+        ai = AI.CreateInstance()
         aiRandom = AIRandom(gameModel: gameModel)
         aiGreedy = AIGreedy(gameModel: gameModel)
         
         gameModel.start()
         
-        sharedAnimationDuration = 0.12
+        sharedAnimationDuration = 0.0
         
 //        NSTimer.scheduledTimerWithTimeInterval(sharedAnimationDuration, target: self, selector: "play", userInfo: nil, repeats: true)
         
@@ -249,16 +257,32 @@ extension ViewController: Game2048Delegate {
 //            self.executeCommandQueue()
 //        })
         
-        // Greedy AI
+        // AI
         if !isGameEnd {
-            let nextCommand = aiGreedy.nextState()
+//            let nextCommand = ai.nextMoveUsingMonoHeuristic(gameModel.currentGameBoard())
+            
+            let nextCommand = ai.nextMoveUsingAlphaBetaPruning(gameModel.currentGameBoard())
+            
             scoreView.number = game2048.score
             gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
                 self.isAnimating = false
-                self.queueCommand(nextCommand)
+                if let nextCommand = nextCommand {
+                    self.queueCommand(nextCommand)
+                }
                 self.executeCommandQueue()
             })
         }
+        
+        // Greedy AI
+//        if !isGameEnd {
+//            let nextCommand = aiGreedy.nextState()
+//            scoreView.number = game2048.score
+//            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
+//                self.isAnimating = false
+//                self.queueCommand(nextCommand)
+//                self.executeCommandQueue()
+//            })
+//        }
         
         // Stupid AI
         

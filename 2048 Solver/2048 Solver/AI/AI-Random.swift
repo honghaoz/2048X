@@ -95,17 +95,21 @@ class AIRandom {
 
 extension AIRandom {
     func printOutGameBoard(gameBoard: [[Int]]) {
-        println("Game Board:")
+        logDebug("Game Board:")
         let dimension = gameBoard.count
+        var buffer = ""
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
                 if gameBoard[i][j] == 0 {
-                    print("_\t")
+                    buffer += "_\t"
+//                    print("_\t")
                 } else {
-                    print("\(gameBoard[i][j])\t")
+                    buffer += "\(gameBoard[i][j])\t"
+//                    print("\(gameBoard[i][j])\t")
                 }
             }
-            println()
+            buffer += "\n"
         }
+        logDebug(buffer)
     }
 }

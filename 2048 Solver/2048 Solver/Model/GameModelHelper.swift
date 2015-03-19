@@ -9,7 +9,14 @@
 import Foundation
 
 struct GameModelHelper {
+    /**
+    Get number of empty spots in game board
+    * Game board is not mutated
     
+    :param: gameBoard gameBoard description
+    
+    :returns: number of empty spots
+    */
     static func gameBoardEmptySpotsCount(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Int {
         let dimension = gameBoard.dimension
         var result = 0
@@ -28,6 +35,7 @@ struct GameModelHelper {
     
     /**
     Return a list of tuples describing the coordinates of empty spots remaining on the gameboard.
+    * Game board is not mutated
     
     :returns: coordinates for empty spots
     */
@@ -49,6 +57,7 @@ struct GameModelHelper {
     
     /**
     Get whether game board is full
+    * Game board is not mutated
     
     :returns: true is game board is full
     */
@@ -56,37 +65,16 @@ struct GameModelHelper {
         return gameBoardEmptySpots(&gameBoard).count == 0
     }
     
+    // * Game board is not mutated
     static func isGameEnded(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
         let dimension = gameBoard.dimension
         if !gameBoardFull(&gameBoard) {
             return false
         }
         
-        // Copy a temp game board
-        var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = copyGameBoard(&gameBoard)
+        let canMove = (moveCommand(MoveCommand(direction: .Up), isValidInGameBoard: &gameBoard) || moveCommand(MoveCommand(direction: .Left), isValidInGameBoard: &gameBoard))
         
-        // Perform and check
-        var resultActions = [Action1D]()
-        for i in 0 ..< dimension {
-            // UP
-            var upMoveTilePointers = tempGameBoard.getColumn(i, reversed: true)
-            let (upMoveActions, _) = processOneDimensionTiles(&upMoveTilePointers)
-            resultActions.extend(upMoveActions)
-            
-            // Left
-            var leftMoveTilePointers = tempGameBoard.getRow(i, reversed: true)
-            let (leftMoveActions, _) = processOneDimensionTiles(&leftMoveTilePointers)
-            resultActions.extend(leftMoveActions)
-        }
-        
-        // Dealloc temp memory
-        deallocGameBoard(&tempGameBoard)
-        
-        if resultActions.count == 0 {
-            return true
-        } else {
-            return false
-        }
+        return !canMove
     }
     
     static func fullMoveCommands(shuffle: Bool = false) -> [MoveCommand] {
@@ -115,6 +103,7 @@ struct GameModelHelper {
         }
     }
     
+    // * Game board is not mutated
     static func validMoveCommandsInGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, shuffle: Bool = false) -> [MoveCommand] {
         var commands = fullMoveCommands(shuffle: false)
         for command in commands {
@@ -129,6 +118,7 @@ struct GameModelHelper {
         return commands
     }
     
+    // * Game board is not mutated
     static func randomValidMoveCommandInGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> MoveCommand? {
         let validCommands = validMoveCommandsInGameBoard(&gameBoard, shuffle: true)
         if validCommands.count > 0 {
@@ -138,6 +128,7 @@ struct GameModelHelper {
         }
     }
     
+    // * Game board is not mutated
     static func moveCommand(moveCommand: MoveCommand, inout isValidInGameBoard gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
         let dimension = gameBoard.dimension
         switch moveCommand.direction {
@@ -246,6 +237,7 @@ extension GameModelHelper {
 // MARK: Game Logic
 extension GameModelHelper {
     
+    // * Game board is MUTATED
     static func performMoveCommand(moveCommand: MoveCommand, inout onGameBoard  gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, shouldInsertNewTiles: Bool) -> Int {
         let (moveActions, increasedScore) = performMoveCommand(moveCommand, onGameBoard: &gameBoard)
         
@@ -256,11 +248,13 @@ extension GameModelHelper {
         return increasedScore
     }
     
+    // * Game board is MUTATED
     static func performInsertCommand(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> InitAction {
         let (initNumber, insertedCoordinate) = insertTileAtRandomLocation(&gameBoard)
         return InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: initNumber)
     }
     
+    // * Game board is MUTATED
     static func performInsertCommand(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, multipleTimes times: Int) -> [InitAction] {
         precondition(times > 0, "Times must be greater than 0")
         var resultInitActions = [InitAction]()
@@ -272,6 +266,7 @@ extension GameModelHelper {
         return resultInitActions
     }
     
+    // * Game board is MUTATED
     static func performMoveCommand(moveCommand: MoveCommand, inout onGameBoard gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> ([MoveAction], Int) {
         let dimension = gameBoard.dimension
         var resultMoveActions = [MoveAction]()
@@ -448,6 +443,7 @@ extension GameModelHelper {
         return resultActions
     }
     
+    // * Tile array is not mutated
     static func oneDimensionTilesCanMove(inout tiles: [UnsafeMutablePointer<Tile>]) -> Bool {
         let count = tiles.count
         for i in stride(from: count - 1, to: -1, by: -1) {
@@ -555,19 +551,21 @@ extension GameModelHelper {
 // MARK: Debug Helper
 extension GameModelHelper {
     static func printOutGameBoard(gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) {
-        println("Game Board:")
+        logDebug("Game Board:")
         let dimension = gameBoard.dimension
+        var buffer = ""
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
                 switch gameBoard[i, j].memory {
                 case .Empty:
-                    print("_\t")
+                    buffer += "_\t"
                 case let .Number(num):
-                    print("\(num)\t")
+                    buffer += "\(num)\t"
                 }
             }
-            println()
+            buffer += "\n"
         }
+        logDebug(buffer)
     }
     
     static func printOutTilePointers(tilePointers: [UnsafeMutablePointer<Tile>]) {
