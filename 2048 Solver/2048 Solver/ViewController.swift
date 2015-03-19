@@ -21,12 +21,16 @@ class ViewController: UIViewController {
     var commandQueue = [MoveCommand]()
     var kCommandQueueSize: Int = 3
     
+    var isGameEnd: Bool = false
+    
     var isAnimating: Bool = false
+    
     
     var views = [String: UIView]()
     var metrics = [String: CGFloat]()
     
     var aiRandom: AIRandom!
+    var aiGreedy: AIGreedy!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +39,7 @@ class ViewController: UIViewController {
         setupSwipeGestures()
         
         aiRandom = AIRandom(gameModel: gameModel)
-        
+        aiGreedy = AIGreedy(gameModel: gameModel)
         
         gameModel.start()
         
@@ -231,17 +235,32 @@ extension ViewController: Game2048Delegate {
     func game2048DidStartNewGame(game2048: Game2048) {
         logDebug("Started")
         game2048.printOutGameState()
+        isGameEnd = false
     }
     
     func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction]) {
         logDebug("Updated")
         game2048.printOutGameState()
         
-        scoreView.number = game2048.score
-        gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
-            self.isAnimating = false
-            self.executeCommandQueue()
-        })
+        // Manual
+//        scoreView.number = game2048.score
+//        gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
+//            self.isAnimating = false
+//            self.executeCommandQueue()
+//        })
+        
+        // Greedy AI
+        if !isGameEnd {
+            let nextCommand = aiGreedy.nextState()
+            scoreView.number = game2048.score
+            gameBoardView.updateWithMoveActions(moveActions, initActions: initActions, completion: {
+                self.isAnimating = false
+                self.queueCommand(nextCommand)
+                self.executeCommandQueue()
+            })
+        }
+        
+        // Stupid AI
         
 //        let nextCommand = self.aiRandom.nextStepWithCurrentState(game2048.currentGameBoard())
 //        if nextCommand == nil {
@@ -264,6 +283,7 @@ extension ViewController: Game2048Delegate {
     func game2048DidEnd(game2048: Game2048) {
         game2048.printOutGameState()
         logDebug("Ended")
+        isGameEnd = true
     }
 }
 

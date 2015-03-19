@@ -10,6 +10,22 @@ import Foundation
 
 struct GameModelHelper {
     
+    static func gameBoardEmptySpotsCount(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Int {
+        let dimension = gameBoard.dimension
+        var result = 0
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                switch gameBoard[i, j].memory {
+                case .Empty:
+                    result += 1
+                case .Number:
+                    break
+                }
+            }
+        }
+        return result
+    }
+    
     /**
     Return a list of tuples describing the coordinates of empty spots remaining on the gameboard.
     
@@ -424,5 +440,39 @@ extension GameModelHelper {
             }
         }
         println()
+    }
+    
+    static func printOutCommand(command: MoveCommand) {
+        switch command.direction {
+        case .Up:
+            logDebug("Up")
+        case .Down:
+            logDebug("Down")
+        case .Left:
+            logDebug("Left")
+        case .Right:
+            logDebug("Right")
+        }
+    }
+    
+    static func printOutMoveActions(actions: [MoveAction]) {
+        for action in actions {
+            println("From: \(action.fromCoordinates) To:\(action.toCoordinate)")
+        }
+    }
+}
+
+extension GameModelHelper {
+    static func fullCommands(shuffle: Bool = false) -> [MoveCommand] {
+        var commands = [MoveCommand]()
+        commands.append(MoveCommand(direction: MoveDirection.Up))
+        commands.append(MoveCommand(direction: MoveDirection.Left))
+        commands.append(MoveCommand(direction: MoveDirection.Down))
+        commands.append(MoveCommand(direction: MoveDirection.Right))
+        
+        if shuffle {
+            commands.shuffle()
+        }
+        return commands
     }
 }

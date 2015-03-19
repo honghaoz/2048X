@@ -22,22 +22,11 @@ var is4InchScreen: Bool { return screenHeight ~= 568.0 }
 var isIphone6: Bool { return screenHeight ~= 667.0 }
 var isIphone6Plus: Bool { return screenHeight ~= 736.0 }
 
-
-func printOutCommand(command: MoveCommand) {
-    switch command.direction {
-    case .Up:
-        logDebug("Up")
-    case .Down:
-        logDebug("Down")
-    case .Left:
-        logDebug("Left")
-    case .Right:
-        logDebug("Right")
-    }
-}
-
-func printOutMoveActions(actions: [MoveAction]) {
-    for action in actions {
-        println("From: \(action.fromCoordinates) To:\(action.toCoordinate)")
+extension Array {
+    mutating func shuffle() {
+        for i in 0..<(count - 1) {
+            let j = Int(arc4random_uniform(UInt32(count - i))) + i
+            swap(&self[i], &self[j])
+        }
     }
 }
