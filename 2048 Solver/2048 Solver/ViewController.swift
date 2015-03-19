@@ -24,7 +24,7 @@ class ViewController: UIViewController {
     var actionQueue = [ActionTuple]()
     
     var kUserCommandQueueSize: Int = 3
-    var kAiCommandQueueSize: Int = 10000
+    var kAiCommandQueueSize: Int = 1000
     
     var isGameEnd: Bool = false
     
@@ -224,6 +224,7 @@ extension ViewController {
     func queueCommand(command: MoveCommand) {
         logDebug("Called")
         let size = isAiRunning ? kAiCommandQueueSize : kUserCommandQueueSize
+        logDebug("CommandQueue size: \(commandQueue.count), ActionQueue size: \(actionQueue.count)")
         if actionQueue.count >= size || commandQueue.count >= size {
             if actionQueue.count >= size {
                 logDebug("ActionQueue is Full")
