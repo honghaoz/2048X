@@ -609,7 +609,7 @@ class AI {
                 nextPos = (prevPos.row + offset.rowOffset, prevPos.col + offset.colOffset)
         }
         
-        return nextPos.row == size || nextPos.col == size ? 0 : gameboard[nextPos.row][nextPos.col]
+        return nextPos.row == size || nextPos.row == -1 || nextPos.col == size || nextPos.col == -1 ? 0 : gameboard[nextPos.row][nextPos.col]
     }
 }
 
