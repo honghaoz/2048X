@@ -555,7 +555,7 @@ extension GameModelHelper {
 // MARK: Debug Helper
 extension GameModelHelper {
     static func printOutGameBoard(gameBoard: [[Int]]) {
-        logDebug("Game Board:")
+//        logDebug("Game Board:")
         let dimension = gameBoard.count
         var buffer = "\n"
         for i in 0 ..< dimension {
@@ -572,7 +572,7 @@ extension GameModelHelper {
     }
     
     static func printOutGameBoard(gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) {
-        logDebug("Game Board:")
+//        logDebug("Game Board:")
         let dimension = gameBoard.dimension
         var buffer = "\n"
         for i in 0 ..< dimension {
