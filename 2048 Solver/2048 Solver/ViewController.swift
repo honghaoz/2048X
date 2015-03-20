@@ -24,7 +24,9 @@ class ViewController: UIViewController {
     var actionQueue = [ActionTuple]()
     
     var kUserCommandQueueSize: Int = 3
-    var kAiCommandQueueSize: Int = 10
+    var kAiCommandQueueSize: Int = 20
+    
+    let kMySerialQueue = dispatch_queue_create("com.honghaoz.2048", DISPATCH_QUEUE_SERIAL)
     
     var isGameEnd: Bool = false
     
@@ -50,9 +52,11 @@ class ViewController: UIViewController {
         aiRandom = AIRandom(gameModel: gameModel)
         aiGreedy = AIGreedy(gameModel: gameModel)
         
+//        dispatch_set_target_queue(kMySerialQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0))
+        
         gameModel.start()
         
-        sharedAnimationDuration = 0.12
+        sharedAnimationDuration = 0.13
         
 //        NSTimer.scheduledTimerWithTimeInterval(sharedAnimationDuration, target: self, selector: "play", userInfo: nil, repeats: true)
         
@@ -201,8 +205,10 @@ extension ViewController {
 
 extension ViewController {
     func runAI() {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+        logDebug()
+        dispatch_async(kMySerialQueue, { () -> Void in
 //            if let nextCommand = self.ai.nextMoveUsingAlphaBetaPruning(self.gameModel.currentGameBoard()) {
+            GameModelHelper.printOutGameBoard(self.gameModel.gameBoard)
             if let nextCommand = self.ai.nextMoveUsingMonoHeuristic(self.gameModel.currentGameBoard()) {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.queueCommand(nextCommand)
@@ -210,7 +216,7 @@ extension ViewController {
             }
         })
         
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+//        dispatch_async(kMySerialQueue, { () -> Void in
 //            if let nextCommand = self.aiRandom.nextCommand() {
 //                dispatch_async(dispatch_get_main_queue(), { () -> Void in
 //                    self.queueCommand(nextCommand)
@@ -254,7 +260,7 @@ extension ViewController {
     func queueAction(action: ActionTuple) {
         logDebug("Called")
         let size = isAiRunning ? kAiCommandQueueSize : kUserCommandQueueSize
-        if actionQueue.count > size {
+        if actionQueue.count >= size {
             logDebug("ActionQueue is Full")
             return
         }
@@ -276,6 +282,7 @@ extension ViewController {
             
             // If before dequeuing, actionQueue is full, command queue is empty, reactivate AI
             if isAiRunning && (actionQueue.count == kAiCommandQueueSize - 1) && (commandQueue.count == 0) {
+                logDebug("Action Queue is available, resume AI")
                 runAI()
             }
             
@@ -298,7 +305,7 @@ extension ViewController: Game2048Delegate {
     
     func game2048DidStartNewGame(game2048: Game2048) {
         logDebug("Started")
-        game2048.printOutGameState()
+//        game2048.printOutGameState()
         isGameEnd = false
         
         isAiRunning = true
@@ -306,9 +313,13 @@ extension ViewController: Game2048Delegate {
     
     func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction], score: Int) {
         logDebug("Updated")
-        game2048.printOutGameState()
+//        game2048.printOutGameState()
+        
         runAI()
-        queueAction((moveActions, initActions, score))
+        if moveActions.count > 0 || initActions.count > 0 {
+            queueAction((moveActions, initActions, score))
+        }
+        
     }
     
     func game2048DidEnd(game2048: Game2048) {
