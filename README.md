@@ -7,7 +7,7 @@
 * Report
 
 # Participant
-* Honghao Zhang
+* [Honghao Zhang](http://honghaoz.com)
 * Yong Xiao
 * Yansong Li
 
