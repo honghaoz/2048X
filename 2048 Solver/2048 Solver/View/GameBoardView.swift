@@ -182,9 +182,6 @@ extension GameBoardView {
             return
         }
         
-        // TODO: Use logger
-//        gameModel.printOutMoveActions(moveActions)
-        
         for (index, action) in enumerate(moveActions) {
             if action.fromCoordinates.count == 1 {
                 // Move Action
