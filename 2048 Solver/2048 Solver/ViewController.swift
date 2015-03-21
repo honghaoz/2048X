@@ -48,30 +48,10 @@ class ViewController: UIViewController {
         setupGameModel()
         setupViews()
         setupSwipeGestures()
-        
-        ai = AI.CreateInstance()
-        aiRandom = AIRandom(gameModel: gameModel)
-        aiGreedy = AIGreedy(gameModel: gameModel)
-        
-        dispatch_set_target_queue(kMySerialQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0))
-        
+        setupAI()
+        otherSetups()
+
         gameModel.start()
-        
-        sharedAnimationDuration = 0.1
-        
-//        NSTimer.scheduledTimerWithTimeInterval(sharedAnimationDuration, target: self, selector: "play", userInfo: nil, repeats: true)
-        
-        let tap = UITapGestureRecognizer(target: self, action: "tap")
-        gameBoardView.addGestureRecognizer(tap)
-    }
-    
-    func tap() {
-//        let nextCommand = self.aiRandom.nextStepWithCurrentState(gameModel.currentGameBoard())
-//        if nextCommand == nil {
-//            logDebug("next: nil")
-//        } else {
-//            queueCommand(nextCommand!)
-//        }
     }
     
     func setupGameModel() {
@@ -94,14 +74,17 @@ class ViewController: UIViewController {
         views["gameBoardView"] = gameBoardView
         view.addSubview(gameBoardView)
         
+        // GameBoard Size
         let gameBoardWidth = screenWidth * 0.9
+        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 0.0, constant: gameBoardWidth))
+        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: .Width, relatedBy: .Equal, toItem: gameBoardView, attribute: .Height, multiplier: 1.0, constant: 0.0))
         
-        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 0.0, constant: gameBoardWidth))
-        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.Height, multiplier: 1.0, constant: 0.0))
-        // FIXME: On iPhone 4s, layout issues
-        
-        view.addConstraint(NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: gameBoardView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0))
+        // GameBoard center horizontally
+        view.addConstraint(NSLayoutConstraint(item: view, attribute: .CenterX, relatedBy: .Equal, toItem: gameBoardView, attribute: .CenterX, multiplier: 1.0, constant: 0.0))
+        let cCenterY = NSLayoutConstraint(item: view, attribute: .CenterY, relatedBy: .Equal, toItem: gameBoardView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
+        // 3.5 inch Screen has a smaller height, this will be broken
+        cCenterY.priority = 750
+        view.addConstraint(cCenterY)
         
         // ScoreView
         scoreView = ScoreView()
@@ -137,7 +120,8 @@ class ViewController: UIViewController {
 //        targetView.numberLabel.text = "∞"
         
         metrics["targetViewHeight"] = gameBoardWidth / 3.0
-        targetView.addConstraint(NSLayoutConstraint(item: targetView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: targetView, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0.0))
+        // TargetView is square
+        targetView.addConstraint(NSLayoutConstraint(item: targetView, attribute: .Height, relatedBy: .Equal, toItem: targetView, attribute: .Width, multiplier: 1.0, constant: 0.0))
         
         // H
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[scoreView]-padding-[targetView]", options: NSLayoutFormatOptions.AlignAllTop, metrics: metrics, views: views))
@@ -147,6 +131,7 @@ class ViewController: UIViewController {
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[scoreView]-padding-[bestScoreView(==scoreView)]-padding-[gameBoardView]", options: NSLayoutFormatOptions.AlignAllLeading, metrics: metrics, views: views))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[targetView(targetViewHeight)]-padding-[gameBoardView]", options: NSLayoutFormatOptions.AlignAllTrailing, metrics: metrics, views: views))
         
+        // Target view top spacing >= 22
         view.addConstraint(NSLayoutConstraint(item: targetView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 22))
         
         // Must call this before start game
@@ -174,11 +159,22 @@ class ViewController: UIViewController {
         rightSwipe.direction = UISwipeGestureRecognizerDirection.Right
         gameBoardView.addGestureRecognizer(rightSwipe)
     }
+    
+    func setupAI() {
+        ai = AI.CreateInstance()
+        aiRandom = AIRandom(gameModel: gameModel)
+        aiGreedy = AIGreedy(gameModel: gameModel)
+    }
+    
+    func otherSetups() {
+        // Let serial queue has a higher priority
+        dispatch_set_target_queue(kMySerialQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0))
+        sharedAnimationDuration = 0.1
+    }
 }
 
 // MARK: Swipe Gestures
 extension ViewController {
-    // Commands
     @objc(up:)
     func upCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
@@ -206,6 +202,7 @@ extension ViewController {
 
 extension ViewController {
     func runAI() {
+        // If dispatched commands + commandToBeDispatched count is greater than size, don't dispacth, otherwise, queue will be overflow
         if ((dispatchedCommandCount + commandQueue.count) >= kAiCommandQueueSize) || ((dispatchedCommandCount + actionQueue.count) >= kAiCommandQueueSize) {
             logDebug("Full, Stop AI")
             return
@@ -215,8 +212,8 @@ extension ViewController {
         logDebug("dispatchedCount: \(dispatchedCommandCount)")
         logDebug("Calculating")
         dispatch_async(kMySerialQueue, { () -> Void in
+//            if let nextCommand = self.aiRandom.nextCommand() {
 //            if let nextCommand = self.ai.nextMoveUsingAlphaBetaPruning(self.gameModel.currentGameBoard()) {
-//            GameModelHelper.printOutGameBoard(self.gameModel.gameBoard)
             if let nextCommand = self.ai.nextMoveUsingMonoHeuristic(self.gameModel.currentGameBoard()) {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.dispatchedCommandCount--
@@ -224,29 +221,6 @@ extension ViewController {
                 })
             }
         })
-        
-//            dispatch_async(kMySerialQueue, { () -> Void in
-//                if let nextCommand = self.aiRandom.nextCommand() {
-//                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                        self.queueCommand(nextCommand)
-//                    })
-//                }
-//            })
-    }
-    
-    func queuesAreFull() -> Bool {
-        let size = isAiRunning ? kAiCommandQueueSize : kUserCommandQueueSize
-        return (actionQueue.count >= size || commandQueue.count >= size)
-    }
-    
-    func commandQueueIsFull() -> Bool {
-        let size = isAiRunning ? kAiCommandQueueSize : kUserCommandQueueSize
-        return commandQueue.count >= size
-    }
-    
-    func actionQueueIsFull() -> Bool {
-        let size = isAiRunning ? kAiCommandQueueSize : kUserCommandQueueSize
-        return actionQueue.count >= size
     }
 }
 
@@ -275,11 +249,6 @@ extension ViewController {
     
     func queueAction(action: ActionTuple) {
         logDebug("Called")
-//        let size = isAiRunning ? kAiCommandQueueSize : kUserCommandQueueSize
-//        if actionQueue.count >= size {
-//            logDebug("ActionQueue is Full")
-//            return
-//        }
         if actionQueueIsFull() {
             logDebug("ActionQueue is Full")
             assertionFailure("Should never happen")
@@ -315,6 +284,22 @@ extension ViewController {
             })
         }
     }
+    
+    // MARK: Queue Helpers
+    func queuesAreFull() -> Bool {
+        let size = isAiRunning ? kAiCommandQueueSize : kUserCommandQueueSize
+        return (actionQueue.count >= size || commandQueue.count >= size)
+    }
+    
+    func commandQueueIsFull() -> Bool {
+        let size = isAiRunning ? kAiCommandQueueSize : kUserCommandQueueSize
+        return commandQueue.count >= size
+    }
+    
+    func actionQueueIsFull() -> Bool {
+        let size = isAiRunning ? kAiCommandQueueSize : kUserCommandQueueSize
+        return actionQueue.count >= size
+    }
 }
 
 // MARK: Game 2048 Delegate
@@ -327,7 +312,6 @@ extension ViewController: Game2048Delegate {
         logDebug("Started")
 //        game2048.printOutGameState()
         isGameEnd = false
-        
         isAiRunning = true
     }
     
