@@ -7,9 +7,9 @@
 * Report
 
 # Participant
-* [Honghao Zhang](http://honghaoz.com)
-* Yong Xiao
-* Yansong Li
+* [Honghao Zhang](https://github.com/honghaoz)
+* [Yong Xiao](https://github.com/LostZebra)
+* [Yansong Li](https://github.com/jindulys)
 
 # References
 * [What is the optimal algorithm for the game, 2048?](http://stackoverflow.com/questions/22342854/what-is-the-optimal-algorithm-for-the-game-2048)
