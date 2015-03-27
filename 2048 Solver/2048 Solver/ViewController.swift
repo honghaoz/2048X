@@ -43,7 +43,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        logLevel = .Off
+        logLevel = .Info
         
         setupGameModel()
         setupViews()
@@ -242,6 +242,7 @@ extension ViewController {
         if commandQueue.count > 0 {
             logDebug("Dequeue and Execute")
             let command = commandQueue[0]
+            GameModelHelper.printOutCommand(command, level: .Info)
             commandQueue.removeAtIndex(0)
             gameModel.playWithCommand(command)
         }

@@ -602,16 +602,16 @@ extension GameModelHelper {
         println()
     }
     
-    static func printOutCommand(command: MoveCommand) {
+    static func printOutCommand(command: MoveCommand, level: ZHLogLevel = .Debug) {
         switch command.direction {
         case .Up:
-            logDebug("Up")
+            logWithLevel(level, "Up")
         case .Down:
-            logDebug("Down")
+            logWithLevel(level, "Down")
         case .Left:
-            logDebug("Left")
+            logWithLevel(level, "Left")
         case .Right:
-            logDebug("Right")
+            logWithLevel(level, "Right")
         }
     }
     
