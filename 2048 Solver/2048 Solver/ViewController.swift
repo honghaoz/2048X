@@ -19,15 +19,13 @@ class ViewController: UIViewController {
     
     var gameModel: Game2048!
     var commandQueue = [MoveCommand]()
-    var dispatchedCommandCount: Int = 0
+    var commandCalculationQueue = NSOperationQueue()
     
     typealias ActionTuple = (moveActions: [MoveAction], initActions: [InitAction], score: Int)
     var actionQueue = [ActionTuple]()
     
     var kUserCommandQueueSize: Int = 3
     var kAiCommandQueueSize: Int = 20
-    
-    let kMySerialQueue = dispatch_queue_create("com.honghaoz.2048", DISPATCH_QUEUE_SERIAL)
     
     var isGameEnd: Bool = false
     
@@ -43,7 +41,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        logLevel = .Info
+//        logLevel = .Info
+        logLevel = .Debug
         
         setupGameModel()
         setupViews()
@@ -167,9 +166,9 @@ class ViewController: UIViewController {
     }
     
     func otherSetups() {
-        // Let serial queue has a higher priority
-        dispatch_set_target_queue(kMySerialQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0))
         sharedAnimationDuration = 0.1
+        // Make sure operation queue is serial
+        commandCalculationQueue.maxConcurrentOperationCount = 1
     }
 }
 
@@ -203,34 +202,35 @@ extension ViewController {
 extension ViewController {
     func runAI() {
         // If dispatched commands + commandToBeDispatched count is greater than size, don't dispacth, otherwise, queue will be overflow
-        if ((dispatchedCommandCount + commandQueue.count) >= kAiCommandQueueSize) || ((dispatchedCommandCount + actionQueue.count) >= kAiCommandQueueSize) {
+        if (
+            (commandCalculationQueue.operationCount + commandQueue.count) >= kAiCommandQueueSize)
+            ||
+            ((commandCalculationQueue.operationCount + actionQueue.count) >= kAiCommandQueueSize)
+        {
             logDebug("Full, Stop AI")
             return
         }
-        
-        dispatchedCommandCount++
-        logDebug("dispatchedCount: \(dispatchedCommandCount)")
-        logDebug("Calculating")
-        dispatch_async(kMySerialQueue, { () -> Void in
+
+        logDebug("Add new command calculation")
+        commandCalculationQueue.addOperationWithBlock { () -> Void in
+            if let nextCommand = self.ai.nextMoveUsingAlphaBetaPruning(self.gameModel.currentGameBoard()) {
 //            if let nextCommand = self.aiRandom.nextCommand() {
-//            if let nextCommand = self.ai.nextMoveUsingAlphaBetaPruning(self.gameModel.currentGameBoard()) {
-            if let nextCommand = self.ai.nextMoveUsingMonoHeuristic(self.gameModel.currentGameBoard()) {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.dispatchedCommandCount--
+//            if let nextCommand = self.ai.nextMoveUsingMonoHeuristic(self.gameModel.currentGameBoard()) {
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                     self.queueCommand(nextCommand)
                 })
             }
-        })
+        }
     }
 }
 
 // MARK: Command Queue
 extension ViewController {
     func queueCommand(command: MoveCommand) {
-        logDebug("Called")
-        logDebug("CommandQueue size: \(commandQueue.count), ActionQueue size: \(actionQueue.count)")
+//        logDebug("CommandQueue size: \(commandQueue.count), ActionQueue size: \(actionQueue.count)")
         if queuesAreFull() {
-            assertionFailure("Should never happen")
+            logError("Queue are Full")
+            assertionFailure("Queue are Full: should never happen")
         }
         logDebug("Enqueue")
         commandQueue.append(command)
@@ -238,21 +238,21 @@ extension ViewController {
     }
     
     func executeCommandQueue() {
-        logDebug("Called")
         if commandQueue.count > 0 {
             logDebug("Dequeue and Execute")
             let command = commandQueue[0]
             GameModelHelper.printOutCommand(command, level: .Info)
             commandQueue.removeAtIndex(0)
             gameModel.playWithCommand(command)
+        } else {
+            logDebug("Queue is empty")
         }
     }
     
     func queueAction(action: ActionTuple) {
-        logDebug("Called")
         if actionQueueIsFull() {
-            logDebug("ActionQueue is Full")
-            assertionFailure("Should never happen")
+            logError("Queue is Full")
+            assertionFailure("Queue is Full: should never happen")
         }
         logDebug("Enqueue")
         actionQueue.append(action)
@@ -260,7 +260,6 @@ extension ViewController {
     }
     
     func executeActionQueue() {
-        logDebug("Called")
         if isAnimating {
             logDebug("is Animating")
             return
@@ -271,7 +270,7 @@ extension ViewController {
             actionQueue.removeAtIndex(0)
             
             // If before dequeuing, actionQueue is full, command queue is empty, reactivate AI
-            if isAiRunning && (actionQueue.count == kAiCommandQueueSize - 1) && (dispatchedCommandCount +  commandQueue.count == 0) {
+            if isAiRunning && (actionQueue.count == kAiCommandQueueSize - 1) && (commandCalculationQueue.operationCount + commandQueue.count == 0) {
                 logDebug("Action Queue is available, resume AI")
                 runAI()
             }
@@ -283,6 +282,8 @@ extension ViewController {
                 self.isAnimating = false
                 self.executeActionQueue()
             })
+        } else {
+            logDebug("Queue is empty")
         }
     }
     
