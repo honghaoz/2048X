@@ -25,16 +25,25 @@ class ViewController: UIViewController {
     var commandQueue = [MoveCommand]()
     var commandCalculationQueue = NSOperationQueue()
     
-    typealias ActionTuple = (moveActions: [MoveAction], initActions: [InitAction], score: Int)
+    typealias ActionTuple = (moveActions: [MoveAction], initActions: [InitAction], removeActions: [RemoveAction], score: Int)
     var actionQueue = [ActionTuple]()
     
-    var kUserCommandQueueSize: Int = 3
+    var kUserCommandQueueSize: Int = 2
     var kAiCommandQueueSize: Int = 20
     
-    var isGameEnd: Bool = false
+    var isGameEnd: Bool = true
     
     var isAnimating: Bool = false
-    var isAiRunning: Bool = false
+    var isAiRunning: Bool = false {
+        didSet {
+            if runAIButton != nil {
+                runAIButton.title = isAiRunning ? "Stop AI" : "Run AI"
+            }
+            if isAiRunning {
+                runAIforNextStep()
+            }
+        }
+    }
     
     var views = [String: UIView]()
     var metrics = [String: CGFloat]()
@@ -217,25 +226,33 @@ extension ViewController {
     @objc(up:)
     func upCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
-        queueCommand(MoveCommand(direction: MoveDirection.Up))
+        if !isGameEnd {
+            queueCommand(MoveCommand(direction: MoveDirection.Up))
+        }
     }
     
     @objc(down:)
     func downCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
-        queueCommand(MoveCommand(direction: MoveDirection.Down))
+        if !isGameEnd {
+            queueCommand(MoveCommand(direction: MoveDirection.Down))
+        }
     }
     
     @objc(left:)
     func leftCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
-        queueCommand(MoveCommand(direction: MoveDirection.Left))
+        if !isGameEnd {
+            queueCommand(MoveCommand(direction: MoveDirection.Left))
+        }
     }
     
     @objc(right:)
     func rightCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
-        queueCommand(MoveCommand(direction: MoveDirection.Right))
+        if !isGameEnd {
+            queueCommand(MoveCommand(direction: MoveDirection.Right))
+        }
     }
 }
 
@@ -249,7 +266,9 @@ extension ViewController {
     
     func runAIButtonTapped(sender: UIButton) {
         logDebug()
-        isAiRunning = true
+        if !isGameEnd {
+            isAiRunning = !isAiRunning
+        }
     }
     
     func runAIButtonLongPressed(sender: UILongPressGestureRecognizer) {
@@ -268,7 +287,10 @@ extension ViewController {
 }
 
 extension ViewController {
-    func runAI() {
+    func runAIforNextStep() {
+        if isGameEnd {
+            return
+        }
         // If dispatched commands + commandToBeDispatched count is greater than size, don't dispacth, otherwise, queue will be overflow
         if (
             (commandCalculationQueue.operationCount + commandQueue.count) >= kAiCommandQueueSize)
@@ -318,11 +340,21 @@ extension ViewController {
     }
     
     func queueAction(action: ActionTuple) {
+        logDebug("CommandQueue size: \(commandQueue.count), ActionQueue size: \(actionQueue.count)")
         if actionQueueIsFull() {
             logError("Queue is Full")
             assertionFailure("Queue is Full: should never happen")
         }
         logDebug("Enqueue")
+//        logDebug("AAAA: ")
+//        if action.removeActions.count > 0 {
+//            logDebug("AAAA: Remove action")
+//        } else if action.moveActions.count > 0 {
+//            logDebug("AAAA: Move Action")
+//        } else {
+//            logDebug("AAAA: Init Action")
+//        }
+        
         actionQueue.append(action)
         executeActionQueue()
     }
@@ -340,16 +372,28 @@ extension ViewController {
             // If before dequeuing, actionQueue is full, command queue is empty, reactivate AI
             if isAiRunning && (actionQueue.count == kAiCommandQueueSize - 1) && (commandCalculationQueue.operationCount + commandQueue.count == 0) {
                 logDebug("Action Queue is available, resume AI")
-                runAI()
+                runAIforNextStep()
             }
             
             // Update UIs
             self.isAnimating = true
             scoreView.number = actionTuple.score
-            gameBoardView.updateWithMoveActions(actionTuple.moveActions, initActions: actionTuple.initActions, completion: {
-                self.isAnimating = false
-                self.executeActionQueue()
-            })
+            // If this is remove action, just clear board
+            if actionTuple.removeActions.count > 0 {
+                logDebug("Clear board")
+                gameBoardView.removeWithRemoveActions(actionTuple.removeActions, completion: { () -> () in
+                    logDebug("animation ends")
+                    self.isAnimating = false
+                    self.executeActionQueue()
+                })
+            } else {
+                logDebug("Init or Move board")
+                gameBoardView.updateWithMoveActions(actionTuple.moveActions, initActions: actionTuple.initActions, completion: {
+                    logDebug("animation ends")
+                    self.isAnimating = false
+                    self.executeActionQueue()
+                })
+            }
         } else {
             logDebug("Queue is empty")
         }
@@ -374,26 +418,32 @@ extension ViewController {
 
 // MARK: Game 2048 Delegate
 extension ViewController: Game2048Delegate {
-    func game2048DidReset(game2048: Game2048) {
+    func game2048DidReset(game2048: Game2048, removeActions: [RemoveAction]) {
         logDebug("Reseted")
-        gameBoardView.cleanBoardView(completion: nil)
+        isGameEnd = true
+        isAiRunning = false
+        if removeActions.count > 0 {
+            queueAction(([], [], removeActions, 0))
+        }
     }
     
     func game2048DidStartNewGame(game2048: Game2048) {
         logDebug("Started")
-//        game2048.printOutGameState()
+        game2048.printOutGameState()
         isGameEnd = false
     }
     
     func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction], score: Int) {
         logDebug("Updated")
-//        game2048.printOutGameState()
+        game2048.printOutGameState()
         
         if moveActions.count > 0 || initActions.count > 0 {
-            queueAction((moveActions, initActions, score))
+            queueAction((moveActions, initActions, [], score))
         }
         
-//        runAI()
+        if isAiRunning {
+            runAIforNextStep()
+        }
     }
     
     func game2048DidEnd(game2048: Game2048) {

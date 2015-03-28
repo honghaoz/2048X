@@ -122,24 +122,30 @@ class GameBoardView: UIView {
 // MARK: Update View Actions
 extension GameBoardView {
     
-    func cleanBoardView(completion: (() -> ())? = nil) {
-        for i in 0 ..< dimension {
-            for j in 0 ..< dimension {
-                if let tile = forgroundTiles[i][j].0 {
-                    // Animation
-                    UIView.animateWithDuration(sharedAnimationDuration, animations: { () -> Void in
-                        tile.alpha = 0.0
-                        }, completion: { (finished) -> Void in
-                            tile.removeFromSuperview()
-                            self.forgroundTiles[i][j] = (nil, nil)
-                            
-                            // If this is the very last actions, call completion block
-                            if i == self.dimension - 1 && j == self.dimension - 1 {
-                                completion?()
-                            }
-                    })
-                }
-            }
+    func removeWithRemoveActions(removeActions: [RemoveAction], completion: (() -> ())? = nil) {
+        let count = removeActions.count
+        for (index, action) in enumerate(removeActions) {
+            let i = action.removeCoordinate.0
+            let j = action.removeCoordinate.1
+            
+            logDebug("Removed: (\(i), \(j))")
+            let tile = forgroundTiles[i][j].0!
+            let underneathTile = forgroundTiles[i][j].1
+            // Animation
+            UIView.animateWithDuration(sharedAnimationDuration * 2,
+                animations: { () -> Void in
+                    tile.alpha = 0.0
+                    underneathTile?.alpha = 0.0
+                }, completion: { (finished) -> Void in
+                    tile.removeFromSuperview()
+                    underneathTile?.removeFromSuperview()
+                    self.forgroundTiles[i][j] = (nil, nil)
+                    
+                    // If this is the very last actions, call completion block
+                    if index == count - 1 {
+                        completion?()
+                    }
+            })
         }
     }
     
@@ -183,11 +189,17 @@ extension GameBoardView {
             
             // Blink pattern: 0 -> 1
             tile.alpha = 0.0
-            UIView.animateWithDuration(sharedAnimationDuration * 2, animations: { () -> Void in
-                tile.alpha = 1.0
-                }, completion: nil)
+            UIView.animateWithDuration(sharedAnimationDuration * 2,
+                animations: { () -> Void in
+                    tile.alpha = 1.0
+                },
+                completion: { (finished) -> Void in
+                    // If this is the very last actions, call completion block
+                    if index == count - 1 {
+                        completion?()
+                    }
+            })
         }
-        completion?()
     }
     
     /**
@@ -219,9 +231,10 @@ extension GameBoardView {
                 forgroundTiles[from.0][from.1] = (nil, nil)
                 
                 // Animation
-                UIView.animateWithDuration(sharedAnimationDuration, animations: { () -> Void in
-                    fromView.frame = self.tileFrameForCoordinate(to)
-                    fromUnderneath?.frame = fromView.frame
+                UIView.animateWithDuration(sharedAnimationDuration,
+                    animations: { () -> Void in
+                        fromView.frame = self.tileFrameForCoordinate(to)
+                        fromUnderneath?.frame = fromView.frame
                     }, completion: { (finished) -> Void in
                         // If this is the very last actions, call completion block
                         if index == count - 1 {
@@ -245,8 +258,9 @@ extension GameBoardView {
                 // Put fromTileView underneath toTileView
                 forgroundTiles[to.0][to.1] = (toTileView, fromTileView)
                 
-                UIView.animateWithDuration(sharedAnimationDuration, animations: { () -> Void in
-                    fromTileView.frame = self.tileFrameForCoordinate(to)
+                UIView.animateWithDuration(sharedAnimationDuration,
+                    animations: { () -> Void in
+                        fromTileView.frame = self.tileFrameForCoordinate(to)
                     }, completion: { (finished) -> Void in
                         fromTileView.removeFromSuperview()
                         

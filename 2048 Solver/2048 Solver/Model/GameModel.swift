@@ -9,7 +9,7 @@
 import Foundation
 
 protocol Game2048Delegate: class {
-    func game2048DidReset(game2048: Game2048)
+    func game2048DidReset(game2048: Game2048, removeActions: [RemoveAction])
     func game2048DidStartNewGame(game2048: Game2048)
     func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction], score: Int)
     func game2048DidEnd(game2048: Game2048)
@@ -63,10 +63,15 @@ class Game2048: NSObject {
 extension Game2048 {
     func reset() {
         score = 0
-        emptyGameBoard()
         commandQueue.removeAll(keepCapacity: true)
+        let removedCoordinates = emptyGameBoard()
+        var removeActions = [RemoveAction]()
+        for coordinate in removedCoordinates {
+            let action = RemoveAction(actionType: .Remove, removeCoordinate: coordinate)
+            removeActions.append(action)
+        }
         
-        delegate?.game2048DidReset(self)
+        delegate?.game2048DidReset(self, removeActions: removeActions)
     }
     
     func start() {
@@ -128,8 +133,8 @@ extension Game2048 {
     Set all values in game board to .Empty
     PRE: gameboard memory is allocated
     */
-    func emptyGameBoard() {
-        GameModelHelper.emptyGameBoard(&gameBoard)
+    func emptyGameBoard() -> [(Int, Int)] {
+        return GameModelHelper.emptyGameBoard(&gameBoard)
     }
     
     /**
