@@ -129,6 +129,10 @@ extension Game2048 {
         GameModelHelper.allocInitGameBoard(&gameBoard)
     }
     
+    func resetGameBoardWithIntBoard(intGameBoard: [[Int]]) {
+        GameModelHelper.resetGameBoard(&gameBoard, withGameBoard: intGameBoard)
+    }
+    
     /**
     Set all values in game board to .Empty
     PRE: gameboard memory is allocated

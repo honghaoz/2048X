@@ -45,6 +45,9 @@ class ViewController: UIViewController {
         }
     }
     
+    /// Flag: whether user stops AI in the mean while
+    var userStoppedAI: Bool = false
+    
     var views = [String: UIView]()
     var metrics = [String: CGFloat]()
     
@@ -226,7 +229,7 @@ extension ViewController {
     @objc(up:)
     func upCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
-        if !isGameEnd {
+        if !isGameEnd && !isAiRunning {
             queueCommand(MoveCommand(direction: MoveDirection.Up))
         }
     }
@@ -234,7 +237,7 @@ extension ViewController {
     @objc(down:)
     func downCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
-        if !isGameEnd {
+        if !isGameEnd && !isAiRunning {
             queueCommand(MoveCommand(direction: MoveDirection.Down))
         }
     }
@@ -242,7 +245,7 @@ extension ViewController {
     @objc(left:)
     func leftCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
-        if !isGameEnd {
+        if !isGameEnd && !isAiRunning {
             queueCommand(MoveCommand(direction: MoveDirection.Left))
         }
     }
@@ -250,7 +253,7 @@ extension ViewController {
     @objc(right:)
     func rightCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
-        if !isGameEnd {
+        if !isGameEnd && !isAiRunning {
             queueCommand(MoveCommand(direction: MoveDirection.Right))
         }
     }
@@ -268,6 +271,21 @@ extension ViewController {
         logDebug()
         if !isGameEnd {
             isAiRunning = !isAiRunning
+            if !isAiRunning {
+                userStoppedAI = true
+                commandQueue.removeAll(keepCapacity: false)
+                actionQueue.removeAll(keepCapacity: false)
+                
+                // If not animatiing, reset game model immediately
+                if !isAnimating {
+                    // Restore game model from view
+                    logDebug("Reset game model")
+                    self.gameModel.resetGameBoardWithIntBoard(self.gameBoardView.currentDisplayingGameBoard())
+                    self.gameModel.printOutGameState()
+                    userStoppedAI = false
+                }
+                // else: userSteppedAI will be set to false in action completion block
+            }
         }
     }
     
@@ -288,7 +306,7 @@ extension ViewController {
 
 extension ViewController {
     func runAIforNextStep() {
-        if isGameEnd {
+        if isGameEnd || !isAiRunning {
             return
         }
         // If dispatched commands + commandToBeDispatched count is greater than size, don't dispacth, otherwise, queue will be overflow
@@ -317,22 +335,38 @@ extension ViewController {
 // MARK: Command Queue
 extension ViewController {
     func queueCommand(command: MoveCommand) {
-//        logDebug("CommandQueue size: \(commandQueue.count), ActionQueue size: \(actionQueue.count)")
+        if userStoppedAI {
+            logDebug("user stopped AI")
+            logDebug("CommandQueue size: \(commandQueue.count)")
+            return
+        }
         if queuesAreFull() {
             logError("Queue are Full")
-            assertionFailure("Queue are Full: should never happen")
+            logDebug("CommandQueue size: \(commandQueue.count)")
+            if isAiRunning {
+                assertionFailure("Queue are Full: should never happen")
+            } else {
+                return
+            }
         }
         logDebug("Enqueue")
         commandQueue.append(command)
+        logDebug("CommandQueue size: \(commandQueue.count)")
         executeCommandQueue()
     }
     
     func executeCommandQueue() {
         if commandQueue.count > 0 {
+            if userStoppedAI {
+                logDebug("user stopped AI")
+                logDebug("CommandQueue size: \(commandQueue.count)")
+                return
+            }
             logDebug("Dequeue and Execute")
             let command = commandQueue[0]
             GameModelHelper.printOutCommand(command, level: .Info)
             commandQueue.removeAtIndex(0)
+            logDebug("CommandQueue size: \(commandQueue.count)")
             gameModel.playWithCommand(command)
         } else {
             logDebug("Queue is empty")
@@ -340,34 +374,42 @@ extension ViewController {
     }
     
     func queueAction(action: ActionTuple) {
-        logDebug("CommandQueue size: \(commandQueue.count), ActionQueue size: \(actionQueue.count)")
+        if userStoppedAI {
+            logDebug("user stopped AI")
+            logDebug("ActionQueue size: \(actionQueue.count)")
+            return
+        }
         if actionQueueIsFull() {
             logError("Queue is Full")
-            assertionFailure("Queue is Full: should never happen")
+            logDebug("ActionQueue size: \(actionQueue.count)")
+            if isAiRunning {
+                assertionFailure("Queue is Full: should never happen")
+            } else {
+                return
+            }
         }
         logDebug("Enqueue")
-//        logDebug("AAAA: ")
-//        if action.removeActions.count > 0 {
-//            logDebug("AAAA: Remove action")
-//        } else if action.moveActions.count > 0 {
-//            logDebug("AAAA: Move Action")
-//        } else {
-//            logDebug("AAAA: Init Action")
-//        }
-        
         actionQueue.append(action)
+        logDebug("ActionQueue size: \(actionQueue.count)")
         executeActionQueue()
     }
     
     func executeActionQueue() {
         if isAnimating {
             logDebug("is Animating")
+            logDebug("ActionQueue size: \(actionQueue.count)")
             return
         }
         if actionQueue.count > 0 {
+            if userStoppedAI {
+                logDebug("user stopped AI")
+                logDebug("ActionQueue size: \(actionQueue.count)")
+                return
+            }
             logDebug("Dequeue and Execute")
             let actionTuple = actionQueue[0]
             actionQueue.removeAtIndex(0)
+            logDebug("ActionQueue size: \(actionQueue.count)")
             
             // If before dequeuing, actionQueue is full, command queue is empty, reactivate AI
             if isAiRunning && (actionQueue.count == kAiCommandQueueSize - 1) && (commandCalculationQueue.operationCount + commandQueue.count == 0) {
@@ -382,15 +424,21 @@ extension ViewController {
             if actionTuple.removeActions.count > 0 {
                 logDebug("Clear board")
                 gameBoardView.removeWithRemoveActions(actionTuple.removeActions, completion: { () -> () in
-                    logDebug("animation ends")
                     self.isAnimating = false
                     self.executeActionQueue()
                 })
             } else {
-                logDebug("Init or Move board")
+                logDebug("Init/ Move board")
                 gameBoardView.updateWithMoveActions(actionTuple.moveActions, initActions: actionTuple.initActions, completion: {
-                    logDebug("animation ends")
                     self.isAnimating = false
+                    
+                    // If user has stopped AI, reset game model from current displaying views
+                    if self.userStoppedAI {
+                        logDebug("Reset game model")
+                        self.gameModel.resetGameBoardWithIntBoard(self.gameBoardView.currentDisplayingGameBoard())
+                        self.gameModel.printOutGameState()
+                        self.userStoppedAI = false
+                    }
                     self.executeActionQueue()
                 })
             }

@@ -193,6 +193,20 @@ extension GameModelHelper {
         }
     }
     
+    static func resetGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, withGameBoard intGameBoard: [[Int]]) {
+        let dimension = gameBoard.dimension
+        // Alloc memory
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                if intGameBoard[i][j] == 0 {
+                    gameBoard[i, j].memory = Tile.Empty
+                } else {
+                    gameBoard[i, j].memory = Tile.Number(intGameBoard[i][j])
+                }
+            }
+        }
+    }
+    
     static func emptyGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> [(Int, Int)] {
         var removedCoordinates = [(Int, Int)]()
         let dimension = gameBoard.dimension

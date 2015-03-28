@@ -123,6 +123,8 @@ class GameBoardView: UIView {
 extension GameBoardView {
     
     func removeWithRemoveActions(removeActions: [RemoveAction], completion: (() -> ())? = nil) {
+        logDebug("removeWithRemoveActions: ")
+        GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
         let count = removeActions.count
         for (index, action) in enumerate(removeActions) {
             let i = action.removeCoordinate.0
@@ -131,6 +133,7 @@ extension GameBoardView {
             logDebug("Removed: (\(i), \(j))")
             let tile = forgroundTiles[i][j].0!
             let underneathTile = forgroundTiles[i][j].1
+            self.forgroundTiles[i][j] = (nil, nil)
             // Animation
             UIView.animateWithDuration(sharedAnimationDuration * 2,
                 animations: { () -> Void in
@@ -139,10 +142,11 @@ extension GameBoardView {
                 }, completion: { (finished) -> Void in
                     tile.removeFromSuperview()
                     underneathTile?.removeFromSuperview()
-                    self.forgroundTiles[i][j] = (nil, nil)
                     
                     // If this is the very last actions, call completion block
                     if index == count - 1 {
+                        logDebug("after removeWithRemoveActions: ")
+                        GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
                         completion?()
                     }
             })
@@ -170,6 +174,8 @@ extension GameBoardView {
     :param: initActions a list of actions which specify how new tiles are inserted
     */
     private func updateWithInitActions(initActions: [InitAction], completion: (() -> ())? = nil) {
+        logDebug("updateWithInitActions: ")
+        GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
         let count = initActions.count
         if count == 0 {
             completion?()
@@ -180,6 +186,7 @@ extension GameBoardView {
             let initCoordinate = action.initCoordinate
             let number = action.initNumber
             
+            logDebug("Init: \(initCoordinate), \(number)")
             let tile = TileView(frame: tileFrameForCoordinate(initCoordinate))
             tile.number = number
             
@@ -209,6 +216,9 @@ extension GameBoardView {
     :param: completion  an optional completion clousure, which will be called once all move actions are done
     */
     private func updateWithMoveActions(moveActions: [MoveAction], completion: (() -> ())? = nil) {
+        logDebug("updateWithMoveActions: ")
+        GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
+        
         let count = moveActions.count
         // If there's no MoveActions, execute completion closure
         if count == 0 {
@@ -221,6 +231,8 @@ extension GameBoardView {
                 // Move Action
                 let from = action.fromCoordinates[0]
                 let to = action.toCoordinate
+                
+                logDebug("Move: from: \(from) -> to: \(to)")
                 
                 let fromView = forgroundTiles[from.0][from.1].0!
                 // There may exist an underneath tile
@@ -246,6 +258,8 @@ extension GameBoardView {
                 let from1 = action.fromCoordinates[0]
                 let from2 = action.fromCoordinates[1]
                 let to = action.toCoordinate
+                
+                logDebug("Move: from1: \(from1) + from2: \(from2) -> to: \(to)")
                 
                 // Make sure the inserting tile are under the inserted tile
                 self.insertSubview(forgroundTiles[from1.0][from1.1].0!, belowSubview: forgroundTiles[from2.0][from2.1].0!)
@@ -305,5 +319,22 @@ extension GameBoardView {
         let y = padding + (tilePadding + tileWidth) * CGFloat(coordinate.0)
         let x = padding + (tilePadding + tileWidth) * CGFloat(coordinate.1)
         return CGRectMake(x, y, tileWidth, tileWidth)
+    }
+    
+    func currentDisplayingGameBoard() -> [[Int]] {
+        var result = [[Int]]()
+        for i in 0 ..< dimension {
+            var row = [Int]()
+            for j in 0 ..< dimension {
+                if let tile = forgroundTiles[i][j].0 {
+                    row.append(tile.number)
+                } else{
+                    row.append(0)
+                }
+            }
+            result.append(row)
+        }
+        
+        return result
     }
 }
