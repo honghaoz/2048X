@@ -121,6 +121,28 @@ class GameBoardView: UIView {
 
 // MARK: Update View Actions
 extension GameBoardView {
+    
+    func cleanBoardView(completion: (() -> ())? = nil) {
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                if let tile = forgroundTiles[i][j].0 {
+                    // Animation
+                    UIView.animateWithDuration(sharedAnimationDuration, animations: { () -> Void in
+                        tile.alpha = 0.0
+                        }, completion: { (finished) -> Void in
+                            tile.removeFromSuperview()
+                            self.forgroundTiles[i][j] = (nil, nil)
+                            
+                            // If this is the very last actions, call completion block
+                            if i == self.dimension - 1 && j == self.dimension - 1 {
+                                completion?()
+                            }
+                    })
+                }
+            }
+        }
+    }
+    
     /**
     When game model is updated, view controller should call this method and passed in corresponding MoveActions and InitActions
     Note: this method will update MoveActions first and then InitActions

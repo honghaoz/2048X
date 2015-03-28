@@ -14,6 +14,10 @@ class ViewController: UIViewController {
     var scoreView: ScoreView!
     var bestScoreView: ScoreView!
     var targetView: ScoreView!
+    var newGameButton: BlackBorderButton!
+    var runAIButton: BlackBorderButton!
+    var undoButton: BlackBorderButton!
+    var hintButton: BlackBorderButton!
     
     var gameBoardView: GameBoardView!
     
@@ -49,8 +53,6 @@ class ViewController: UIViewController {
         setupSwipeGestures()
         setupAI()
         otherSetups()
-
-        gameModel.start()
     }
     
     func setupGameModel() {
@@ -122,13 +124,51 @@ class ViewController: UIViewController {
         // TargetView is square
         targetView.addConstraint(NSLayoutConstraint(item: targetView, attribute: .Height, relatedBy: .Equal, toItem: targetView, attribute: .Width, multiplier: 1.0, constant: 0.0))
         
+        // New Game Button
+        newGameButton = BlackBorderButton()
+        newGameButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        newGameButton.title = "New Game"
+        newGameButton.addTarget(self, action: "newGameButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        views["newGameButton"] = newGameButton
+        view.addSubview(newGameButton)
+        
+        // Run AI Button
+        runAIButton = BlackBorderButton()
+        runAIButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        runAIButton.title = "Run AI"
+        runAIButton.addTarget(self, action: "runAIButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: "runAIButtonLongPressed:")
+        runAIButton.addGestureRecognizer(longPressGesture)
+        views["runAIButton"] = runAIButton
+        view.addSubview(runAIButton)
+        
+        // Undo Button
+        undoButton = BlackBorderButton()
+        undoButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        undoButton.title = "Undo"
+        undoButton.addTarget(self, action: "undoButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        views["undoButton"] = undoButton
+        view.addSubview(undoButton)
+        
+        // Hint Button
+        hintButton = BlackBorderButton()
+        hintButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        hintButton.title = "Hint"
+        hintButton.addTarget(self, action: "hintButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        views["hintButton"] = hintButton
+        view.addSubview(hintButton)
+        
+        metrics["buttonHeight"] = 50.0
+        
         // H
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[scoreView]-padding-[targetView]", options: NSLayoutFormatOptions.AlignAllTop, metrics: metrics, views: views))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[bestScoreView]-padding-[targetView]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[newGameButton]-padding-[runAIButton(==newGameButton)]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[undoButton]-padding-[hintButton(==undoButton)]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
         
         // V
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[scoreView]-padding-[bestScoreView(==scoreView)]-padding-[gameBoardView]", options: NSLayoutFormatOptions.AlignAllLeading, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[targetView(targetViewHeight)]-padding-[gameBoardView]", options: NSLayoutFormatOptions.AlignAllTrailing, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[scoreView]-padding-[bestScoreView(==scoreView)]-padding-[gameBoardView]-[newGameButton(buttonHeight)]-padding-[undoButton(==newGameButton)]", options: NSLayoutFormatOptions.AlignAllLeading, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[targetView(targetViewHeight)]-padding-[gameBoardView]-[runAIButton(buttonHeight)]-padding-[hintButton(==runAIButton)]", options: NSLayoutFormatOptions.AlignAllTrailing, metrics: metrics, views: views))
         
         // Target view top spacing >= 22
         view.addConstraint(NSLayoutConstraint(item: targetView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 22))
@@ -199,6 +239,34 @@ extension ViewController {
     }
 }
 
+// MARK: Button Actions
+extension ViewController {
+    func newGameButtonTapped(sender: UIButton) {
+        logDebug()
+        gameModel.reset()
+        gameModel.start()
+    }
+    
+    func runAIButtonTapped(sender: UIButton) {
+        logDebug()
+        isAiRunning = true
+    }
+    
+    func runAIButtonLongPressed(sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.Began {
+            logDebug()
+        }
+    }
+    
+    func undoButtonTapped(sender: UIButton) {
+        logDebug()
+    }
+    
+    func hintButtonTapped(sender: UIButton) {
+        logDebug()
+    }
+}
+
 extension ViewController {
     func runAI() {
         // If dispatched commands + commandToBeDispatched count is greater than size, don't dispacth, otherwise, queue will be overflow
@@ -213,9 +281,9 @@ extension ViewController {
 
         logDebug("Add new command calculation")
         commandCalculationQueue.addOperationWithBlock { () -> Void in
-            if let nextCommand = self.ai.nextMoveUsingAlphaBetaPruning(self.gameModel.currentGameBoard()) {
+//            if let nextCommand = self.ai.nextMoveUsingAlphaBetaPruning(self.gameModel.currentGameBoard()) {
 //            if let nextCommand = self.aiRandom.nextCommand() {
-//            if let nextCommand = self.ai.nextMoveUsingMonoHeuristic(self.gameModel.currentGameBoard()) {
+            if let nextCommand = self.ai.nextMoveUsingMonoHeuristic(self.gameModel.currentGameBoard()) {
                 NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                     self.queueCommand(nextCommand)
                 })
@@ -308,13 +376,13 @@ extension ViewController {
 extension ViewController: Game2048Delegate {
     func game2048DidReset(game2048: Game2048) {
         logDebug("Reseted")
+        gameBoardView.cleanBoardView(completion: nil)
     }
     
     func game2048DidStartNewGame(game2048: Game2048) {
         logDebug("Started")
 //        game2048.printOutGameState()
         isGameEnd = false
-        isAiRunning = true
     }
     
     func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction], score: Int) {
@@ -324,7 +392,8 @@ extension ViewController: Game2048Delegate {
         if moveActions.count > 0 || initActions.count > 0 {
             queueAction((moveActions, initActions, score))
         }
-        runAI()
+        
+//        runAI()
     }
     
     func game2048DidEnd(game2048: Game2048) {

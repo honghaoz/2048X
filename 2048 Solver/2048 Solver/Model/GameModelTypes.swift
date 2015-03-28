@@ -41,6 +41,7 @@ protocol Action { var actionType: ActionType { set get } }
 enum ActionType {
     case Init // Create a new tile
     case Move // Move tiles
+    case Remove // Remove a tile
 }
 
 struct InitAction: Action {
@@ -58,6 +59,11 @@ struct MoveAction: Action {
     var actionType: ActionType = .Move
     var fromCoordinates: [(Int, Int)] // Either 1 tile or 2 tiles, 2 tiles means merge
     var toCoordinate: (Int, Int)
+}
+
+struct RemoveAction: Action {
+    var actionType: ActionType = .Remove
+    var removeCoordinate: (Int, Int)
 }
 
 // Private Use

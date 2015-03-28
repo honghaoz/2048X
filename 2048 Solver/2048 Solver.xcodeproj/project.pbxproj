@@ -23,9 +23,9 @@
 		023EDE8A1AAA325100F5B9C5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE881AAA325100F5B9C5 /* LaunchScreen.xib */; };
 		023EDE961AAA325100F5B9C5 /* _048_SolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */; };
 		028159611AAD07E500C795D9 /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028159601AAD07E500C795D9 /* TileView.swift */; };
+		0297205E1AC65377009B86D2 /* BlackBorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0297205D1AC65377009B86D2 /* BlackBorderButton.swift */; };
 		02D1339F1AB2A0BA00CE8ADA /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D1339E1AB2A0BA00CE8ADA /* AVKit.framework */; };
 		02DBF5811AB269E7007EE133 /* move.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02DBF5801AB269E7007EE133 /* move.wav */; };
-		02E9A9121AC1151300089DA9 /* AIOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E9A9111AC1151300089DA9 /* AIOperation.swift */; };
 		02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */; };
 		02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAF1ABA51B800487782 /* AI-Greedy.swift */; };
 		FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5C5DD91AAF782A00CE6981 /* AI.swift */; };
@@ -62,9 +62,9 @@
 		023EDE941AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _048_SolverTests.swift; sourceTree = "<group>"; };
 		028159601AAD07E500C795D9 /* TileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileView.swift; sourceTree = "<group>"; };
+		0297205D1AC65377009B86D2 /* BlackBorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackBorderButton.swift; sourceTree = "<group>"; };
 		02D1339E1AB2A0BA00CE8ADA /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		02DBF5801AB269E7007EE133 /* move.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = move.wav; sourceTree = "<group>"; };
-		02E9A9111AC1151300089DA9 /* AIOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AIOperation.swift; sourceTree = "<group>"; };
 		02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModelHelper.swift; sourceTree = "<group>"; };
 		02F21BAF1ABA51B800487782 /* AI-Greedy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AI-Greedy.swift"; sourceTree = "<group>"; };
 		FF5C5DD91AAF782A00CE6981 /* AI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AI.swift; sourceTree = "<group>"; };
@@ -96,6 +96,7 @@
 				02107C971AACCC4400CFF8FF /* GameBoardView.swift */,
 				028159601AAD07E500C795D9 /* TileView.swift */,
 				02107C991AAD1F0000CFF8FF /* ScoreView.swift */,
+				0297205D1AC65377009B86D2 /* BlackBorderButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -148,7 +149,6 @@
 				02107C9D1AAD238D00CFF8FF /* Model */,
 				02107C961AACCC4400CFF8FF /* View */,
 				023EDE811AAA325100F5B9C5 /* ViewController.swift */,
-				02E9A9111AC1151300089DA9 /* AIOperation.swift */,
 				023EDE831AAA325100F5B9C5 /* Main.storyboard */,
 				023EDE861AAA325100F5B9C5 /* Images.xcassets */,
 				023EDE881AAA325100F5B9C5 /* LaunchScreen.xib */,
@@ -310,9 +310,9 @@
 				02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */,
 				02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */,
 				0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */,
-				02E9A9121AC1151300089DA9 /* AIOperation.swift in Sources */,
 				02107CA11AAD244A00CFF8FF /* GameModelTypes.swift in Sources */,
 				02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */,
+				0297205E1AC65377009B86D2 /* BlackBorderButton.swift in Sources */,
 				023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */,
 				028159611AAD07E500C795D9 /* TileView.swift in Sources */,
 				02107C9F1AAD240400CFF8FF /* GameModel.swift in Sources */,
