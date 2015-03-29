@@ -28,6 +28,11 @@
 		02DBF5811AB269E7007EE133 /* move.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02DBF5801AB269E7007EE133 /* move.wav */; };
 		02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */; };
 		02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAF1ABA51B800487782 /* AI-Greedy.swift */; };
+		0E824BDF1AC88383008B90E8 /* Action2048.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E824BDA1AC88383008B90E8 /* Action2048.swift */; };
+		0E824BE01AC88383008B90E8 /* Game2048Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E824BDB1AC88383008B90E8 /* Game2048Board.swift */; };
+		0E824BE11AC88383008B90E8 /* NTuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E824BDC1AC88383008B90E8 /* NTuple.swift */; };
+		0E824BE21AC88383008B90E8 /* RectSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E824BDD1AC88383008B90E8 /* RectSize.swift */; };
+		0E824BE31AC88383008B90E8 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E824BDE1AC88383008B90E8 /* Util.swift */; };
 		FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5C5DD91AAF782A00CE6981 /* AI.swift */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +72,11 @@
 		02DBF5801AB269E7007EE133 /* move.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = move.wav; sourceTree = "<group>"; };
 		02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModelHelper.swift; sourceTree = "<group>"; };
 		02F21BAF1ABA51B800487782 /* AI-Greedy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AI-Greedy.swift"; sourceTree = "<group>"; };
+		0E824BDA1AC88383008B90E8 /* Action2048.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action2048.swift; sourceTree = "<group>"; };
+		0E824BDB1AC88383008B90E8 /* Game2048Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game2048Board.swift; sourceTree = "<group>"; };
+		0E824BDC1AC88383008B90E8 /* NTuple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuple.swift; sourceTree = "<group>"; };
+		0E824BDD1AC88383008B90E8 /* RectSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectSize.swift; sourceTree = "<group>"; };
+		0E824BDE1AC88383008B90E8 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		FF5C5DD91AAF782A00CE6981 /* AI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,6 +152,7 @@
 		023EDE7C1AAA325100F5B9C5 /* 2048 Solver */ = {
 			isa = PBXGroup;
 			children = (
+				0E824BD91AC8833C008B90E8 /* TDLearning */,
 				023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */,
 				0225A24A1AB8A6E300EA72C8 /* Extension.swift */,
 				0225A2471AB7DD8A00EA72C8 /* ThirdParty */,
@@ -189,6 +200,18 @@
 			);
 			name = Resource;
 			path = "2048 Solver/Resource";
+			sourceTree = "<group>";
+		};
+		0E824BD91AC8833C008B90E8 /* TDLearning */ = {
+			isa = PBXGroup;
+			children = (
+				0E824BDA1AC88383008B90E8 /* Action2048.swift */,
+				0E824BDB1AC88383008B90E8 /* Game2048Board.swift */,
+				0E824BDC1AC88383008B90E8 /* NTuple.swift */,
+				0E824BDD1AC88383008B90E8 /* RectSize.swift */,
+				0E824BDE1AC88383008B90E8 /* Util.swift */,
+			);
+			name = TDLearning;
 			sourceTree = "<group>";
 		};
 		FF5C5DD81AAF77C600CE6981 /* AI */ = {
@@ -305,7 +328,9 @@
 			files = (
 				023EDE821AAA325100F5B9C5 /* ViewController.swift in Sources */,
 				02107C9C1AAD220800CFF8FF /* Appearance.swift in Sources */,
+				0E824BE21AC88383008B90E8 /* RectSize.swift in Sources */,
 				FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */,
+				0E824BE31AC88383008B90E8 /* Util.swift in Sources */,
 				0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */,
 				02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */,
 				02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */,
@@ -315,6 +340,9 @@
 				0297205E1AC65377009B86D2 /* BlackBorderButton.swift in Sources */,
 				023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */,
 				028159611AAD07E500C795D9 /* TileView.swift in Sources */,
+				0E824BE01AC88383008B90E8 /* Game2048Board.swift in Sources */,
+				0E824BE11AC88383008B90E8 /* NTuple.swift in Sources */,
+				0E824BDF1AC88383008B90E8 /* Action2048.swift in Sources */,
 				02107C9F1AAD240400CFF8FF /* GameModel.swift in Sources */,
 				02107C9A1AAD1F0000CFF8FF /* ScoreView.swift in Sources */,
 				0225A2491AB7DD9000EA72C8 /* ZHLogger.swift in Sources */,
