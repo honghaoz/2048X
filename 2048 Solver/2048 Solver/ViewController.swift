@@ -11,27 +11,48 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    // MARK: Views
     var scoreView: ScoreView!
     var bestScoreView: ScoreView!
     var targetView: ScoreView!
+    
+    var gameBoardView: GameBoardView!
+    
     var newGameButton: BlackBorderButton!
     var runAIButton: BlackBorderButton!
     var undoButton: BlackBorderButton!
     var hintButton: BlackBorderButton!
     
-    var gameBoardView: GameBoardView!
+    var views = [String: UIView]()
+    var metrics = [String: CGFloat]()
     
+    // MARK: Model
     var gameModel: Game2048!
+    /// queue for move command
     var commandQueue = [MoveCommand]()
+    /// queue for next command calculate, AI related
     var commandCalculationQueue = NSOperationQueue()
     
     typealias ActionTuple = (moveActions: [MoveAction], initActions: [InitAction], removeActions: [RemoveAction], score: Int)
+    /// queue for action (action is for view update)
     var actionQueue = [ActionTuple]()
     
+    /// queue size for different mode
     var kUserCommandQueueSize: Int = 2
     var kAiCommandQueueSize: Int = 20
     
-    var isGameEnd: Bool = true
+    // Game History
+    typealias GameState = (stateId: Int, gameBoard: [[Int]], score: Int)
+    typealias CommandRecord = (fromStateId: Int, toStateId: Int, command: MoveCommand)
+    var gameStateHistory = [GameState]()
+    var commandHistory = [CommandRecord]()
+    
+    // MARK: Game status flags
+    var isGameEnd: Bool = true {
+        didSet {
+            isAiRunning = false
+        }
+    }
     
     var isAnimating: Bool = false
     var isAiRunning: Bool = false {
@@ -45,28 +66,31 @@ class ViewController: UIViewController {
         }
     }
     
-    /// Flag: whether user stops AI in the mean while
+    /// Flag: whether user just stopped AI (user pressed Stop AI button), 
+    //        this flag will only be true for a short peroid. E.g. when AI is running and user stopped AI, this flag is used for avoiding queue more commands or actions
     var userStoppedAI: Bool = false
     
-    var views = [String: UIView]()
-    var metrics = [String: CGFloat]()
-    
+    // MARK: AI Related
     var ai: AI!
     var aiRandom: AIRandom!
     var aiGreedy: AIGreedy!
     
+    // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        logLevel = .Info
-        logLevel = .Debug
+        logLevel = .Info
+//        logLevel = .Debug
         
         setupGameModel()
         setupViews()
         setupSwipeGestures()
         setupAI()
         otherSetups()
+        
+        newGameButtonTapped(nil)
     }
     
+    // MARK: Setups
     func setupGameModel() {
         gameModel = Game2048(dimension: 4, target: 0)
         gameModel.delegate = self
@@ -261,8 +285,11 @@ extension ViewController {
 
 // MARK: Button Actions
 extension ViewController {
-    func newGameButtonTapped(sender: UIButton) {
+    func newGameButtonTapped(sender: AnyObject?) {
         logDebug()
+        if isAiRunning || isAnimating {
+            return
+        }
         gameModel.reset()
         gameModel.start()
     }
@@ -297,16 +324,37 @@ extension ViewController {
     
     func undoButtonTapped(sender: UIButton) {
         logDebug()
+        let count = gameStateHistory.count
+        if count <= 1 {
+            return
+        }
+        if isGameEnd || isAiRunning || isAnimating || commandQueue.count > 0 || actionQueue.count > 0 || commandCalculationQueue.operationCount > 0 {
+            return
+        }
+        
+        // Last state is current state
+        gameStateHistory.removeLast()
+        
+        // Update last state
+        let lastState = gameStateHistory.last!
+        gameModel.resetGameBoardWithIntBoard(lastState.gameBoard)
+        gameBoardView.setGameBoardWithBoard(lastState.gameBoard)
+        scoreView.number = lastState.score
     }
     
     func hintButtonTapped(sender: UIButton) {
         logDebug()
+        if isGameEnd || isAiRunning {
+            return
+        }
+        runAIforNextStep()
     }
 }
 
+// MARK: AI Calculation
 extension ViewController {
     func runAIforNextStep() {
-        if isGameEnd || !isAiRunning {
+        if isGameEnd {
             return
         }
         // If dispatched commands + commandToBeDispatched count is greater than size, don't dispacth, otherwise, queue will be overflow
@@ -335,6 +383,7 @@ extension ViewController {
 // MARK: Command Queue
 extension ViewController {
     func queueCommand(command: MoveCommand) {
+        // If user just stopped AI, stop queueing command
         if userStoppedAI {
             logDebug("user stopped AI")
             logDebug("CommandQueue size: \(commandQueue.count)")
@@ -343,9 +392,11 @@ extension ViewController {
         if queuesAreFull() {
             logError("Queue are Full")
             logDebug("CommandQueue size: \(commandQueue.count)")
+            // If AI is running, shouldn't happen
             if isAiRunning {
                 assertionFailure("Queue are Full: should never happen")
             } else {
+                // If user is playing game, ignore more commands
                 return
             }
         }
@@ -357,6 +408,8 @@ extension ViewController {
     
     func executeCommandQueue() {
         if commandQueue.count > 0 {
+            // If user just stopped AI, don't execute
+            // To avoid race condition, when commandQueue.count is > 0 while user tapped stop AI.
             if userStoppedAI {
                 logDebug("user stopped AI")
                 logDebug("CommandQueue size: \(commandQueue.count)")
@@ -479,14 +532,23 @@ extension ViewController: Game2048Delegate {
         logDebug("Started")
         game2048.printOutGameState()
         isGameEnd = false
+        
+        // Clean up
+        gameStateHistory.removeAll(keepCapacity: false)
+        commandHistory.removeAll(keepCapacity: false)
     }
     
     func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction], score: Int) {
         logDebug("Updated")
         game2048.printOutGameState()
         
+        // Only update view and record state when there's valid action
         if moveActions.count > 0 || initActions.count > 0 {
             queueAction((moveActions, initActions, [], score))
+            
+            // Record game state
+            let newGameState = GameState(stateId: gameStateHistory.count, gameBoard: game2048.currentGameBoard(), score: score)
+            gameStateHistory.append(newGameState)
         }
         
         if isAiRunning {

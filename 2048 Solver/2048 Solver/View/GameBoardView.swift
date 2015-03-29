@@ -117,14 +117,40 @@ class GameBoardView: UIView {
             }
         }
     }
+    
+    func cleanForgroundTileViews() {
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                forgroundTiles[i][j].0?.removeFromSuperview()
+                forgroundTiles[i][j].1?.removeFromSuperview()
+                forgroundTiles[i][j] = (nil, nil)
+            }
+        }
+    }
+    
+    func setGameBoardWithBoard(board: [[Int]]) {
+        precondition(board.count == dimension, "dimension must be equal")
+        cleanForgroundTileViews()
+        
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                if board[i][j] > 0 {
+                    let tile = TileView(frame: tileFrameForCoordinate((i, j)))
+                    tile.number = board[i][j]
+                    self.addSubview(tile)
+                    forgroundTiles[i][j] = (tile, nil)
+                }
+            }
+        }
+    }
 }
 
 // MARK: Update View Actions
 extension GameBoardView {
     
     func removeWithRemoveActions(removeActions: [RemoveAction], completion: (() -> ())? = nil) {
-        logDebug("removeWithRemoveActions: ")
-        GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
+//        logDebug("removeWithRemoveActions: ")
+//        GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
         let count = removeActions.count
         for (index, action) in enumerate(removeActions) {
             let i = action.removeCoordinate.0
@@ -145,8 +171,8 @@ extension GameBoardView {
                     
                     // If this is the very last actions, call completion block
                     if index == count - 1 {
-                        logDebug("after removeWithRemoveActions: ")
-                        GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
+//                        logDebug("after removeWithRemoveActions: ")
+//                        GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
                         completion?()
                     }
             })
