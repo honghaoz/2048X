@@ -307,7 +307,7 @@ extension ViewController {
                 if !isAnimating {
                     // Restore game model from view
                     logDebug("Reset game model")
-                    self.gameModel.resetGameBoardWithIntBoard(self.gameBoardView.currentDisplayingGameBoard())
+                    self.gameModel.resetGameBoardWithIntBoard(self.gameBoardView.currentDisplayingGameBoard(), score: self.scoreView.number)
                     self.gameModel.printOutGameState()
                     userStoppedAI = false
                 }
@@ -337,7 +337,7 @@ extension ViewController {
         
         // Update last state
         let lastState = gameStateHistory.last!
-        gameModel.resetGameBoardWithIntBoard(lastState.gameBoard)
+        gameModel.resetGameBoardWithIntBoard(lastState.gameBoard, score: lastState.score)
         gameBoardView.setGameBoardWithBoard(lastState.gameBoard)
         scoreView.number = lastState.score
     }
@@ -488,7 +488,7 @@ extension ViewController {
                     // If user has stopped AI, reset game model from current displaying views
                     if self.userStoppedAI {
                         logDebug("Reset game model")
-                        self.gameModel.resetGameBoardWithIntBoard(self.gameBoardView.currentDisplayingGameBoard())
+                        self.gameModel.resetGameBoardWithIntBoard(self.gameBoardView.currentDisplayingGameBoard(), score: self.scoreView.number)
                         self.gameModel.printOutGameState()
                         self.userStoppedAI = false
                     }

@@ -129,7 +129,8 @@ extension Game2048 {
         GameModelHelper.allocInitGameBoard(&gameBoard)
     }
     
-    func resetGameBoardWithIntBoard(intGameBoard: [[Int]]) {
+    func resetGameBoardWithIntBoard(intGameBoard: [[Int]], score: Int) {
+        self.score = score
         GameModelHelper.resetGameBoard(&gameBoard, withGameBoard: intGameBoard)
     }
     
