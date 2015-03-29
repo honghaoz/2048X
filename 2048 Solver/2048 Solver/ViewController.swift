@@ -78,8 +78,8 @@ class ViewController: UIViewController {
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        logLevel = .Info
-//        logLevel = .Debug
+//        logLevel = .Info
+        logLevel = .Debug
         
         setupGameModel()
         setupViews()
@@ -302,18 +302,45 @@ extension ViewController {
                 userStoppedAI = true
                 commandQueue.removeAll(keepCapacity: false)
                 actionQueue.removeAll(keepCapacity: false)
+                logDebug("cancelAllOperations")
+                commandCalculationQueue.cancelAllOperations()
                 
+                let currentDisplayingGameBoard = self.gameBoardView.currentDisplayingGameBoard()
                 // If not animatiing, reset game model immediately
                 if !isAnimating {
-                    // Restore game model from view
-                    logDebug("Reset game model")
-                    self.gameModel.resetGameBoardWithIntBoard(self.gameBoardView.currentDisplayingGameBoard(), score: self.scoreView.number)
-                    self.gameModel.printOutGameState()
-                    userStoppedAI = false
+//                    // Restore game model from view
+//                    logDebug("Reset game model")
+//                    self.gameModel.resetGameBoardWithIntBoard(currentDisplayingGameBoard, score: self.scoreView.number)
+//                    self.gameModel.printOutGameState()
+//                    userStoppedAI = false
+                    resetGameState()
                 }
                 // else: userSteppedAI will be set to false in action completion block
             }
         }
+    }
+    
+    private func resetGameState() {
+        let currentDisplayingGameBoard = self.gameBoardView.currentDisplayingGameBoard()
+        
+        // Reset game model from current view state
+        logDebug("Reset game model")
+        self.gameModel.resetGameBoardWithIntBoard(currentDisplayingGameBoard, score: self.scoreView.number)
+        self.gameModel.printOutGameState()
+        
+        // Reset game state history (roll back)
+        let historyCount = gameStateHistory.count
+        var currentGameStateIndex = -1
+        for i in stride(from: historyCount - 1, to: -1, by: -1) {
+            let gameBoard = gameStateHistory[i].gameBoard
+            if GameModelHelper.gameBoard(gameBoard, IsEqualTo: currentDisplayingGameBoard) {
+                currentGameStateIndex = i
+            }
+        }
+        assert(currentGameStateIndex > -1, "error game state history")
+        gameStateHistory.removeRange(currentGameStateIndex + 1 ..< gameStateHistory.count)
+        
+        self.userStoppedAI = false
     }
     
     func runAIButtonLongPressed(sender: UILongPressGestureRecognizer) {
@@ -347,13 +374,14 @@ extension ViewController {
         if isGameEnd || isAiRunning {
             return
         }
-        runAIforNextStep()
+        runAIforNextStep(ignoreIsAIRunning: true)
     }
 }
 
 // MARK: AI Calculation
 extension ViewController {
-    func runAIforNextStep() {
+    // If ignoreIsAIRunning is true, command calculated will be queued anyway
+    func runAIforNextStep(ignoreIsAIRunning: Bool = false) {
         if isGameEnd {
             return
         }
@@ -373,7 +401,9 @@ extension ViewController {
 //            if let nextCommand = self.aiRandom.nextCommand() {
             if let nextCommand = self.ai.nextMoveUsingMonoHeuristic(self.gameModel.currentGameBoard()) {
                 NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    self.queueCommand(nextCommand)
+                    if ignoreIsAIRunning || self.isAiRunning {
+                        self.queueCommand(nextCommand)
+                    }
                 })
             }
         }
@@ -487,10 +517,11 @@ extension ViewController {
                     
                     // If user has stopped AI, reset game model from current displaying views
                     if self.userStoppedAI {
-                        logDebug("Reset game model")
-                        self.gameModel.resetGameBoardWithIntBoard(self.gameBoardView.currentDisplayingGameBoard(), score: self.scoreView.number)
-                        self.gameModel.printOutGameState()
-                        self.userStoppedAI = false
+//                        logDebug("Reset game model")
+//                        self.gameModel.resetGameBoardWithIntBoard(self.gameBoardView.currentDisplayingGameBoard(), score: self.scoreView.number)
+//                        self.gameModel.printOutGameState()
+//                        self.userStoppedAI = false
+                        self.resetGameState()
                     }
                     self.executeActionQueue()
                 })

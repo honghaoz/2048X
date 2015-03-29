@@ -164,6 +164,19 @@ struct GameModelHelper {
         
         return false
     }
+    
+    static func gameBoard(gameBoard1: [[Int]], IsEqualTo gameBoard2: [[Int]]) -> Bool {
+        let dimension = gameBoard1.count
+        precondition(dimension == gameBoard2.count, "dimension must be equal")
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                if gameBoard1[i][j] != gameBoard2[i][j] {
+                    return false
+                }
+            }
+        }
+        return true
+    }
 }
 
 // MARK: Memory Management
