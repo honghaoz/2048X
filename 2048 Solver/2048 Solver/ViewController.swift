@@ -143,7 +143,8 @@ class ViewController: UIViewController {
         bestScoreView.titleLabel.text = "BEST"
         bestScoreView.numberLabelMaxFontSize = is3_5InchScreen ? 20 : 28
         bestScoreView.numberLabel.textAlignment = .Right
-        bestScoreView.number = 999999 // TODO: Record best score
+        bestScoreView.number = 0 // TODO: Record best score
+        readBestScore()
         
         // TargetView
         targetView = ScoreView()
@@ -503,6 +504,11 @@ extension ViewController {
             // Update UIs
             self.isAnimating = true
             scoreView.number = actionTuple.score
+            if scoreView.number > bestScoreView.number {
+                bestScoreView.number = scoreView.number
+                saveBestScore(bestScoreView.number)
+            }
+            
             // If this is remove action, just clear board
             if actionTuple.removeActions.count > 0 {
                 logDebug("Clear board")
@@ -613,4 +619,17 @@ extension ViewController {
 //            })
 //        }
 //    }
+    
+    func saveBestScore(score: Int) {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setInteger(score, forKey: "BestScore")
+    }
+    
+    func readBestScore() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let storedScore: Int = defaults.integerForKey("BestScore")
+        if storedScore > 0 {
+            bestScoreView.number = storedScore
+        }
+    }
 }
