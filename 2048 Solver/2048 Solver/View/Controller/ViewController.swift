@@ -246,6 +246,8 @@ class ViewController: UIViewController {
         sharedAnimationDuration = 0.08
         // Make sure operation queue is serial
         commandCalculationQueue.maxConcurrentOperationCount = 1
+        
+        (UIApplication.sharedApplication().delegate as! AppDelegate).mainViewController = self
     }
 }
 
