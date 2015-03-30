@@ -21,6 +21,7 @@ var is3_5InchScreen: Bool { return screenHeight ~= 480.0 }
 var is4InchScreen: Bool { return screenHeight ~= 568.0 }
 var isIphone6: Bool { return screenHeight ~= 667.0 }
 var isIphone6Plus: Bool { return screenHeight ~= 736.0 }
+var is320ScreenWidth: Bool { return screenWidth ~= 320.0 }
 
 extension Array {
     mutating func shuffle() {
@@ -31,8 +32,8 @@ extension Array {
     }
 }
 
-extension UIButton {
-    private func imageWithColor(color: UIColor) -> UIImage {
+extension UIImage {
+    class func imageWithColor(color: UIColor) -> UIImage {
         let rect = CGRectMake(0.0, 0.0, 1.0, 1.0)
         UIGraphicsBeginImageContext(rect.size)
         let context = UIGraphicsGetCurrentContext()
@@ -46,7 +47,27 @@ extension UIButton {
         return image
     }
     
+    class func imageWithBorderRectangle(size: CGSize, borderWidth: CGFloat, borderColor: UIColor, fillColor: UIColor = UIColor.clearColor()) -> UIImage {
+        UIGraphicsBeginImageContext(size)
+        let context = UIGraphicsGetCurrentContext()
+        let rect = CGRect(origin: CGPointZero, size: size)
+        
+        CGContextSetFillColorWithColor(context, fillColor.CGColor)
+        CGContextFillRect(context, rect)
+        
+        CGContextSetStrokeColorWithColor(context, borderColor.CGColor)
+        CGContextSetLineWidth(context, borderWidth)
+        CGContextStrokeRect(context, rect)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+    }
+}
+
+extension UIButton {
     func setBackgroundColor(color: UIColor, forUIControlState state: UIControlState) {
-        self.setBackgroundImage(imageWithColor(color), forState: state)
+        self.setBackgroundImage(UIImage.imageWithColor(color), forState: state)
     }
 }

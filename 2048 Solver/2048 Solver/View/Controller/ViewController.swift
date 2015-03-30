@@ -71,6 +71,9 @@ class ViewController: UIViewController {
     var userStoppedAI: Bool = false
     
     // MARK: AI Related
+    typealias AITuple = (description: String, function: () -> MoveCommand?)
+    var aiChoices = [Int: AITuple]()
+    var aiSelectedChoiceIndex: Int = 1
     var ai: AI!
     var aiRandom: AIRandom!
     var aiGreedy: AIGreedy!
@@ -240,6 +243,15 @@ class ViewController: UIViewController {
         ai = AI.CreateInstance()
         aiRandom = AIRandom(gameModel: gameModel)
         aiGreedy = AIGreedy(gameModel: gameModel)
+        
+        let AIMiniMaxWithAlphaBetaPruning = AITuple(description: "Minimax Tree with Alpha/Beta Pruning", function: miniMaxWithAlphaBetaPruning)
+        aiChoices[0] = AIMiniMaxWithAlphaBetaPruning
+        
+        let AIMonoHeuristic = AITuple(description: "Mono Heuristic", function: MonoHeuristic)
+        aiChoices[1] = AIMonoHeuristic
+        
+        let AIRandomness = AITuple(description: "Pure Monte Carlo Tree Search", function: randomness)
+        aiChoices[2] = AIRandomness
     }
     
     func otherSetups() {
@@ -310,7 +322,7 @@ extension ViewController {
         self.gameModel.start()
     }
     
-    func runAIButtonTapped(sender: UIButton) {
+    func runAIButtonTapped(sender: UIButton?) {
         logDebug()
         if !isGameEnd {
             isAiRunning = !isAiRunning
@@ -324,11 +336,6 @@ extension ViewController {
                 let currentDisplayingGameBoard = self.gameBoardView.currentDisplayingGameBoard()
                 // If not animatiing, reset game model immediately
                 if !isAnimating {
-//                    // Restore game model from view
-//                    logDebug("Reset game model")
-//                    self.gameModel.resetGameBoardWithIntBoard(currentDisplayingGameBoard, score: self.scoreView.number)
-//                    self.gameModel.printOutGameState()
-//                    userStoppedAI = false
                     resetGameState()
                 }
                 // else: userSteppedAI will be set to false in action completion block
@@ -362,6 +369,23 @@ extension ViewController {
     func runAIButtonLongPressed(sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.Began {
             logDebug()
+            var aiIsRunningBefore = false
+            if isAiRunning {
+                aiIsRunningBefore = true
+                runAIButtonTapped(nil)
+            }
+            
+            let settingVC = SettingViewController()
+            settingVC.transitioningDelegate = settingVC
+            settingVC.modalPresentationStyle = .Custom
+            settingVC.mainViewController = self
+            settingVC.dismissClosure = {
+                if aiIsRunningBefore {
+                    self.runAIButtonTapped(nil)
+                }
+            }
+            
+            self.presentViewController(settingVC, animated: true, completion: nil)
         }
     }
     
@@ -414,9 +438,7 @@ extension ViewController {
 
         logDebug("Add new command calculation")
         commandCalculationQueue.addOperationWithBlock { () -> Void in
-//            if let nextCommand = self.ai.nextMoveUsingAlphaBetaPruning(self.gameModel.currentGameBoard()) {
-//            if let nextCommand = self.aiRandom.nextCommand() {
-            if let nextCommand = self.ai.nextMoveUsingMonoHeuristic(self.gameModel.currentGameBoard()) {
+            if let nextCommand = self.aiChoices[self.aiSelectedChoiceIndex]!.function() {
                 NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                     if ignoreIsAIRunning || self.isAiRunning {
                         self.queueCommand(nextCommand)
@@ -424,6 +446,19 @@ extension ViewController {
                 })
             }
         }
+    }
+    
+    // MARK: Different AI algorithms
+    func miniMaxWithAlphaBetaPruning() -> MoveCommand? {
+        return ai.nextMoveUsingAlphaBetaPruning(self.gameModel.currentGameBoard())
+    }
+    
+    func MonoHeuristic() -> MoveCommand? {
+        return ai.nextMoveUsingMonoHeuristic(self.gameModel.currentGameBoard())
+    }
+    
+    func randomness() -> MoveCommand? {
+        return aiRandom.nextCommand()
     }
 }
 
@@ -540,10 +575,6 @@ extension ViewController {
                     
                     // If user has stopped AI, reset game model from current displaying views
                     if self.userStoppedAI {
-//                        logDebug("Reset game model")
-//                        self.gameModel.resetGameBoardWithIntBoard(self.gameBoardView.currentDisplayingGameBoard(), score: self.scoreView.number)
-//                        self.gameModel.printOutGameState()
-//                        self.userStoppedAI = false
                         self.resetGameState()
                     }
                     self.executeActionQueue()

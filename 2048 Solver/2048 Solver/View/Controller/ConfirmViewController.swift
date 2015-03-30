@@ -41,7 +41,7 @@ class ConfirmViewController: UIViewController {
         
         titleLabel.text = "Start a new game?"
         titleLabel.textColor = UIColor.blackColor()
-        titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 25)
+        titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: is320ScreenWidth ? 22 : 25)
         titleLabel.textAlignment = NSTextAlignment.Center
         titleLabel.numberOfLines = 0
         

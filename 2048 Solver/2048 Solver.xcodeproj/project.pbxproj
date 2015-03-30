@@ -32,6 +32,9 @@
 		02BC42891AC8F18C0089639B /* PresentingAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42861AC8F18C0089639B /* PresentingAnimator.swift */; };
 		02BC428A1AC8F18C0089639B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42871AC8F18C0089639B /* ViewController.swift */; };
 		02BC428C1AC8F20B0089639B /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC428B1AC8F20B0089639B /* SettingViewController.swift */; };
+		02C2A86B1AC9DFF3002DEB97 /* BlackSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2A86A1AC9DFF3002DEB97 /* BlackSlider.swift */; };
+		02C2A86D1AC9E9EF002DEB97 /* BlackSelectionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2A86C1AC9E9EF002DEB97 /* BlackSelectionControl.swift */; };
+		02C2A86F1AC9EC10002DEB97 /* AIAlgorithmCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2A86E1AC9EC10002DEB97 /* AIAlgorithmCell.swift */; };
 		02D1339F1AB2A0BA00CE8ADA /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D1339E1AB2A0BA00CE8ADA /* AVKit.framework */; };
 		02DBF5811AB269E7007EE133 /* move.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02DBF5801AB269E7007EE133 /* move.wav */; };
 		02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */; };
@@ -79,6 +82,9 @@
 		02BC42861AC8F18C0089639B /* PresentingAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentingAnimator.swift; sourceTree = "<group>"; };
 		02BC42871AC8F18C0089639B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		02BC428B1AC8F20B0089639B /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		02C2A86A1AC9DFF3002DEB97 /* BlackSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackSlider.swift; sourceTree = "<group>"; };
+		02C2A86C1AC9E9EF002DEB97 /* BlackSelectionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackSelectionControl.swift; sourceTree = "<group>"; };
+		02C2A86E1AC9EC10002DEB97 /* AIAlgorithmCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AIAlgorithmCell.swift; sourceTree = "<group>"; };
 		02D1339E1AB2A0BA00CE8ADA /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		02DBF5801AB269E7007EE133 /* move.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = move.wav; sourceTree = "<group>"; };
 		02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModelHelper.swift; sourceTree = "<group>"; };
@@ -113,6 +119,9 @@
 				028159601AAD07E500C795D9 /* TileView.swift */,
 				02107C991AAD1F0000CFF8FF /* ScoreView.swift */,
 				0297205D1AC65377009B86D2 /* BlackBorderButton.swift */,
+				02C2A86A1AC9DFF3002DEB97 /* BlackSlider.swift */,
+				02C2A86C1AC9E9EF002DEB97 /* BlackSelectionControl.swift */,
+				02C2A86E1AC9EC10002DEB97 /* AIAlgorithmCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -352,10 +361,12 @@
 				02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */,
 				02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */,
 				02BC428A1AC8F18C0089639B /* ViewController.swift in Sources */,
+				02C2A86D1AC9E9EF002DEB97 /* BlackSelectionControl.swift in Sources */,
 				0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */,
 				02107CA11AAD244A00CFF8FF /* GameModelTypes.swift in Sources */,
 				02BC42891AC8F18C0089639B /* PresentingAnimator.swift in Sources */,
 				02BC428C1AC8F20B0089639B /* SettingViewController.swift in Sources */,
+				02C2A86F1AC9EC10002DEB97 /* AIAlgorithmCell.swift in Sources */,
 				02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */,
 				0297205E1AC65377009B86D2 /* BlackBorderButton.swift in Sources */,
 				023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */,
@@ -363,6 +374,7 @@
 				028159611AAD07E500C795D9 /* TileView.swift in Sources */,
 				02BC427C1AC88B230089639B /* Game2048Board.swift in Sources */,
 				02BC427D1AC88B230089639B /* NTuple.swift in Sources */,
+				02C2A86B1AC9DFF3002DEB97 /* BlackSlider.swift in Sources */,
 				02BC427B1AC88B230089639B /* Action2048.swift in Sources */,
 				02107C9F1AAD240400CFF8FF /* GameModel.swift in Sources */,
 				02107C9A1AAD1F0000CFF8FF /* ScoreView.swift in Sources */,
