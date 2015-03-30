@@ -100,7 +100,7 @@ class ViewController: UIViewController {
     func setupViews() {
         view.backgroundColor = SharedColors.BackgroundColor
 
-        metrics["padding"] = 5.0
+        metrics["padding"] = is3_5InchScreen ? 5.0 : 8.0
         
         // GameBoardView
         gameBoardView = GameBoardView()
@@ -157,7 +157,7 @@ class ViewController: UIViewController {
         targetView.number = 2048
 //        targetView.numberLabel.text = "∞"
         
-        metrics["targetViewHeight"] = gameBoardWidth / 3.0
+        metrics["targetViewHeight"] = is3_5InchScreen ? gameBoardWidth / 3.6 : gameBoardWidth / 3.0
         // TargetView is square
         targetView.addConstraint(NSLayoutConstraint(item: targetView, attribute: .Height, relatedBy: .Equal, toItem: targetView, attribute: .Width, multiplier: 1.0, constant: 0.0))
         
@@ -195,7 +195,8 @@ class ViewController: UIViewController {
         views["hintButton"] = hintButton
         view.addSubview(hintButton)
         
-        metrics["buttonHeight"] = 50.0
+//        metrics["buttonHeight"] = is3_5InchScreen ? metrics["targetViewHeight"]! / 2.0 : 50.0
+        metrics["buttonHeight"] = (metrics["targetViewHeight"]! - metrics["padding"]!) / 2.0
         
         // H
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[scoreView]-padding-[targetView]", options: NSLayoutFormatOptions.AlignAllTop, metrics: metrics, views: views))
@@ -204,8 +205,8 @@ class ViewController: UIViewController {
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[undoButton]-padding-[hintButton(==undoButton)]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
         
         // V
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[scoreView]-padding-[bestScoreView(==scoreView)]-padding-[gameBoardView]-[newGameButton(buttonHeight)]-padding-[undoButton(==newGameButton)]", options: NSLayoutFormatOptions.AlignAllLeading, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[targetView(targetViewHeight)]-padding-[gameBoardView]-[runAIButton(buttonHeight)]-padding-[hintButton(==runAIButton)]", options: NSLayoutFormatOptions.AlignAllTrailing, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[scoreView]-padding-[bestScoreView(==scoreView)]-padding-[gameBoardView]-padding-[newGameButton(buttonHeight)]-padding-[undoButton(buttonHeight)]", options: NSLayoutFormatOptions.AlignAllLeading, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[targetView(targetViewHeight)]-padding-[gameBoardView]-padding-[runAIButton(buttonHeight)]-padding-[hintButton(buttonHeight)]", options: NSLayoutFormatOptions.AlignAllTrailing, metrics: metrics, views: views))
         
         // Target view top spacing >= 22
         view.addConstraint(NSLayoutConstraint(item: targetView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 22))
