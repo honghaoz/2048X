@@ -22,6 +22,7 @@ class SettingViewController: UIViewController {
     var aiAlgorithmTitleLabel: UILabel!
     var aiAlgorithmTableView: UITableView!
     var kAIAlgorithmCellIdentifier: String = "AICell"
+    let kTableViewRowHeight: CGFloat = 34.0
     
     var saveButton: BlackBorderButton!
     var cancelButton: BlackBorderButton!
@@ -40,7 +41,10 @@ class SettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        presentingAnimator.presentingViewSize = CGSize(width: ceil(screenWidth * (is320ScreenWidth ? 0.82 : 0.7) + 24), height: 280.0)
+        // 165 is height without table view rows, 10 bottom spacing
+        var height: CGFloat = 165 + 10
+        height += CGFloat(mainViewController.aiChoices.count) * kTableViewRowHeight
+        presentingAnimator.presentingViewSize = CGSize(width: ceil(screenWidth * (is320ScreenWidth ? 0.82 : 0.7) + 24), height: height)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -224,11 +228,11 @@ extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 34
+        return kTableViewRowHeight
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 34
+        return kTableViewRowHeight
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
