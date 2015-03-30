@@ -87,7 +87,7 @@ class ViewController: UIViewController {
         setupAI()
         otherSetups()
         
-        newGameButtonTapped(nil)
+        startNewGame()
     }
     
     // MARK: Setups
@@ -289,11 +289,24 @@ extension ViewController {
 extension ViewController {
     func newGameButtonTapped(sender: AnyObject?) {
         logDebug()
-        if isAiRunning || isAnimating {
+        
+        if self.isAiRunning || self.isAnimating {
             return
         }
-        gameModel.reset()
-        gameModel.start()
+        
+        let confirmVC = ConfirmViewController()
+        confirmVC.transitioningDelegate = confirmVC
+        confirmVC.modalPresentationStyle = .Custom
+        confirmVC.okClosure = {
+            self.startNewGame()
+        }
+        
+        self.presentViewController(confirmVC, animated: true, completion: nil)
+    }
+    
+    private func startNewGame() {
+        self.gameModel.reset()
+        self.gameModel.start()
     }
     
     func runAIButtonTapped(sender: UIButton) {
