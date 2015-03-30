@@ -154,8 +154,7 @@ class ViewController: UIViewController {
         
         targetView.titleLabel.text = "TARGET"
         targetView.numberLabelMaxFontSize = 38
-        targetView.number = 2048
-//        targetView.numberLabel.text = "∞"
+        targetView.number = 2048 // "∞"
         
         metrics["targetViewHeight"] = is3_5InchScreen ? gameBoardWidth / 3.6 : gameBoardWidth / 3.0
         // TargetView is square
@@ -244,7 +243,7 @@ class ViewController: UIViewController {
     }
     
     func otherSetups() {
-        sharedAnimationDuration = 0.1
+        sharedAnimationDuration = 0.08
         // Make sure operation queue is serial
         commandCalculationQueue.maxConcurrentOperationCount = 1
     }
@@ -519,7 +518,6 @@ extension ViewController {
             // Update UIs
             self.isAnimating = true
             scoreView.number = actionTuple.score
-            updateTargetScore()
             if scoreView.number > bestScoreView.number {
                 bestScoreView.number = scoreView.number
                 saveBestScore(bestScoreView.number)
@@ -536,6 +534,7 @@ extension ViewController {
                 logDebug("Init/ Move board")
                 gameBoardView.updateWithMoveActions(actionTuple.moveActions, initActions: actionTuple.initActions, completion: {
                     self.isAnimating = false
+                    self.updateTargetScore()
                     
                     // If user has stopped AI, reset game model from current displaying views
                     if self.userStoppedAI {
@@ -650,7 +649,7 @@ extension ViewController {
     }
     
     func updateTargetScore() {
-        let currentScore = Double(gameBoardView.currentMaxTileNumber())
+        let currentScore = gameBoardView.currentMaxTileNumber()
         if currentScore < 2048 {
             targetView.number = 2048
             return
@@ -658,7 +657,7 @@ extension ViewController {
         
         var i: Double = 11
         while true {
-            if pow(Double(2.0), i) < currentScore && currentScore < pow(Double(2.0), i + 1) {
+            if Int(pow(Double(2.0), i)) <= currentScore && currentScore < Int(pow(Double(2.0), i + 1)) {
                 targetView.number = Int(pow(Double(2.0), i + 1))
                 break
             }
