@@ -363,4 +363,18 @@ extension GameBoardView {
         
         return result
     }
+    
+    func currentMaxTileNumber() -> Int {
+        var maxNumber = 0
+        for i in 0 ..< dimension {
+            for j in 0 ..< dimension {
+                if let tile = forgroundTiles[i][j].0 {
+                    if tile.number > maxNumber {
+                        maxNumber = tile.number
+                    }
+                }
+            }
+        }
+        return maxNumber
+    }
 }

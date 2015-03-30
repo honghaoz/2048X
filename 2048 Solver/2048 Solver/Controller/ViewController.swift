@@ -143,7 +143,7 @@ class ViewController: UIViewController {
         bestScoreView.titleLabel.text = "BEST"
         bestScoreView.numberLabelMaxFontSize = is3_5InchScreen ? 20 : 28
         bestScoreView.numberLabel.textAlignment = .Right
-        bestScoreView.number = 0 // TODO: Record best score
+        bestScoreView.number = 0
         readBestScore()
         
         // TargetView
@@ -382,6 +382,7 @@ extension ViewController {
         gameModel.resetGameBoardWithIntBoard(lastState.gameBoard, score: lastState.score)
         gameBoardView.setGameBoardWithBoard(lastState.gameBoard)
         scoreView.number = lastState.score
+        updateTargetScore()
     }
     
     func hintButtonTapped(sender: UIButton) {
@@ -518,6 +519,7 @@ extension ViewController {
             // Update UIs
             self.isAnimating = true
             scoreView.number = actionTuple.score
+            updateTargetScore()
             if scoreView.number > bestScoreView.number {
                 bestScoreView.number = scoreView.number
                 saveBestScore(bestScoreView.number)
@@ -644,6 +646,23 @@ extension ViewController {
         let storedScore: Int = defaults.integerForKey("BestScore")
         if storedScore > 0 {
             bestScoreView.number = storedScore
+        }
+    }
+    
+    func updateTargetScore() {
+        let currentScore = Double(gameBoardView.currentMaxTileNumber())
+        if currentScore < 2048 {
+            targetView.number = 2048
+            return
+        }
+        
+        var i: Double = 11
+        while true {
+            if pow(Double(2.0), i) < currentScore && currentScore < pow(Double(2.0), i + 1) {
+                targetView.number = Int(pow(Double(2.0), i + 1))
+                break
+            }
+            i++
         }
     }
 }

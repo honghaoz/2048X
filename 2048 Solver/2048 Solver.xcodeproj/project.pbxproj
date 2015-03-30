@@ -17,7 +17,6 @@
 		0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A24A1AB8A6E300EA72C8 /* Extension.swift */; };
 		0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */; };
 		023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */; };
-		023EDE821AAA325100F5B9C5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE811AAA325100F5B9C5 /* ViewController.swift */; };
 		023EDE851AAA325100F5B9C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE831AAA325100F5B9C5 /* Main.storyboard */; };
 		023EDE871AAA325100F5B9C5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE861AAA325100F5B9C5 /* Images.xcassets */; };
 		023EDE8A1AAA325100F5B9C5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE881AAA325100F5B9C5 /* LaunchScreen.xib */; };
@@ -29,8 +28,9 @@
 		02BC427D1AC88B230089639B /* NTuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42781AC88B230089639B /* NTuple.swift */; };
 		02BC427E1AC88B230089639B /* RectSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42791AC88B230089639B /* RectSize.swift */; };
 		02BC427F1AC88B230089639B /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC427A1AC88B230089639B /* Util.swift */; };
-		02BC42811AC8DA360089639B /* ConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42801AC8DA360089639B /* ConfirmViewController.swift */; };
-		02BC42831AC8DCE10089639B /* PresentingAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42821AC8DCE10089639B /* PresentingAnimator.swift */; };
+		02BC42881AC8F18C0089639B /* ConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42851AC8F18C0089639B /* ConfirmViewController.swift */; };
+		02BC42891AC8F18C0089639B /* PresentingAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42861AC8F18C0089639B /* PresentingAnimator.swift */; };
+		02BC428A1AC8F18C0089639B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42871AC8F18C0089639B /* ViewController.swift */; };
 		02D1339F1AB2A0BA00CE8ADA /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D1339E1AB2A0BA00CE8ADA /* AVKit.framework */; };
 		02DBF5811AB269E7007EE133 /* move.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02DBF5801AB269E7007EE133 /* move.wav */; };
 		02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */; };
@@ -61,7 +61,6 @@
 		023EDE7A1AAA325100F5B9C5 /* 2048 Solver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2048 Solver.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023EDE7E1AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		023EDE811AAA325100F5B9C5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		023EDE841AAA325100F5B9C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		023EDE861AAA325100F5B9C5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		023EDE891AAA325100F5B9C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -75,8 +74,9 @@
 		02BC42781AC88B230089639B /* NTuple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuple.swift; sourceTree = "<group>"; };
 		02BC42791AC88B230089639B /* RectSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectSize.swift; sourceTree = "<group>"; };
 		02BC427A1AC88B230089639B /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
-		02BC42801AC8DA360089639B /* ConfirmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmViewController.swift; sourceTree = "<group>"; };
-		02BC42821AC8DCE10089639B /* PresentingAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentingAnimator.swift; sourceTree = "<group>"; };
+		02BC42851AC8F18C0089639B /* ConfirmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmViewController.swift; sourceTree = "<group>"; };
+		02BC42861AC8F18C0089639B /* PresentingAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentingAnimator.swift; sourceTree = "<group>"; };
+		02BC42871AC8F18C0089639B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		02D1339E1AB2A0BA00CE8ADA /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		02DBF5801AB269E7007EE133 /* move.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = move.wav; sourceTree = "<group>"; };
 		02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModelHelper.swift; sourceTree = "<group>"; };
@@ -162,9 +162,7 @@
 				FF5C5DD81AAF77C600CE6981 /* AI */,
 				02107C9D1AAD238D00CFF8FF /* Model */,
 				02107C961AACCC4400CFF8FF /* View */,
-				023EDE811AAA325100F5B9C5 /* ViewController.swift */,
-				02BC42801AC8DA360089639B /* ConfirmViewController.swift */,
-				02BC42821AC8DCE10089639B /* PresentingAnimator.swift */,
+				02BC42841AC8F18C0089639B /* Controller */,
 				023EDE831AAA325100F5B9C5 /* Main.storyboard */,
 				023EDE861AAA325100F5B9C5 /* Images.xcassets */,
 				023EDE881AAA325100F5B9C5 /* LaunchScreen.xib */,
@@ -208,6 +206,17 @@
 				02BC427A1AC88B230089639B /* Util.swift */,
 			);
 			path = TDLearning;
+			sourceTree = "<group>";
+		};
+		02BC42841AC8F18C0089639B /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				02BC42871AC8F18C0089639B /* ViewController.swift */,
+				02BC42851AC8F18C0089639B /* ConfirmViewController.swift */,
+				02BC42861AC8F18C0089639B /* PresentingAnimator.swift */,
+			);
+			name = Controller;
+			path = View/Controller;
 			sourceTree = "<group>";
 		};
 		02DBF57F1AB269E7007EE133 /* Resource */ = {
@@ -332,7 +341,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				023EDE821AAA325100F5B9C5 /* ViewController.swift in Sources */,
 				02107C9C1AAD220800CFF8FF /* Appearance.swift in Sources */,
 				02BC427E1AC88B230089639B /* RectSize.swift in Sources */,
 				FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */,
@@ -340,13 +348,14 @@
 				0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */,
 				02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */,
 				02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */,
-				02BC42831AC8DCE10089639B /* PresentingAnimator.swift in Sources */,
+				02BC428A1AC8F18C0089639B /* ViewController.swift in Sources */,
 				0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */,
 				02107CA11AAD244A00CFF8FF /* GameModelTypes.swift in Sources */,
+				02BC42891AC8F18C0089639B /* PresentingAnimator.swift in Sources */,
 				02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */,
-				02BC42811AC8DA360089639B /* ConfirmViewController.swift in Sources */,
 				0297205E1AC65377009B86D2 /* BlackBorderButton.swift in Sources */,
 				023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */,
+				02BC42881AC8F18C0089639B /* ConfirmViewController.swift in Sources */,
 				028159611AAD07E500C795D9 /* TileView.swift in Sources */,
 				02BC427C1AC88B230089639B /* Game2048Board.swift in Sources */,
 				02BC427D1AC88B230089639B /* NTuple.swift in Sources */,
