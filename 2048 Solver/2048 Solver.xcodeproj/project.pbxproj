@@ -22,6 +22,7 @@
 		023EDE871AAA325100F5B9C5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE861AAA325100F5B9C5 /* Images.xcassets */; };
 		023EDE8A1AAA325100F5B9C5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE881AAA325100F5B9C5 /* LaunchScreen.xib */; };
 		023EDE961AAA325100F5B9C5 /* _048_SolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */; };
+		0249C9C51ACB1AE5000E954F /* AI-Expectimax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0249C9C41ACB1AE5000E954F /* AI-Expectimax.swift */; };
 		028159611AAD07E500C795D9 /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028159601AAD07E500C795D9 /* TileView.swift */; };
 		0297205E1AC65377009B86D2 /* BlackBorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0297205D1AC65377009B86D2 /* BlackBorderButton.swift */; };
 		02BC427B1AC88B230089639B /* Action2048.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42761AC88B230089639B /* Action2048.swift */; };
@@ -73,6 +74,7 @@
 		023EDE8F1AAA325100F5B9C5 /* 2048 SolverTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "2048 SolverTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023EDE941AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _048_SolverTests.swift; sourceTree = "<group>"; };
+		0249C9C41ACB1AE5000E954F /* AI-Expectimax.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AI-Expectimax.swift"; sourceTree = "<group>"; };
 		028159601AAD07E500C795D9 /* TileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileView.swift; sourceTree = "<group>"; };
 		0297205D1AC65377009B86D2 /* BlackBorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackBorderButton.swift; sourceTree = "<group>"; };
 		02BC42761AC88B230089639B /* Action2048.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action2048.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */,
 				02F21BAF1ABA51B800487782 /* AI-Greedy.swift */,
 				02BC42751AC88B230089639B /* TDLearning */,
+				0249C9C41ACB1AE5000E954F /* AI-Expectimax.swift */,
 			);
 			path = AI;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 				02BC427F1AC88B230089639B /* Util.swift in Sources */,
 				0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */,
 				02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */,
+				0249C9C51ACB1AE5000E954F /* AI-Expectimax.swift in Sources */,
 				02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */,
 				02BC428A1AC8F18C0089639B /* ViewController.swift in Sources */,
 				02C2A86D1AC9E9EF002DEB97 /* BlackSelectionControl.swift in Sources */,

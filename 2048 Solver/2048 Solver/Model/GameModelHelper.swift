@@ -105,8 +105,9 @@ struct GameModelHelper {
     
     // * Game board is not mutated
     static func validMoveCommandsInGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, shuffle: Bool = false) -> [MoveCommand] {
-        var commands = moveCommands(shuffle: false)
-        for command in commands {
+        var commands = [MoveCommand]()
+        var fullCommands = moveCommands(shuffle: false)
+        for command in fullCommands {
             if moveCommand(command, isValidInGameBoard: &gameBoard) {
                 commands.append(command)
             }
@@ -115,6 +116,7 @@ struct GameModelHelper {
         if shuffle {
             commands.shuffle()
         }
+        
         return commands
     }
     
@@ -177,6 +179,30 @@ struct GameModelHelper {
         }
         return true
     }
+    
+    /**
+    Return a copy of gameBoard (a 2d matrix contains integers, 0 stands for .Empty)
+    
+    :returns: 2d array of Int
+    */
+    static func intGameBoardFromGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> [[Int]] {
+        let dimension = gameBoard.dimension
+        var result = [[Int]]()
+        for i in 0 ..< dimension {
+            var row = [Int]()
+            for j in 0 ..< dimension {
+                switch gameBoard[i, j].memory {
+                case .Empty:
+                    row.append(0)
+                case let .Number(num):
+                    row.append(num)
+                }
+            }
+            result.append(row)
+        }
+        return result
+    }
+
 }
 
 // MARK: Memory Management

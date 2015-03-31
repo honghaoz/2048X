@@ -86,12 +86,13 @@ class ViewController: UIViewController {
     var ai: AI!
     var aiRandom: AIRandom!
     var aiGreedy: AIGreedy!
+    var aiExpectimax: AIExpectimax!
     
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        logLevel = .Info
-        logLevel = .Debug
+        logLevel = .Error
+//        logLevel = .Debug
         
         readData()
         setupGameModel()
@@ -253,6 +254,7 @@ class ViewController: UIViewController {
         ai = AI.CreateInstance()
         aiRandom = AIRandom(gameModel: gameModel)
         aiGreedy = AIGreedy(gameModel: gameModel)
+        aiExpectimax = AIExpectimax(gameModel: gameModel)
         
         let AIMiniMaxWithAlphaBetaPruning = AITuple(description: "Minimax Tree with Alpha/Beta Pruning", function: miniMaxWithAlphaBetaPruning)
         aiChoices[0] = AIMiniMaxWithAlphaBetaPruning
@@ -262,6 +264,9 @@ class ViewController: UIViewController {
         
         let AIRandomness = AITuple(description: "Pure Monte Carlo Tree Search", function: randomness)
         aiChoices[2] = AIRandomness
+        
+        let AIExpectimaxTuple = AITuple(description: "Expectimax Tree Search", function: expectimax)
+        aiChoices[3] = AIExpectimaxTuple
     }
     
     func otherSetups() {
@@ -410,6 +415,7 @@ extension ViewController {
                     self.gameModel.commandQueueSize = self.kAiCommandQueueSize
                     self.gameBoardView.gameModel = self.gameModel
                     self.aiRandom.gameModel = self.gameModel
+                    self.aiExpectimax.gameModel = self.gameModel
                     
                     self.readBestScore()
                     
@@ -501,6 +507,10 @@ extension ViewController {
     func randomness() -> MoveCommand? {
         return aiRandom.nextCommand()
     }
+    
+    func expectimax() -> MoveCommand? {
+        return aiExpectimax.nextCommand()
+    }
 }
 
 // MARK: Command Queue
@@ -588,7 +598,7 @@ extension ViewController {
             logDebug("ActionQueue size: \(actionQueue.count)")
             
             // If before dequeuing, actionQueue is full, command queue is empty, reactivate AI
-            if isAiRunning && (actionQueue.count < kAiCommandQueueSize) && (commandCalculationQueue.operationCount + commandQueue.count == 0) {
+            if isAiRunning && (actionQueue.count == kAiCommandQueueSize - 1) && (commandCalculationQueue.operationCount + commandQueue.count == 0) {
                 logDebug("Action Queue is available, resume AI")
                 runAIforNextStep()
             }
