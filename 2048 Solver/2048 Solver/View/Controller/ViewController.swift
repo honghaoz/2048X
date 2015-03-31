@@ -40,7 +40,7 @@ class ViewController: UIViewController {
     
     /// queue size for different mode
     var kUserCommandQueueSize: Int = 2
-    var kAiCommandQueueSize: Int = 20
+    var kAiCommandQueueSize: Int = 10
     
     // Game History
     typealias GameState = (stateId: Int, gameBoard: [[Int]], score: Int)
@@ -327,7 +327,7 @@ extension ViewController {
         }
         
         confirmVC.cancelClosure = {
-            if aiIsRunningBefore {
+            if aiIsRunningBefore && !self.isAiRunning{
                 self.runAIButtonTapped(nil)
             }
         }
@@ -410,6 +410,7 @@ extension ViewController {
                     self.gameModel.delegate = self
                     self.gameModel.commandQueueSize = self.kAiCommandQueueSize
                     self.gameBoardView.gameModel = self.gameModel
+                    self.aiRandom.gameModel = self.gameModel
                     
                     self.readBestScore()
                     
@@ -417,7 +418,7 @@ extension ViewController {
                     return
                 }
                 
-                if aiIsRunningBefore {
+                if aiIsRunningBefore && !self.isAiRunning {
                     self.runAIButtonTapped(nil)
                 }
             }
@@ -432,8 +433,12 @@ extension ViewController {
         if count <= 1 {
             return
         }
-        if isGameEnd || isAiRunning || isAnimating || commandQueue.count > 0 || actionQueue.count > 0 || commandCalculationQueue.operationCount > 0 {
+        if isAiRunning || isAnimating || commandQueue.count > 0 || actionQueue.count > 0 || commandCalculationQueue.operationCount > 0 {
             return
+        }
+        
+        if isGameEnd {
+            isGameEnd = false
         }
         
         // Last state is current state
