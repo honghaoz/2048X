@@ -265,7 +265,6 @@ class ViewController: UIViewController {
     }
     
     func otherSetups() {
-        sharedAnimationDuration = 0.08
         // Make sure operation queue is serial
         commandCalculationQueue.maxConcurrentOperationCount = 1
         
@@ -427,7 +426,7 @@ extension ViewController {
         }
     }
     
-    func undoButtonTapped(sender: UIButton) {
+    func undoButtonTapped(sender: UIButton?) {
         logDebug()
         let count = gameStateHistory.count
         if count <= 1 {
@@ -624,6 +623,19 @@ extension ViewController {
             }
         } else {
             logDebug("Queue is empty")
+            if isGameEnd {
+                let gameEndVC = GameEndViewController()
+                gameEndVC.transitioningDelegate = gameEndVC
+                gameEndVC.modalPresentationStyle = .Custom
+                gameEndVC.undoClosure = {
+                    self.undoButtonTapped(nil)
+                }
+                gameEndVC.startClosure = {
+                    self.startNewGame()
+                }
+                
+                self.presentViewController(gameEndVC, animated: true, completion: nil)
+            }
         }
     }
     
