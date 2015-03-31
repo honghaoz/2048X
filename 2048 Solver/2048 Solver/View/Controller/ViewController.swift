@@ -27,6 +27,7 @@ class ViewController: UIViewController {
     var metrics = [String: CGFloat]()
     
     // MARK: Model
+    var dimension: Int = 4
     var gameModel: Game2048!
     /// queue for move command
     var commandQueue = [MoveCommand]()
@@ -44,7 +45,15 @@ class ViewController: UIViewController {
     // Game History
     typealias GameState = (stateId: Int, gameBoard: [[Int]], score: Int)
     typealias CommandRecord = (fromStateId: Int, toStateId: Int, command: MoveCommand)
-    var gameStateHistory = [GameState]()
+    var gameStateHistory = [GameState]() {
+        didSet {
+            if gameStateHistory.count > 1 {
+                undoButton.enabled = true
+            } else {
+                undoButton.enabled = false
+            }
+        }
+    }
     var commandHistory = [CommandRecord]()
     
     // MARK: Game status flags
@@ -84,6 +93,7 @@ class ViewController: UIViewController {
 //        logLevel = .Info
         logLevel = .Debug
         
+        readData()
         setupGameModel()
         setupViews()
         setupSwipeGestures()
@@ -95,7 +105,7 @@ class ViewController: UIViewController {
     
     // MARK: Setups
     func setupGameModel() {
-        gameModel = Game2048(dimension: 4, target: 0)
+        gameModel = Game2048(dimension: dimension, target: 0)
         gameModel.delegate = self
         gameModel.commandQueueSize = kAiCommandQueueSize
     }
@@ -303,8 +313,10 @@ extension ViewController {
     func newGameButtonTapped(sender: AnyObject?) {
         logDebug()
         
-        if self.isAiRunning || self.isAnimating {
-            return
+        var aiIsRunningBefore = false
+        if isAiRunning {
+            aiIsRunningBefore = true
+            runAIButtonTapped(nil)
         }
         
         let confirmVC = ConfirmViewController()
@@ -312,6 +324,12 @@ extension ViewController {
         confirmVC.modalPresentationStyle = .Custom
         confirmVC.okClosure = {
             self.startNewGame()
+        }
+        
+        confirmVC.cancelClosure = {
+            if aiIsRunningBefore {
+                self.runAIButtonTapped(nil)
+            }
         }
         
         self.presentViewController(confirmVC, animated: true, completion: nil)
@@ -375,11 +393,30 @@ extension ViewController {
                 runAIButtonTapped(nil)
             }
             
+            var dimensionBefore = dimension
+            
             let settingVC = SettingViewController()
             settingVC.transitioningDelegate = settingVC
             settingVC.modalPresentationStyle = .Custom
             settingVC.mainViewController = self
+            settingVC.saveClosure = {
+                self.saveData()
+            }
+            
             settingVC.dismissClosure = {
+                // If dimension is changed, reset game model and game board
+                if dimensionBefore != self.dimension {
+                    self.gameModel = Game2048(dimension: self.dimension, target: 0)
+                    self.gameModel.delegate = self
+                    self.gameModel.commandQueueSize = self.kAiCommandQueueSize
+                    self.gameBoardView.gameModel = self.gameModel
+                    
+                    self.readBestScore()
+                    
+                    self.startNewGame()
+                    return
+                }
+                
                 if aiIsRunningBefore {
                     self.runAIButtonTapped(nil)
                 }
@@ -668,17 +705,65 @@ extension ViewController {
 //        }
 //    }
     
+    func readData() {
+        readDimension()
+        readAnimationDuration()
+        readAIChoice()
+    }
+    
+    func saveData() {
+        saveDimension()
+        saveAnimationDuration()
+        saveAIChoice()
+    }
+    
+    func saveAIChoice() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let number = NSNumber(integer: aiSelectedChoiceIndex)
+        defaults.setObject(number, forKey: "AIChoice")
+    }
+    
+    func readAIChoice() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let choiceNumber = defaults.objectForKey("AIChoice") as? NSNumber {
+            aiSelectedChoiceIndex = choiceNumber.integerValue
+        }
+    }
+    
+    func saveDimension() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setInteger(dimension, forKey: "Dimension")
+    }
+    
+    func readDimension() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let storedDimension: Int = defaults.integerForKey("Dimension")
+        if storedDimension > 0 {
+            dimension = storedDimension
+        }
+    }
+    
+    func saveAnimationDuration() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let number = NSNumber(double: sharedAnimationDuration)
+        defaults.setObject(number, forKey: "AnimationDuration")
+    }
+    
+    func readAnimationDuration() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let durationNumber = defaults.objectForKey("AnimationDuration") as? NSNumber {
+            sharedAnimationDuration = durationNumber.doubleValue
+        }
+    }
+    
     func saveBestScore(score: Int) {
         let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setInteger(score, forKey: "BestScore")
+        defaults.setInteger(score, forKey: String(format: "BestScore_%d", dimension))
     }
     
     func readBestScore() {
         let defaults = NSUserDefaults.standardUserDefaults()
-        let storedScore: Int = defaults.integerForKey("BestScore")
-        if storedScore > 0 {
-            bestScoreView.number = storedScore
-        }
+        bestScoreView.number = defaults.integerForKey(String(format: "BestScore_%d", dimension))
     }
     
     func updateTargetScore() {

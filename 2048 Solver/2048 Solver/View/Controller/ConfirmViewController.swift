@@ -21,6 +21,7 @@ class ConfirmViewController: UIViewController {
     
     var okClosure: (() -> ())? = nil
     var cancelClosure: (() -> ())? = nil
+    var dismissClosure: (() -> ())? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,12 +76,14 @@ class ConfirmViewController: UIViewController {
         logDebug()
         self.dismissViewControllerAnimated(true, completion: nil)
         okClosure?()
+        dismissClosure?()
     }
     
     func cancelButtonTapped(sender: UIButton) {
         logDebug()
         self.dismissViewControllerAnimated(true, completion: nil)
         cancelClosure?()
+        dismissClosure?()
     }
 }
 
