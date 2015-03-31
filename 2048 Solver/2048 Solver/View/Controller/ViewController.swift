@@ -589,7 +589,7 @@ extension ViewController {
             logDebug("ActionQueue size: \(actionQueue.count)")
             
             // If before dequeuing, actionQueue is full, command queue is empty, reactivate AI
-            if isAiRunning && (actionQueue.count == kAiCommandQueueSize - 1) && (commandCalculationQueue.operationCount + commandQueue.count == 0) {
+            if isAiRunning && (actionQueue.count < kAiCommandQueueSize) && (commandCalculationQueue.operationCount + commandQueue.count == 0) {
                 logDebug("Action Queue is available, resume AI")
                 runAIforNextStep()
             }
