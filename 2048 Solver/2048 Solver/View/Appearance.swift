@@ -11,6 +11,41 @@ import UIKit
 
 var sharedAnimationDuration: NSTimeInterval = 0.12
 
+struct SharedFontSize {
+    static func tileFontSizeForDimension(dimension: Int) -> Int {
+        switch dimension {
+        case 0:
+            return 150
+        case 1:
+            return 100
+        case 2:
+            return 80
+        case 3:
+            return 50
+        case 4:
+            return 40
+        case 5:
+            return 32
+        case 6:
+            return 28
+        case 7:
+            return 25
+        case 8:
+            return 22
+        case 9:
+            return 18
+        case 10:
+            return 16
+        case 11:
+            return 13
+        case 12:
+            return 11
+        default:
+            return 10
+        }
+    }
+}
+
 struct SharedColors {
     static let BackgroundColor = UIColor(red: 160.0/255.0, green: 167.0/255.0, blue: 147.0/255.0, alpha: 1.0)
     static func tileBackgrounColorForNumber(number: Int) -> UIColor {

@@ -21,6 +21,18 @@ class BlackBorderButton: UIButton {
         }
     }
     
+    private let disabledColor = UIColor(white: 0.0, alpha: 0.5)
+    
+    override var enabled: Bool {
+        didSet {
+            if enabled {
+                self.layer.borderColor = UIColor.blackColor().CGColor
+            } else {
+                self.layer.borderColor = disabledColor.CGColor
+            }
+        }
+    }
+    
     // MARK:- Init Methods
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -54,6 +66,7 @@ class BlackBorderButton: UIButton {
         
         self.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
         self.setTitleColor(SharedColors.BackgroundColor, forState: UIControlState.Highlighted)
+        self.setTitleColor(disabledColor, forState: UIControlState.Disabled)
         
         self.setBackgroundColor(SharedColors.BackgroundColor, forUIControlState: UIControlState.Normal)
         self.setBackgroundColor(UIColor.blackColor(), forUIControlState: UIControlState.Highlighted)

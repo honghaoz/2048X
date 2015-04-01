@@ -1,26 +1,26 @@
 //
-//  ConfirmViewController.swift
+//  GameEndViewController.swift
 //  2048 Solver
 //
-//  Created by Honghao Zhang on 3/29/15.
+//  Created by Honghao Zhang on 3/31/15.
 //  Copyright (c) 2015 Honghao Zhang. All rights reserved.
 //
 
 import UIKit
 
-class ConfirmViewController: UIViewController {
-
+class GameEndViewController: UIViewController {
+    
     var titleLabel: UILabel!
-    var okButton: BlackBorderButton!
-    var cancelButton: BlackBorderButton!
+    var undoButton: BlackBorderButton!
+    var startButton: BlackBorderButton!
     
     var views = [String: UIView]()
     var metrics = [String: CGFloat]()
     
     let presentingAnimator = PresentingAnimator()
     
-    var okClosure: (() -> ())? = nil
-    var cancelClosure: (() -> ())? = nil
+    var undoClosure: (() -> ())? = nil
+    var startClosure: (() -> ())? = nil
     var dismissClosure: (() -> ())? = nil
     
     override func viewDidLoad() {
@@ -40,54 +40,54 @@ class ConfirmViewController: UIViewController {
         views["titleLabel"] = titleLabel
         view.addSubview(titleLabel)
         
-        titleLabel.text = "Start a new game?"
+        titleLabel.text = "Game Over!"
         titleLabel.textColor = UIColor.blackColor()
         titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: is320ScreenWidth ? 22 : 25)
         titleLabel.textAlignment = NSTextAlignment.Center
         titleLabel.numberOfLines = 0
         
-        // OK button
-        okButton = BlackBorderButton()
-        okButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-        okButton.title = "Yes"
-        okButton.addTarget(self, action: "okButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-        views["okButton"] = okButton
-        view.addSubview(okButton)
+        // undoButton
+        undoButton = BlackBorderButton()
+        undoButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        undoButton.title = "Undo"
+        undoButton.addTarget(self, action: "undoButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        views["undoButton"] = undoButton
+        view.addSubview(undoButton)
         
-        // Cancel button
-        cancelButton = BlackBorderButton()
-        cancelButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-        cancelButton.title = "No"
-        cancelButton.addTarget(self, action: "cancelButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-        views["cancelButton"] = cancelButton
-        view.addSubview(cancelButton)
+        // Start a new game button
+        startButton = BlackBorderButton()
+        startButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        startButton.title = "Try Again"
+        startButton.addTarget(self, action: "startButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        views["startButton"] = startButton
+        view.addSubview(startButton)
         
         // Auto Layout
         // H:
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[titleLabel]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[okButton]-(-5)-[cancelButton(==okButton)]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[undoButton]-(-5)-[startButton(==undoButton)]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
         
         // V:
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[titleLabel][okButton(50)]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[titleLabel][cancelButton]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[titleLabel][undoButton(50)]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[titleLabel][startButton]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
     }
     
-    func okButtonTapped(sender: UIButton) {
+    func undoButtonTapped(sender: UIButton) {
         logDebug()
         self.dismissViewControllerAnimated(true, completion: nil)
-        okClosure?()
+        undoClosure?()
         dismissClosure?()
     }
     
-    func cancelButtonTapped(sender: UIButton) {
+    func startButtonTapped(sender: UIButton) {
         logDebug()
         self.dismissViewControllerAnimated(true, completion: nil)
-        cancelClosure?()
+        startClosure?()
         dismissClosure?()
     }
 }
 
-extension ConfirmViewController: UIViewControllerTransitioningDelegate {
+extension GameEndViewController: UIViewControllerTransitioningDelegate {
     // MARK: - UIViewControllerTransitioningDelegate
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         presentingAnimator.presenting = true

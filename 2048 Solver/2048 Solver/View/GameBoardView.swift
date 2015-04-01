@@ -30,7 +30,17 @@ class GameBoardView: UIView {
     var forgroundTiles = [[(TileView?, TileView?)]]()
     
     /// GameModel for GameBoardView
-    var gameModel: Game2048!
+    var gameModel: Game2048! {
+        didSet {
+            if superview != nil {
+                updateTileWidth()
+                setupBackgroundTileViews()
+                setupForgroundTileViews()
+                updateBackgroundTileViews()
+                updateForgroundTileViews()
+            }
+        }
+    }
     
     // MARK:- Init Methods
     required init(coder aDecoder: NSCoder) {
@@ -70,6 +80,7 @@ class GameBoardView: UIView {
         precondition(gameModel != nil, "GameModel must not be nil")
         // Remove old ones
         backgroundTiles.map{ $0.map { $0.removeFromSuperview() }}
+        backgroundTiles.removeAll(keepCapacity: false)
         // Layout tiles
         for i in 0 ..< dimension {
             var tiles = [TileView]()
@@ -87,6 +98,7 @@ class GameBoardView: UIView {
         precondition(gameModel != nil, "GameModel must not be nil")
         forgroundTiles.map { $0.map { $0.0?.removeFromSuperview() } }
         forgroundTiles.map { $0.map { $0.1?.removeFromSuperview() } }
+        forgroundTiles.removeAll(keepCapacity: false)
         
         for i in 0 ..< dimension {
             var tiles = [(TileView?, TileView?)]()
@@ -102,6 +114,7 @@ class GameBoardView: UIView {
         // Update background tiles' frame
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
+                logDebug("i: \(i), j: \(j)")
                 backgroundTiles[i][j].frame = tileFrameForCoordinate((i, j))
             }
         }
@@ -137,6 +150,7 @@ class GameBoardView: UIView {
                 if board[i][j] > 0 {
                     let tile = TileView(frame: tileFrameForCoordinate((i, j)))
                     tile.number = board[i][j]
+                    tile.numberLabel.font = tile.numberLabel.font.fontWithSize(CGFloat(SharedFontSize.tileFontSizeForDimension(dimension)))
                     self.addSubview(tile)
                     forgroundTiles[i][j] = (tile, nil)
                 }
@@ -215,6 +229,7 @@ extension GameBoardView {
             logDebug("Init: \(initCoordinate), \(number)")
             let tile = TileView(frame: tileFrameForCoordinate(initCoordinate))
             tile.number = number
+            tile.numberLabel.font = tile.numberLabel.font.fontWithSize(CGFloat(SharedFontSize.tileFontSizeForDimension(dimension)))
             
             // Store new tile views
             forgroundTiles[initCoordinate.0][initCoordinate.1].0 = tile

@@ -19,6 +19,11 @@ class SettingViewController: UIViewController {
     
     var animationDurationSlider: BlackSlider!
     
+    var dimensionTitleLabel: UILabel!
+    var dimensionNumberLabel: UILabel!
+    var dimensionSlider: BlackSlider!
+    var dimension: Int!
+    
     var aiAlgorithmTitleLabel: UILabel!
     var aiAlgorithmTableView: UITableView!
     var kAIAlgorithmCellIdentifier: String = "AICell"
@@ -40,11 +45,16 @@ class SettingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViews()
-        // 165 is height without table view rows, 10 bottom spacing
-        var height: CGFloat = 165 + 10
+
+        // 230 is height without table view rows, 10 bottom spacing
+        var height: CGFloat = 230 + 10
         height += CGFloat(mainViewController.aiChoices.count) * kTableViewRowHeight
         presentingAnimator.presentingViewSize = CGSize(width: ceil(screenWidth * (is320ScreenWidth ? 0.82 : 0.7) + 24), height: height)
+        
+        //
+        dimension = mainViewController.dimension
+        
+        setupViews()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -66,7 +76,7 @@ class SettingViewController: UIViewController {
         views["mainContainerView"] = mainContainerView
         view.addSubview(mainContainerView)
         
-        // Title Label
+        // Animation Duration Title Label
         animationDurationTitleLabel = UILabel()
         animationDurationTitleLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         views["animationDurationTitleLabel"] = animationDurationTitleLabel
@@ -78,7 +88,7 @@ class SettingViewController: UIViewController {
         animationDurationTitleLabel.textAlignment = NSTextAlignment.Left
         animationDurationTitleLabel.numberOfLines = 1
         
-        //
+        // Animation Duration Number Label
         animationDurationNumberLabel = UILabel()
         animationDurationNumberLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         views["animationDurationNumberLabel"] = animationDurationNumberLabel
@@ -90,6 +100,7 @@ class SettingViewController: UIViewController {
         animationDurationNumberLabel.textAlignment = NSTextAlignment.Center
         animationDurationNumberLabel.numberOfLines = 1
         
+        // Animation Duration Under score view
         animationDurationNumberUnderscoreView = UIView()
         animationDurationNumberUnderscoreView.setTranslatesAutoresizingMaskIntoConstraints(false)
         views["animationDurationNumberUnderscoreView"] = animationDurationNumberUnderscoreView
@@ -97,7 +108,14 @@ class SettingViewController: UIViewController {
         
         animationDurationNumberUnderscoreView.backgroundColor = UIColor.blackColor()
         
-        //
+        let cHeight = NSLayoutConstraint(item: animationDurationNumberUnderscoreView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 0.0, constant: 3.0)
+        animationDurationNumberUnderscoreView.addConstraint(cHeight)
+        let cWidth = NSLayoutConstraint(item: animationDurationNumberUnderscoreView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: animationDurationNumberLabel, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0.0)
+        let cTopSpacing = NSLayoutConstraint(item: animationDurationNumberUnderscoreView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: animationDurationNumberLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0)
+        let cLeading = NSLayoutConstraint(item: animationDurationNumberUnderscoreView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: animationDurationNumberLabel, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0)
+        mainContainerView.addConstraints([cWidth, cTopSpacing, cLeading])
+        
+        // Animation Duration Unit Label
         animationDurationUnitLabel = UILabel()
         animationDurationUnitLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         views["animationDurationUnitLabel"] = animationDurationUnitLabel
@@ -114,6 +132,7 @@ class SettingViewController: UIViewController {
         animationDurationUnitLabel.setContentCompressionResistancePriority(1000, forAxis: UILayoutConstraintAxis.Horizontal)
         animationDurationUnitLabel.setContentCompressionResistancePriority(1000, forAxis: UILayoutConstraintAxis.Vertical)
         
+        // Animation Duration Slider
         animationDurationSlider = BlackSlider()
         animationDurationSlider.setTranslatesAutoresizingMaskIntoConstraints(false)
         views["animationDurationSlider"] = animationDurationSlider
@@ -122,6 +141,40 @@ class SettingViewController: UIViewController {
         animationDurationSlider.maximumValue = 1.0
         animationDurationSlider.value = Float(sharedAnimationDuration)
         animationDurationSlider.addTarget(self, action: "animationDurationSliderValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        
+        // Dimension Title Label
+        dimensionTitleLabel = UILabel()
+        dimensionTitleLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        views["dimensionTitleLabel"] = dimensionTitleLabel
+        mainContainerView.addSubview(dimensionTitleLabel)
+        
+        dimensionTitleLabel.text = "Board Size:"
+        dimensionTitleLabel.textColor = UIColor.blackColor()
+        dimensionTitleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
+        dimensionTitleLabel.textAlignment = NSTextAlignment.Left
+        dimensionTitleLabel.numberOfLines = 1
+        
+        // Dimension Number Label
+        dimensionNumberLabel = UILabel()
+        dimensionNumberLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        views["dimensionNumberLabel"] = dimensionNumberLabel
+        mainContainerView.addSubview(dimensionNumberLabel)
+        
+        dimensionNumberLabel.text = String(format: "%d×%d", dimension, dimension)
+        dimensionNumberLabel.textColor = UIColor.blackColor()
+        dimensionNumberLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
+        dimensionNumberLabel.textAlignment = NSTextAlignment.Center
+        dimensionNumberLabel.numberOfLines = 1
+        
+        // Dimension Slider
+        dimensionSlider = BlackSlider()
+        dimensionSlider.setTranslatesAutoresizingMaskIntoConstraints(false)
+        views["dimensionSlider"] = dimensionSlider
+        mainContainerView.addSubview(dimensionSlider)
+        dimensionSlider.minimumValue = 2
+        dimensionSlider.maximumValue = 12
+        dimensionSlider.value = Float(dimension)
+        dimensionSlider.addTarget(self, action: "dimensionSliderValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
         
         // aiAlgorithmTitleLabel
         aiAlgorithmTitleLabel = UILabel()
@@ -163,6 +216,8 @@ class SettingViewController: UIViewController {
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[mainContainerView]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
         mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-12-[animationDurationTitleLabel]-3-[animationDurationNumberLabel]-2-[animationDurationUnitLabel]-(>=12)-|", options: NSLayoutFormatOptions.AlignAllFirstBaseline, metrics: metrics, views: views))
         mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-32-[animationDurationSlider]-32-|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
+        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-12-[dimensionTitleLabel]-3-[dimensionNumberLabel]-(>=12)-|", options: NSLayoutFormatOptions.AlignAllFirstBaseline, metrics: metrics, views: views))
+        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-32-[dimensionSlider]-32-|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
         mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-12-[aiAlgorithmTitleLabel]", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
         mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-24-[aiAlgorithmTableView]-24-|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[saveButton]-(-5)-[cancelButton(==saveButton)]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
@@ -170,18 +225,23 @@ class SettingViewController: UIViewController {
         // V:
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[mainContainerView][saveButton(50)]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[mainContainerView][cancelButton]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[animationDurationTitleLabel]-10-[animationDurationSlider]-10-[aiAlgorithmTitleLabel]-10-[aiAlgorithmTableView]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
+        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[animationDurationTitleLabel]-10-[animationDurationSlider]-10-[dimensionTitleLabel]-10-[dimensionSlider]-10-[aiAlgorithmTitleLabel]-10-[aiAlgorithmTableView]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
     }
     
     func animationDurationSliderValueChanged(sender: UISlider) {
-        let string = String(format: "%0.2f", sender.value)
-        animationDurationNumberLabel.text = string
+        animationDurationNumberLabel.text = String(format: "%0.2f", sender.value)
+    }
+    
+    func dimensionSliderValueChanged(sender: UISlider) {
+        dimension = Int(floor(sender.value))
+        dimensionNumberLabel.text = String(format: "%d×%d", dimension, dimension)
     }
     
     func saveButtonTapped(sender: UIButton) {
         logDebug()
         sharedAnimationDuration = NSTimeInterval(animationDurationSlider.value)
         mainViewController.aiSelectedChoiceIndex = aiAlgorithmTableView.indexPathForSelectedRow()!.row
+        mainViewController.dimension = dimension
         
         saveClosure?()
         dismissClosure?()
