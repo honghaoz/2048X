@@ -35,6 +35,7 @@ class Transition {
     func getAction() -> Action2048 {
         return action
     }
+
     
     func getAfterState() -> State2048 {
         return afterState

@@ -87,6 +87,7 @@ class ViewController: UIViewController {
     var aiRandom: AIRandom!
     var aiGreedy: AIGreedy!
     var aiExpectimax: AIExpectimax!
+    var TDLAi: TDLGame2048!
     
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
@@ -108,6 +109,9 @@ class ViewController: UIViewController {
 //            var myGame = Game2048ExperimentTDL()
 //            myGame.RunMe()
 //        })
+        
+//        var myGame = Game2048ExperimentTDL()
+//        myGame.RunMe()
     }
     
     // MARK: Setups
@@ -261,6 +265,7 @@ class ViewController: UIViewController {
         aiRandom = AIRandom(gameModel: gameModel)
         aiGreedy = AIGreedy(gameModel: gameModel)
         aiExpectimax = AIExpectimax(gameModel: gameModel)
+        TDLAi = TDLGame2048()
         
         let AIMiniMaxWithAlphaBetaPruning = AITuple(description: "Minimax Tree with Alpha/Beta Pruning", function: miniMaxWithAlphaBetaPruning)
         aiChoices[0] = AIMiniMaxWithAlphaBetaPruning
@@ -273,6 +278,9 @@ class ViewController: UIViewController {
         
         let AIExpectimaxTuple = AITuple(description: "Expectimax Tree Search", function: expectimax)
         aiChoices[3] = AIExpectimaxTuple
+        
+        let AITDLearningTuple = AITuple(description: "TDLearning", function: TDLearning)
+        aiChoices[4] = AITDLearningTuple
     }
     
     func otherSetups() {
@@ -516,6 +524,10 @@ extension ViewController {
     
     func expectimax() -> MoveCommand? {
         return aiExpectimax.nextCommand()
+    }
+    
+    func TDLearning() -> MoveCommand? {
+        return TDLAi.playWithCurrentState(self.gameModel.currentGameBoard())
     }
 }
 

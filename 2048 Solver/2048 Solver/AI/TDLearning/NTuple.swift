@@ -27,7 +27,7 @@ func == (lhs:NTuple, rhs:NTuple) -> Bool {
     return true
 }
 
-class NTuple:Equatable {
+class NTuple:NSObject, Equatable {
     var numValues:Int
     var locations:[Int]
     var LUT:[Double] // LUT Table
@@ -53,6 +53,19 @@ class NTuple:Equatable {
             weights[i] = Double(Float.random(lower: Float(minWeight), upper: Float(maxWeight)))
         }
         self.init(numValues: numValues, locations: locations, weights: weights)
+    }
+    
+    // MARK: NSCoding
+    required init(coder aDecoder: NSCoder) {
+        self.numValues = aDecoder.decodeIntegerForKey("numValues")
+        self.locations = aDecoder.decodeObjectForKey("locations") as! [Int]
+        self.LUT = aDecoder.decodeObjectForKey("LUT") as! [Double]
+    }
+    
+    func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(self.locations, forKey: "locations")
+        coder.encodeObject(self.LUT, forKey: "LUT")
+        coder.encodeInt(Int32(self.numValues), forKey: "numValues")
     }
     
     convenience init(template:NTuple) {

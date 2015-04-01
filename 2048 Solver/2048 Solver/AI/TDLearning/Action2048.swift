@@ -46,4 +46,20 @@ enum Action2048 {
         }
     }
     
+    func toMoveCommand() -> MoveCommand {
+        switch(self) {
+        case .UP:
+            return MoveCommand(direction:MoveDirection.Up)
+        case .DOWN:
+            return MoveCommand(direction:MoveDirection.Down)
+        case .RIGHT:
+            return MoveCommand(direction:MoveDirection.Right)
+        case .LEFT:
+            return MoveCommand(direction:MoveDirection.Left)
+        default:
+            return MoveCommand(direction:MoveDirection.Left)
+        }
+        
+    }
+    
 }

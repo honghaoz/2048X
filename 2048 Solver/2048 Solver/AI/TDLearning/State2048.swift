@@ -23,6 +23,8 @@ final class State2048 {
     
     let rewards:[Int] = [0, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536]
     
+    let myInt:[Int:Int] = [0:0, 2:1, 4:2, 8:3, 16:4, 32:5, 64:6, 128:7, 256:8, 512:9, 1024:10, 2048:11, 4096:12, 8192:13, 16384:14,32768:15, 65536:16]
+    
     var board:Array<Array<Int>>
     
     init() {
@@ -34,6 +36,23 @@ final class State2048 {
         for i in 0..<size {
             for j in 0..<size {
                 self.board[i][j] = state.board[i][j]
+            }
+        }
+    }
+    
+    convenience init(data:[[Int]]) {
+        self.init()
+        var feature = Array<Int>()
+        for array in data {
+            for val in array {
+                feature.append(myInt[val]!)
+            }
+        }
+        
+        var index = 0
+        for i in 0..<size {
+            for j in 0..<size {
+                self.board[i][j] = Int(feature[index++])
             }
         }
     }

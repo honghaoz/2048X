@@ -14,6 +14,33 @@ func == (lhs:NTuples, rhs:NTuples) -> Bool {
 
 class NTuples: Equatable{
     var mainNTuples:Array<NTuple>
+    // MARKING
+    
+    
+    
+    class func getNTuplesFromPath(path:String) -> NTuples? {
+        var documentDirectories = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        var documentDirectory = documentDirectories[0] as! String
+        var path = documentDirectory.stringByAppendingPathComponent(path)
+        
+        if let archievedNTuples = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? Array<NTuple> {
+            println("Here we enter here")
+            return NTuples(tuples: archievedNTuples)
+        }
+        return nil
+    }
+    
+    func saveNTuplesForPath(path:String) -> Bool {
+        var documentDirectories = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        var documentDirectory = documentDirectories[0] as! String
+        var path = documentDirectory.stringByAppendingPathComponent(path)
+        
+        if NSKeyedArchiver.archiveRootObject(self.mainNTuples, toFile: path) {
+            return true
+        }
+        return false
+    }
+    
     
     init(tuples:Array<NTuple>) {
         mainNTuples = Array<NTuple>()
@@ -78,7 +105,6 @@ class NTuples: Equatable{
             tuple.update(board, delta: delta)
         }
     }
-    
     
     
 }

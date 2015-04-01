@@ -29,8 +29,17 @@ class TDLGame2048 {
     
     private var game:GameYS
     
+    // For Interface
+    var currentNTuples: NTuples?
+    
     init() {
         game = GameYS()
+        
+        // get current NTuples
+        var path = "NTuples.archieves"
+        if let archived = NTuples.getNTuplesFromPath(path) {
+            currentNTuples = archived
+        }
     }
     
     func getBestValueAction(state:State2048,ntuples:NTuples) -> Double {
@@ -63,6 +72,19 @@ class TDLGame2048 {
         }
         return bestTransition
     }
+    
+    // give a state return the best move
+    func playWithCurrentState(board:[[Int]]) -> MoveCommand? {
+        var state = State2048(data: board)
+        if let tmpNTuples = self.currentNTuples {
+            if let transition = chooseBestTransitionAfterstate(state, ntuples: tmpNTuples) {
+                return transition.getAction().toMoveCommand()
+            }
+            return nil
+        }
+        return nil
+    }
+    
     
     func playByAfterstates(nTuples:NTuples) -> Game2048Outcome {
         var sumRewards = 0
