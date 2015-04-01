@@ -39,6 +39,19 @@
 		02DBF5811AB269E7007EE133 /* move.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02DBF5801AB269E7007EE133 /* move.wav */; };
 		02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */; };
 		02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAF1ABA51B800487782 /* AI-Greedy.swift */; };
+		0E1423A41ACA16E5000E8B8B /* State2048.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423A31ACA16E5000E8B8B /* State2048.swift */; };
+		0E1423A61ACA17BE000E8B8B /* NTuples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423A51ACA17BE000E8B8B /* NTuples.swift */; };
+		0E1423A81ACA4C4E000E8B8B /* DefaultNTupleEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423A71ACA4C4E000E8B8B /* DefaultNTupleEvaluator.swift */; };
+		0E1423AA1ACACEBA000E8B8B /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423A91ACACEBA000E8B8B /* Transition.swift */; };
+		0E1423AC1ACAE58A000E8B8B /* GameYS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423AB1ACAE58A000E8B8B /* GameYS.swift */; };
+		0E1423AE1ACAF879000E8B8B /* TDLGame2048.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423AD1ACAF879000E8B8B /* TDLGame2048.swift */; };
+		0E1423B01ACB4707000E8B8B /* Game2048ExperimentTDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423AF1ACB4707000E8B8B /* Game2048ExperimentTDL.swift */; };
+		0E1423B21ACB4ADE000E8B8B /* NTuplesAllStraightFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423B11ACB4ADE000E8B8B /* NTuplesAllStraightFactory.swift */; };
+		0E1423B41ACB7C5A000E8B8B /* BoardPos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423B31ACB7C5A000E8B8B /* BoardPos.swift */; };
+		0E1423B61ACB7D41000E8B8B /* BoardPosList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423B51ACB7D41000E8B8B /* BoardPosList.swift */; };
+		0E1423BA1ACBA1F9000E8B8B /* NTuplesBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423B91ACBA1F9000E8B8B /* NTuplesBuilder.swift */; };
+		0E1423BC1ACBA7B8000E8B8B /* CollectionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423BB1ACBA7B8000E8B8B /* CollectionUtils.swift */; };
+		0E1423BE1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423BD1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift */; };
 		FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5C5DD91AAF782A00CE6981 /* AI.swift */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +102,19 @@
 		02DBF5801AB269E7007EE133 /* move.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = move.wav; sourceTree = "<group>"; };
 		02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModelHelper.swift; sourceTree = "<group>"; };
 		02F21BAF1ABA51B800487782 /* AI-Greedy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AI-Greedy.swift"; sourceTree = "<group>"; };
+		0E1423A31ACA16E5000E8B8B /* State2048.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State2048.swift; sourceTree = "<group>"; };
+		0E1423A51ACA17BE000E8B8B /* NTuples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuples.swift; sourceTree = "<group>"; };
+		0E1423A71ACA4C4E000E8B8B /* DefaultNTupleEvaluator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultNTupleEvaluator.swift; sourceTree = "<group>"; };
+		0E1423A91ACACEBA000E8B8B /* Transition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transition.swift; sourceTree = "<group>"; };
+		0E1423AB1ACAE58A000E8B8B /* GameYS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameYS.swift; sourceTree = "<group>"; };
+		0E1423AD1ACAF879000E8B8B /* TDLGame2048.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TDLGame2048.swift; sourceTree = "<group>"; };
+		0E1423AF1ACB4707000E8B8B /* Game2048ExperimentTDL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game2048ExperimentTDL.swift; sourceTree = "<group>"; };
+		0E1423B11ACB4ADE000E8B8B /* NTuplesAllStraightFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuplesAllStraightFactory.swift; sourceTree = "<group>"; };
+		0E1423B31ACB7C5A000E8B8B /* BoardPos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardPos.swift; sourceTree = "<group>"; };
+		0E1423B51ACB7D41000E8B8B /* BoardPosList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardPosList.swift; sourceTree = "<group>"; };
+		0E1423B91ACBA1F9000E8B8B /* NTuplesBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuplesBuilder.swift; sourceTree = "<group>"; };
+		0E1423BB1ACBA7B8000E8B8B /* CollectionUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionUtils.swift; sourceTree = "<group>"; };
+		0E1423BD1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuplesAllRectanglesFactory.swift; sourceTree = "<group>"; };
 		FF5C5DD91AAF782A00CE6981 /* AI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -210,11 +236,24 @@
 		02BC42751AC88B230089639B /* TDLearning */ = {
 			isa = PBXGroup;
 			children = (
+				0E1423A31ACA16E5000E8B8B /* State2048.swift */,
 				02BC42761AC88B230089639B /* Action2048.swift */,
 				02BC42771AC88B230089639B /* Game2048Board.swift */,
 				02BC42781AC88B230089639B /* NTuple.swift */,
 				02BC42791AC88B230089639B /* RectSize.swift */,
 				02BC427A1AC88B230089639B /* Util.swift */,
+				0E1423A51ACA17BE000E8B8B /* NTuples.swift */,
+				0E1423A91ACACEBA000E8B8B /* Transition.swift */,
+				0E1423A71ACA4C4E000E8B8B /* DefaultNTupleEvaluator.swift */,
+				0E1423AB1ACAE58A000E8B8B /* GameYS.swift */,
+				0E1423AD1ACAF879000E8B8B /* TDLGame2048.swift */,
+				0E1423AF1ACB4707000E8B8B /* Game2048ExperimentTDL.swift */,
+				0E1423B11ACB4ADE000E8B8B /* NTuplesAllStraightFactory.swift */,
+				0E1423B31ACB7C5A000E8B8B /* BoardPos.swift */,
+				0E1423B51ACB7D41000E8B8B /* BoardPosList.swift */,
+				0E1423B91ACBA1F9000E8B8B /* NTuplesBuilder.swift */,
+				0E1423BB1ACBA7B8000E8B8B /* CollectionUtils.swift */,
+				0E1423BD1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift */,
 			);
 			path = TDLearning;
 			sourceTree = "<group>";
@@ -356,23 +395,36 @@
 				02107C9C1AAD220800CFF8FF /* Appearance.swift in Sources */,
 				02BC427E1AC88B230089639B /* RectSize.swift in Sources */,
 				FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */,
+				0E1423B41ACB7C5A000E8B8B /* BoardPos.swift in Sources */,
 				02BC427F1AC88B230089639B /* Util.swift in Sources */,
 				0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */,
 				02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */,
 				02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */,
+				0E1423B01ACB4707000E8B8B /* Game2048ExperimentTDL.swift in Sources */,
+				0E1423A81ACA4C4E000E8B8B /* DefaultNTupleEvaluator.swift in Sources */,
 				02BC428A1AC8F18C0089639B /* ViewController.swift in Sources */,
+				0E1423BA1ACBA1F9000E8B8B /* NTuplesBuilder.swift in Sources */,
+				0E1423AA1ACACEBA000E8B8B /* Transition.swift in Sources */,
 				02C2A86D1AC9E9EF002DEB97 /* BlackSelectionControl.swift in Sources */,
+				0E1423A41ACA16E5000E8B8B /* State2048.swift in Sources */,
 				0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */,
+				0E1423BE1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift in Sources */,
 				02107CA11AAD244A00CFF8FF /* GameModelTypes.swift in Sources */,
 				02BC42891AC8F18C0089639B /* PresentingAnimator.swift in Sources */,
 				02BC428C1AC8F20B0089639B /* SettingViewController.swift in Sources */,
+				0E1423BC1ACBA7B8000E8B8B /* CollectionUtils.swift in Sources */,
 				02C2A86F1AC9EC10002DEB97 /* AIAlgorithmCell.swift in Sources */,
+				0E1423B21ACB4ADE000E8B8B /* NTuplesAllStraightFactory.swift in Sources */,
+				0E1423AC1ACAE58A000E8B8B /* GameYS.swift in Sources */,
 				02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */,
 				0297205E1AC65377009B86D2 /* BlackBorderButton.swift in Sources */,
 				023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */,
+				0E1423A61ACA17BE000E8B8B /* NTuples.swift in Sources */,
+				0E1423AE1ACAF879000E8B8B /* TDLGame2048.swift in Sources */,
 				02BC42881AC8F18C0089639B /* ConfirmViewController.swift in Sources */,
 				028159611AAD07E500C795D9 /* TileView.swift in Sources */,
 				02BC427C1AC88B230089639B /* Game2048Board.swift in Sources */,
+				0E1423B61ACB7D41000E8B8B /* BoardPosList.swift in Sources */,
 				02BC427D1AC88B230089639B /* NTuple.swift in Sources */,
 				02C2A86B1AC9DFF3002DEB97 /* BlackSlider.swift in Sources */,
 				02BC427B1AC88B230089639B /* Action2048.swift in Sources */,

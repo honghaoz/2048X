@@ -81,8 +81,8 @@ class ViewController: UIViewController {
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        logLevel = .Info
-        logLevel = .Debug
+        logLevel = .Info
+//        logLevel = .Debug
         
         setupGameModel()
         setupViews()
@@ -91,6 +91,9 @@ class ViewController: UIViewController {
         otherSetups()
         
         startNewGame()
+        
+        var myGame = Game2048ExperimentTDL()
+        myGame.RunMe()
     }
     
     // MARK: Setups
