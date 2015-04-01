@@ -103,8 +103,11 @@ class ViewController: UIViewController {
         
         startNewGame()
         
-        var myGame = Game2048ExperimentTDL()
-        myGame.RunMe()
+//        let customQ = dispatch_queue_create("com.uw.yansong", DISPATCH_QUEUE_CONCURRENT)
+//        dispatch_async(customQ, { () -> Void in
+//            var myGame = Game2048ExperimentTDL()
+//            myGame.RunMe()
+//        })
     }
     
     // MARK: Setups
