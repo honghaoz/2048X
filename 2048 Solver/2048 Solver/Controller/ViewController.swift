@@ -67,7 +67,7 @@ class ViewController: UIViewController {
     var isAiRunning: Bool = false {
         didSet {
             if runAIButton != nil {
-                runAIButton.title = isAiRunning ? "Stop AI" : "Run AI"
+                runAIButton.title = isAiRunning ? "Stop" : "Run"
             }
             if isAiRunning {
                 runAIforNextStep()
@@ -196,7 +196,7 @@ class ViewController: UIViewController {
         // Run AI Button
         runAIButton = BlackBorderButton()
         runAIButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-        runAIButton.title = "Run AI"
+        runAIButton.title = "Run"
         runAIButton.addTarget(self, action: "runAIButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: "runAIButtonLongPressed:")
         runAIButton.addGestureRecognizer(longPressGesture)

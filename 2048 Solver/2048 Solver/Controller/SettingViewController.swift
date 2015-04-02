@@ -182,7 +182,7 @@ class SettingViewController: UIViewController {
         views["aiAlgorithmTitleLabel"] = aiAlgorithmTitleLabel
         mainContainerView.addSubview(aiAlgorithmTitleLabel)
         
-        aiAlgorithmTitleLabel.text = "AI Algorithm:"
+        aiAlgorithmTitleLabel.text = "Algorithm:"
         aiAlgorithmTitleLabel.textColor = UIColor.blackColor()
         aiAlgorithmTitleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
         aiAlgorithmTitleLabel.textAlignment = NSTextAlignment.Left
