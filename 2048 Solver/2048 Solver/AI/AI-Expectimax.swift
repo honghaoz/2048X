@@ -21,72 +21,132 @@ class AIExpectimax {
         if GameModelHelper.isGameEnded(&gameModel.gameBoard) {
             return nil
         } else {
-            return _nextCommand(&gameModel.gameBoard, level: 0)
+            let (command, _) = _nextCommand(&gameModel.gameBoard, level: 0)
+            return command
         }
     }
     
-    func _nextCommand(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, level: Int = 0) -> MoveCommand? {
+    func _nextCommand(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, level: Int = 0, maxDepth: Int = 3) -> (MoveCommand?, Double) {
+        var choosenCommand: MoveCommand? = nil
+        var maxScore: Double = 0.0
         
-        var choosenCommand: MoveCommand!
-        var maxScore: Float = -1.0
-        
-        let commands = GameModelHelper.validMoveCommandsInGameBoard(&gameBoard, shuffle: true)
-        
-        for command in commands {
-            GameModelHelper.printOutCommand(command, level: ZHLogLevel.Error)
-            
-            var score: Float = 0.0
+        var commands = GameModelHelper.validMoveCommandsInGameBoard(&gameBoard, shuffle: false)
+        for command in commands {            
             // Copy a new board, Alloc
-            var gameBoardCopy = GameModelHelper.copyGameBoard(&gameModel.gameBoard)
+            var copyGameBoard = GameModelHelper.copyGameBoard(&gameBoard)
             
             // Perform command
-            GameModelHelper.performMoveCommand(command, onGameBoard: &gameBoardCopy)
+            let (a, b) = GameModelHelper.performMoveCommand(command, onGameBoard: &copyGameBoard)
             
-            // availableSpot
-            let availableSpots = GameModelHelper.gameBoardEmptySpots(&gameBoardCopy)
-            if availableSpots.count == 0 {
-                // Dealloc
-                GameModelHelper.deallocGameBoard(&gameBoardCopy)
-                continue
+//            var (score, (x, y)) = evaluateUsingMonoHeuristic(GameModelHelper.intGameBoardFromGameBoard(&copyGameBoard))
+//            GameModelHelper.insertTile(&copyGameBoard, pos: (y, x), value: 2)
+            var score = heuristicSMonotonic(&copyGameBoard)
+            GameModelHelper.insertTileAtRandomLocation(&copyGameBoard)
+
+            if level < maxDepth {
+                var (nextCommand, nextLevelScore) = _nextCommand(&copyGameBoard, level: level + 1, maxDepth: maxDepth)
+                if nextCommand != nil {
+                    score += nextLevelScore * pow(0.9, Double(level) + 1.0)
+                }
             }
             
-            for eachAvailableSpot in availableSpots {
-                // Try to insert 2
-                GameModelHelper.insertTile(&gameBoardCopy, pos: eachAvailableSpot, value: 2)
-                score += heuristicScore(&gameBoardCopy) * 0.85
-                
-                // Restore
-                gameBoardCopy[eachAvailableSpot.0, eachAvailableSpot.1].memory = .Empty
-                
-                // Try to insert 4
-                GameModelHelper.insertTile(&gameBoardCopy, pos: eachAvailableSpot, value: 4)
-                score += heuristicScore(&gameBoardCopy) * 0.15
-                
-                // Restore
-                gameBoardCopy[eachAvailableSpot.0, eachAvailableSpot.1].memory = .Empty
-            }
             if score > maxScore {
                 maxScore = score
                 choosenCommand = command
             }
             
             // Dealloc
-            GameModelHelper.deallocGameBoard(&gameBoardCopy)
+            GameModelHelper.deallocGameBoard(&copyGameBoard)
+            
+            // Expectimax
+//            score += heuristicScore(&gameBoardCopy)
+            
+//            // availableSpot
+//            let availableSpots = GameModelHelper.gameBoardEmptySpots(&gameBoardCopy)
+//            if availableSpots.count == 0 {
+//                // Dealloc
+//                GameModelHelper.deallocGameBoard(&gameBoardCopy)
+//                continue
+//            }
+//            
+//            for eachAvailableSpot in availableSpots {
+//                // Try to insert 2
+//                GameModelHelper.insertTile(&gameBoardCopy, pos: eachAvailableSpot, value: 2)
+//                score += heuristicScore(&gameBoardCopy) * 0.85 * powf(0.25, Float(level))
+//                var (_, nextLevelScore) = _nextCommand(&gameBoardCopy, level: level + 1, maxDepth: maxDepth)
+//                score += nextLevelScore
+//                
+//                // Restore
+//                gameBoardCopy[eachAvailableSpot.0, eachAvailableSpot.1].memory = .Empty
+//                
+//                // Try to insert 4
+//                GameModelHelper.insertTile(&gameBoardCopy, pos: eachAvailableSpot, value: 4)
+//                score += heuristicScore(&gameBoardCopy) * 0.15 * powf(0.25, Float(level))
+//                (_, nextLevelScore) = _nextCommand(&gameBoardCopy, level: level + 1, maxDepth: maxDepth)
+//                score += nextLevelScore
+//                
+//                // Restore
+//                gameBoardCopy[eachAvailableSpot.0, eachAvailableSpot.1].memory = .Empty
+//            }
         }
-        
-        return choosenCommand
+        return (choosenCommand, maxScore)
     }
     
-    
     // MARK: Heuristic
-    func heuristicScore(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Float {
-       
-        let (score, (_, _)) = evaluateUsingMonoHeuristic(GameModelHelper.intGameBoardFromGameBoard(&gameBoard))
-        return Float(score)
-//        let free = heuristicFreeTiles(&gameBoard)
-//        let mono = heuristicMonotonicity(&gameBoard)
-//        logError("free: \(free), mono: \(mono)")
-//        return free + mono
+    func heuristicScore(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Double {
+        let myScore = heuristicSMonotonic(&gameBoard)
+        return myScore
+    }
+    
+    func heuristicSMonotonic(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Double {
+        var ratio: Double = 0.25
+        var maxScore: Double = -1.0
+        
+        // Construct 8 different patterns into one linear array
+        // Direction for the first row
+        for startDirection in 0 ..< 2 {
+            // Whether flip the board
+            for flip in 0 ..< 2 {
+                // Whether it's row or column
+                for rOrC in 0 ..< 2 {
+                    var oneDimension = [UnsafeMutablePointer<Tile>]()
+                    for row in stride(from: 0, to: dimension, by: 2) {
+                        let firstRow = Bool(flip) ? (dimension - 1 - row) : row
+                        if Bool(rOrC) {
+                            oneDimension.extend(gameBoard.getRow(firstRow, reversed: Bool(startDirection)))
+                        } else {
+                            oneDimension.extend(gameBoard.getColumn(firstRow, reversed: Bool(startDirection)))
+                        }
+                        
+                        let secondRow = Bool(flip) ? (dimension - 1 - row - 1) : row + 1
+                        if 0 <= secondRow && secondRow < dimension {
+                            if Bool(rOrC) {
+                                oneDimension.extend(gameBoard.getRow(firstRow, reversed: !Bool(startDirection)))
+                            } else {
+                                oneDimension.extend(gameBoard.getColumn(firstRow, reversed: !Bool(startDirection)))
+                            }
+                        }
+                    }
+                    
+                    var weight: Double = 1.0
+                    var result: Double = 0.0
+                    for (index, tile) in enumerate(oneDimension){
+                        switch tile.memory {
+                        case .Empty:
+                            break
+                        case .Number(let num):
+                            result += Double(num) * weight
+                        }
+                        weight *= ratio
+                    }
+                    if result > maxScore {
+                        maxScore = result
+                    }
+                }
+            }
+        }
+        
+        return maxScore
     }
     
     func heuristicFreeTiles(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Float {
@@ -95,7 +155,8 @@ class AIExpectimax {
     }
     
     func heuristicMonotonicity(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Float {
-        let r: Float = 0.5
+        
+        let r: Float = 0.25
         let dimension = gameBoard.dimension
         var maxResult: Float = 0.0
         var result: Float = 0.0
@@ -165,7 +226,19 @@ class AIExpectimax {
         return maxResult
     }
     
+    
     private func evaluateUsingMonoHeuristic(gameboard: [[Int]], ratio: Double = 0.25) -> (Double, (Int, Int)) {
+        let d = gameboard.count
+        var hasZero = false
+        for i in 0 ..< d {
+            for j in 0 ..< d {
+                if gameboard[i][j] == 0 {
+                    hasZero = true
+                }
+            }
+        }
+        assert(hasZero == true, "")
+        
         let yRange = (0...gameboard.count - 1).map{$0}
         let yRangeReverse = (0...gameboard.count - 1).map{$0}.reverse()
         let xRange = yRange

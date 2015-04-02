@@ -91,6 +91,7 @@ class ViewController: UIViewController {
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+//        logLevel = ZHLogLevel.Off
         logLevel = .Error
 //        logLevel = .Debug
         
@@ -265,7 +266,7 @@ class ViewController: UIViewController {
         let AIRandomness = AITuple(description: "Pure Monte Carlo Tree Search", function: randomness)
         aiChoices[2] = AIRandomness
         
-        let AIExpectimaxTuple = AITuple(description: "Expectimax Tree Search", function: expectimax)
+        let AIExpectimaxTuple = AITuple(description: "Mono 2", function: expectimax)
         aiChoices[3] = AIExpectimaxTuple
     }
     

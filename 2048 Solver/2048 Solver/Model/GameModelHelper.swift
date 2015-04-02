@@ -282,12 +282,7 @@ extension GameModelHelper {
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
                 tempGameBoard[i, j] = UnsafeMutablePointer<Tile>.alloc(1)
-                switch gameBoard[i, j].memory {
-                case .Empty:
-                    tempGameBoard[i, j].initialize(Tile.Empty)
-                case let .Number(tileNumber):
-                    tempGameBoard[i, j].initialize(gameBoard[i, j].memory)
-                }
+                tempGameBoard[i, j].initialize(gameBoard[i, j].memory)
             }
         }
         
@@ -615,7 +610,7 @@ extension GameModelHelper {
 
 // MARK: Debug Helper
 extension GameModelHelper {
-    static func printOutGameBoard(gameBoard: [[Int]]) {
+    static func printOutGameBoard(gameBoard: [[Int]], level: ZHLogLevel = .Debug) {
 //        logDebug("Game Board:")
         let dimension = gameBoard.count
         var buffer = "\n"
@@ -629,11 +624,10 @@ extension GameModelHelper {
             }
             buffer += "\n"
         }
-        logDebug(buffer)
+        logWithLevel(level, buffer)
     }
     
-    static func printOutGameBoard(gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) {
-//        logDebug("Game Board:")
+    static func printOutGameBoard(gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, level: ZHLogLevel = .Debug) {
         let dimension = gameBoard.dimension
         var buffer = "\n"
         for i in 0 ..< dimension {
@@ -647,7 +641,7 @@ extension GameModelHelper {
             }
             buffer += "\n"
         }
-        logDebug(buffer)
+        logWithLevel(level, buffer)
     }
     
     static func printOutTilePointers(tilePointers: [UnsafeMutablePointer<Tile>]) {
