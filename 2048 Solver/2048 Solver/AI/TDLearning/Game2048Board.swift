@@ -15,6 +15,35 @@ class BoardUtils {
         static var TOTAL_MARGIN = 2 * MARGIN_WIDTH
     }
     
+    /*
+    * Returned position is margin-based
+    */
+    class func toMarginPos(boardSize: RectSize, pos: BoardPos)->Int {
+        return (pos.row() + 1) * (boardSize.width + METRICS.TOTAL_MARGIN) + pos.column() + 1
+    }
+    
+    
+    class func toMarginPos(boardWidth:Int, row:Int, col:Int) -> Int {
+        return toMarginPos(RectSize(size: boardWidth), pos: BoardPos(row: row, col: col))
+    }
+    
+    class func isValidPosition(pos:Int, boardSize:Int) -> Bool {
+        return isValidPosition(pos, rows: boardSize, cols: boardSize)
+    }
+    
+    class func isValidPosition(pos:Int, rows:Int, cols:Int) -> Bool {
+        var row = rowFromPos(pos, boardWidth: cols)
+        var col = colFromPos(pos, boardWidth: cols)
+        return 0 <= row && row < rows && 0 <= col && col < cols
+    }
+    
+    class func rowFromPos(pos:Int, boardWidth:Int) -> Int {
+        return pos / (boardWidth + METRICS.TOTAL_MARGIN) - 1
+    }
+    
+    class func colFromPos(pos:Int, boardWidth:Int) -> Int {
+        return pos % (boardWidth + METRICS.TOTAL_MARGIN) - 1
+    }
 }
 
 func == (lhs: Game2048Board, rhs:Game2048Board) -> Bool {
@@ -128,5 +157,7 @@ class Game2048Board:Equatable {
         return getSize()
     }
     
-    
+    func clone() -> Game2048Board {
+        return Game2048Board(buffer: self.buffer)
+    }
 }

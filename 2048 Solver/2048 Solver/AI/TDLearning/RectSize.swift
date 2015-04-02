@@ -35,6 +35,10 @@ struct RectSize :Equatable{
         self.init(rows:size, cols:size)
     }
     
+    func contains(position: BoardPos) -> Bool {
+        return 0 <= position.row() && position.row() < height && 0 <= position.column() && position.column() < width
+    }
+    
 }
 
 func == (lhs: RectSize, rhs:RectSize) -> Bool {

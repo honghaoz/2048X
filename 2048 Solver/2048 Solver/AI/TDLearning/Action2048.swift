@@ -29,4 +29,37 @@ enum Action2048 {
         }
     }
     
+    static func randomAction() -> Action2048 {
+        var rd =  arc4random_uniform(4)
+        
+        switch(rd) {
+        case 0:
+            return .UP
+        case 1:
+            return .DOWN
+        case 2:
+            return .RIGHT
+        case 3:
+            return .LEFT
+        default:
+            return .UP
+        }
+    }
+    
+    func toMoveCommand() -> MoveCommand {
+        switch(self) {
+        case .UP:
+            return MoveCommand(direction:MoveDirection.Up)
+        case .DOWN:
+            return MoveCommand(direction:MoveDirection.Down)
+        case .RIGHT:
+            return MoveCommand(direction:MoveDirection.Right)
+        case .LEFT:
+            return MoveCommand(direction:MoveDirection.Left)
+        default:
+            return MoveCommand(direction:MoveDirection.Left)
+        }
+        
+    }
+    
 }
