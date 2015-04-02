@@ -93,7 +93,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        logLevel = ZHLogLevel.Off
-        logLevel = .Error
+        logLevel = .Info
 //        logLevel = .Debug
         
         readData()
@@ -266,7 +266,7 @@ class ViewController: UIViewController {
         aiRandom = AIRandom(gameModel: gameModel)
         aiGreedy = AIGreedy(gameModel: gameModel)
         aiExpectimax = AIExpectimax(gameModel: gameModel)
-        TDLAi = TDLGame2048()
+        
         
         let AIMiniMaxWithAlphaBetaPruning = AITuple(description: "Minimax Tree with Alpha/Beta Pruning", function: miniMaxWithAlphaBetaPruning)
         aiChoices[0] = AIMiniMaxWithAlphaBetaPruning
@@ -280,8 +280,18 @@ class ViewController: UIViewController {
         let AIExpectimaxTuple = AITuple(description: "Mono 2", function: expectimax)
         aiChoices[3] = AIExpectimaxTuple
         
-        let AITDLearningTuple = AITuple(description: "TDLearning", function: TDLearning)
-        aiChoices[4] = AITDLearningTuple
+        let backgroundReadingQueue = dispatch_queue_create("READING_FILE", DISPATCH_QUEUE_CONCURRENT)
+        dispatch_async(backgroundReadingQueue, { () -> Void in
+            // Do background process
+            logInfo("Loading TDLearning file")
+            self.TDLAi = TDLGame2048()
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                // Do on main thread
+                logInfo("Loading TDLearning file successfully")
+                let AITDLearningTuple = AITuple(description: "TDLearning", function: self.TDLearning)
+                self.aiChoices[4] = AITDLearningTuple
+            })
+        })
     }
     
     func otherSetups() {

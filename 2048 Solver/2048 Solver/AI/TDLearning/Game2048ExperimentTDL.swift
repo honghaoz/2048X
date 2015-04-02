@@ -14,7 +14,6 @@ class Game2048ExperimentTDL {
         
         var tdlGame2048 = TDLGame2048()
         
-        
         var path = "NTuples.archieves"
         var vFunction:NTuples
         
@@ -34,7 +33,7 @@ class Game2048ExperimentTDL {
             println("Start a NEW ONE ---------\(i)")
             tdlGame2048.TDAfterstateLearn(vFunction, explorationRate: 0.001, learningRate: 0.01)
             println("Finish this ONE ---------\(i)")
-            if (i % 501 == 0) {
+            if (i % 20 == 0) {
                 vFunction.saveNTuplesForPath(path)
                 evaluatePerformance(tdlGame2048, vFunctions: vFunction, numEpisodes: 10, e: i)
             }
