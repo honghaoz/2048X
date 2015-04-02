@@ -27,6 +27,7 @@ class ViewController: UIViewController {
     var metrics = [String: CGFloat]()
     
     // MARK: Model
+    var dimension: Int = 4
     var gameModel: Game2048!
     /// queue for move command
     var commandQueue = [MoveCommand]()
@@ -39,12 +40,20 @@ class ViewController: UIViewController {
     
     /// queue size for different mode
     var kUserCommandQueueSize: Int = 2
-    var kAiCommandQueueSize: Int = 20
+    var kAiCommandQueueSize: Int = 10
     
     // Game History
     typealias GameState = (stateId: Int, gameBoard: [[Int]], score: Int)
     typealias CommandRecord = (fromStateId: Int, toStateId: Int, command: MoveCommand)
-    var gameStateHistory = [GameState]()
+    var gameStateHistory = [GameState]() {
+        didSet {
+            if gameStateHistory.count > 1 {
+                undoButton.enabled = true
+            } else {
+                undoButton.enabled = false
+            }
+        }
+    }
     var commandHistory = [CommandRecord]()
     
     // MARK: Game status flags
@@ -71,16 +80,23 @@ class ViewController: UIViewController {
     var userStoppedAI: Bool = false
     
     // MARK: AI Related
+    typealias AITuple = (description: String, function: () -> MoveCommand?)
+    var aiChoices = [Int: AITuple]()
+    var aiSelectedChoiceIndex: Int = 1
     var ai: AI!
     var aiRandom: AIRandom!
     var aiGreedy: AIGreedy!
+    var aiExpectimax: AIExpectimax!
+    var TDLAi: TDLGame2048!
     
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        logLevel = .Info
-        logLevel = .Debug
+//        logLevel = ZHLogLevel.Off
+        logLevel = .Error
+//        logLevel = .Debug
         
+        readData()
         setupGameModel()
         setupViews()
         setupSwipeGestures()
@@ -88,11 +104,20 @@ class ViewController: UIViewController {
         otherSetups()
         
         startNewGame()
+        
+//        let customQ = dispatch_queue_create("com.uw.yansong", DISPATCH_QUEUE_CONCURRENT)
+//        dispatch_async(customQ, { () -> Void in
+//            var myGame = Game2048ExperimentTDL()
+//            myGame.RunMe()
+//        })
+        
+//        var myGame = Game2048ExperimentTDL()
+//        myGame.RunMe()
     }
     
     // MARK: Setups
     func setupGameModel() {
-        gameModel = Game2048(dimension: 4, target: 0)
+        gameModel = Game2048(dimension: dimension, target: 0)
         gameModel.delegate = self
         gameModel.commandQueueSize = kAiCommandQueueSize
     }
@@ -154,8 +179,7 @@ class ViewController: UIViewController {
         
         targetView.titleLabel.text = "TARGET"
         targetView.numberLabelMaxFontSize = 38
-        targetView.number = 2048
-//        targetView.numberLabel.text = "∞"
+        targetView.number = 2048 // "∞"
         
         metrics["targetViewHeight"] = is3_5InchScreen ? gameBoardWidth / 3.6 : gameBoardWidth / 3.0
         // TargetView is square
@@ -241,12 +265,30 @@ class ViewController: UIViewController {
         ai = AI.CreateInstance()
         aiRandom = AIRandom(gameModel: gameModel)
         aiGreedy = AIGreedy(gameModel: gameModel)
+        aiExpectimax = AIExpectimax(gameModel: gameModel)
+        TDLAi = TDLGame2048()
+        
+        let AIMiniMaxWithAlphaBetaPruning = AITuple(description: "Minimax Tree with Alpha/Beta Pruning", function: miniMaxWithAlphaBetaPruning)
+        aiChoices[0] = AIMiniMaxWithAlphaBetaPruning
+        
+        let AIMonoHeuristic = AITuple(description: "Mono Heuristic", function: MonoHeuristic)
+        aiChoices[1] = AIMonoHeuristic
+        
+        let AIRandomness = AITuple(description: "Pure Monte Carlo Tree Search", function: randomness)
+        aiChoices[2] = AIRandomness
+        
+        let AIExpectimaxTuple = AITuple(description: "Mono 2", function: expectimax)
+        aiChoices[3] = AIExpectimaxTuple
+        
+        let AITDLearningTuple = AITuple(description: "TDLearning", function: TDLearning)
+        aiChoices[4] = AITDLearningTuple
     }
     
     func otherSetups() {
-        sharedAnimationDuration = 0.1
         // Make sure operation queue is serial
         commandCalculationQueue.maxConcurrentOperationCount = 1
+        
+        (UIApplication.sharedApplication().delegate as! AppDelegate).mainViewController = self
     }
 }
 
@@ -290,8 +332,10 @@ extension ViewController {
     func newGameButtonTapped(sender: AnyObject?) {
         logDebug()
         
-        if self.isAiRunning || self.isAnimating {
-            return
+        var aiIsRunningBefore = false
+        if isAiRunning {
+            aiIsRunningBefore = true
+            runAIButtonTapped(nil)
         }
         
         let confirmVC = ConfirmViewController()
@@ -299,6 +343,12 @@ extension ViewController {
         confirmVC.modalPresentationStyle = .Custom
         confirmVC.okClosure = {
             self.startNewGame()
+        }
+        
+        confirmVC.cancelClosure = {
+            if aiIsRunningBefore && !self.isAiRunning{
+                self.runAIButtonTapped(nil)
+            }
         }
         
         self.presentViewController(confirmVC, animated: true, completion: nil)
@@ -309,7 +359,7 @@ extension ViewController {
         self.gameModel.start()
     }
     
-    func runAIButtonTapped(sender: UIButton) {
+    func runAIButtonTapped(sender: UIButton?) {
         logDebug()
         if !isGameEnd {
             isAiRunning = !isAiRunning
@@ -323,11 +373,6 @@ extension ViewController {
                 let currentDisplayingGameBoard = self.gameBoardView.currentDisplayingGameBoard()
                 // If not animatiing, reset game model immediately
                 if !isAnimating {
-//                    // Restore game model from view
-//                    logDebug("Reset game model")
-//                    self.gameModel.resetGameBoardWithIntBoard(currentDisplayingGameBoard, score: self.scoreView.number)
-//                    self.gameModel.printOutGameState()
-//                    userStoppedAI = false
                     resetGameState()
                 }
                 // else: userSteppedAI will be set to false in action completion block
@@ -361,17 +406,59 @@ extension ViewController {
     func runAIButtonLongPressed(sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.Began {
             logDebug()
+            var aiIsRunningBefore = false
+            if isAiRunning {
+                aiIsRunningBefore = true
+                runAIButtonTapped(nil)
+            }
+            
+            var dimensionBefore = dimension
+            
+            let settingVC = SettingViewController()
+            settingVC.transitioningDelegate = settingVC
+            settingVC.modalPresentationStyle = .Custom
+            settingVC.mainViewController = self
+            settingVC.saveClosure = {
+                self.saveData()
+            }
+            
+            settingVC.dismissClosure = {
+                // If dimension is changed, reset game model and game board
+                if dimensionBefore != self.dimension {
+                    self.gameModel = Game2048(dimension: self.dimension, target: 0)
+                    self.gameModel.delegate = self
+                    self.gameModel.commandQueueSize = self.kAiCommandQueueSize
+                    self.gameBoardView.gameModel = self.gameModel
+                    self.aiRandom.gameModel = self.gameModel
+                    self.aiExpectimax.gameModel = self.gameModel
+                    
+                    self.readBestScore()
+                    
+                    self.startNewGame()
+                    return
+                }
+                
+                if aiIsRunningBefore && !self.isAiRunning {
+                    self.runAIButtonTapped(nil)
+                }
+            }
+            
+            self.presentViewController(settingVC, animated: true, completion: nil)
         }
     }
     
-    func undoButtonTapped(sender: UIButton) {
+    func undoButtonTapped(sender: UIButton?) {
         logDebug()
         let count = gameStateHistory.count
         if count <= 1 {
             return
         }
-        if isGameEnd || isAiRunning || isAnimating || commandQueue.count > 0 || actionQueue.count > 0 || commandCalculationQueue.operationCount > 0 {
+        if isAiRunning || isAnimating || commandQueue.count > 0 || actionQueue.count > 0 || commandCalculationQueue.operationCount > 0 {
             return
+        }
+        
+        if isGameEnd {
+            isGameEnd = false
         }
         
         // Last state is current state
@@ -413,9 +500,7 @@ extension ViewController {
 
         logDebug("Add new command calculation")
         commandCalculationQueue.addOperationWithBlock { () -> Void in
-//            if let nextCommand = self.ai.nextMoveUsingAlphaBetaPruning(self.gameModel.currentGameBoard()) {
-//            if let nextCommand = self.aiRandom.nextCommand() {
-            if let nextCommand = self.ai.nextMoveUsingMonoHeuristic(self.gameModel.currentGameBoard()) {
+            if let nextCommand = self.aiChoices[self.aiSelectedChoiceIndex]!.function() {
                 NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                     if ignoreIsAIRunning || self.isAiRunning {
                         self.queueCommand(nextCommand)
@@ -423,6 +508,27 @@ extension ViewController {
                 })
             }
         }
+    }
+    
+    // MARK: Different AI algorithms
+    func miniMaxWithAlphaBetaPruning() -> MoveCommand? {
+        return ai.nextMoveUsingAlphaBetaPruning(self.gameModel.currentGameBoard())
+    }
+    
+    func MonoHeuristic() -> MoveCommand? {
+        return ai.nextMoveUsingMonoHeuristic(self.gameModel.currentGameBoard())
+    }
+    
+    func randomness() -> MoveCommand? {
+        return aiRandom.nextCommand()
+    }
+    
+    func expectimax() -> MoveCommand? {
+        return aiExpectimax.nextCommand()
+    }
+    
+    func TDLearning() -> MoveCommand? {
+        return TDLAi.playWithCurrentState(self.gameModel.currentGameBoard())
     }
 }
 
@@ -519,7 +625,6 @@ extension ViewController {
             // Update UIs
             self.isAnimating = true
             scoreView.number = actionTuple.score
-            updateTargetScore()
             if scoreView.number > bestScoreView.number {
                 bestScoreView.number = scoreView.number
                 saveBestScore(bestScoreView.number)
@@ -536,13 +641,10 @@ extension ViewController {
                 logDebug("Init/ Move board")
                 gameBoardView.updateWithMoveActions(actionTuple.moveActions, initActions: actionTuple.initActions, completion: {
                     self.isAnimating = false
+                    self.updateTargetScore()
                     
                     // If user has stopped AI, reset game model from current displaying views
                     if self.userStoppedAI {
-//                        logDebug("Reset game model")
-//                        self.gameModel.resetGameBoardWithIntBoard(self.gameBoardView.currentDisplayingGameBoard(), score: self.scoreView.number)
-//                        self.gameModel.printOutGameState()
-//                        self.userStoppedAI = false
                         self.resetGameState()
                     }
                     self.executeActionQueue()
@@ -550,6 +652,19 @@ extension ViewController {
             }
         } else {
             logDebug("Queue is empty")
+            if isGameEnd {
+                let gameEndVC = GameEndViewController()
+                gameEndVC.transitioningDelegate = gameEndVC
+                gameEndVC.modalPresentationStyle = .Custom
+                gameEndVC.undoClosure = {
+                    self.undoButtonTapped(nil)
+                }
+                gameEndVC.startClosure = {
+                    self.startNewGame()
+                }
+                
+                self.presentViewController(gameEndVC, animated: true, completion: nil)
+            }
         }
     }
     
@@ -636,21 +751,69 @@ extension ViewController {
 //        }
 //    }
     
+    func readData() {
+        readDimension()
+        readAnimationDuration()
+        readAIChoice()
+    }
+    
+    func saveData() {
+        saveDimension()
+        saveAnimationDuration()
+        saveAIChoice()
+    }
+    
+    func saveAIChoice() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let number = NSNumber(integer: aiSelectedChoiceIndex)
+        defaults.setObject(number, forKey: "AIChoice")
+    }
+    
+    func readAIChoice() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let choiceNumber = defaults.objectForKey("AIChoice") as? NSNumber {
+            aiSelectedChoiceIndex = choiceNumber.integerValue
+        }
+    }
+    
+    func saveDimension() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setInteger(dimension, forKey: "Dimension")
+    }
+    
+    func readDimension() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let storedDimension: Int = defaults.integerForKey("Dimension")
+        if storedDimension > 0 {
+            dimension = storedDimension
+        }
+    }
+    
+    func saveAnimationDuration() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let number = NSNumber(double: sharedAnimationDuration)
+        defaults.setObject(number, forKey: "AnimationDuration")
+    }
+    
+    func readAnimationDuration() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let durationNumber = defaults.objectForKey("AnimationDuration") as? NSNumber {
+            sharedAnimationDuration = durationNumber.doubleValue
+        }
+    }
+    
     func saveBestScore(score: Int) {
         let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setInteger(score, forKey: "BestScore")
+        defaults.setInteger(score, forKey: String(format: "BestScore_%d", dimension))
     }
     
     func readBestScore() {
         let defaults = NSUserDefaults.standardUserDefaults()
-        let storedScore: Int = defaults.integerForKey("BestScore")
-        if storedScore > 0 {
-            bestScoreView.number = storedScore
-        }
+        bestScoreView.number = defaults.integerForKey(String(format: "BestScore_%d", dimension))
     }
     
     func updateTargetScore() {
-        let currentScore = Double(gameBoardView.currentMaxTileNumber())
+        let currentScore = gameBoardView.currentMaxTileNumber()
         if currentScore < 2048 {
             targetView.number = 2048
             return
@@ -658,7 +821,7 @@ extension ViewController {
         
         var i: Double = 11
         while true {
-            if pow(Double(2.0), i) < currentScore && currentScore < pow(Double(2.0), i + 1) {
+            if Int(pow(Double(2.0), i)) <= currentScore && currentScore < Int(pow(Double(2.0), i + 1)) {
                 targetView.number = Int(pow(Double(2.0), i + 1))
                 break
             }

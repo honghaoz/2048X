@@ -21,6 +21,7 @@ class ConfirmViewController: UIViewController {
     
     var okClosure: (() -> ())? = nil
     var cancelClosure: (() -> ())? = nil
+    var dismissClosure: (() -> ())? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +42,7 @@ class ConfirmViewController: UIViewController {
         
         titleLabel.text = "Start a new game?"
         titleLabel.textColor = UIColor.blackColor()
-        titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 25)
+        titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: is320ScreenWidth ? 22 : 25)
         titleLabel.textAlignment = NSTextAlignment.Center
         titleLabel.numberOfLines = 0
         
@@ -75,12 +76,14 @@ class ConfirmViewController: UIViewController {
         logDebug()
         self.dismissViewControllerAnimated(true, completion: nil)
         okClosure?()
+        dismissClosure?()
     }
     
     func cancelButtonTapped(sender: UIButton) {
         logDebug()
         self.dismissViewControllerAnimated(true, completion: nil)
         cancelClosure?()
+        dismissClosure?()
     }
 }
 

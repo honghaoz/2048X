@@ -57,7 +57,7 @@ class GameEndViewController: UIViewController {
         // Start a new game button
         startButton = BlackBorderButton()
         startButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-        startButton.title = "Try Again"
+        startButton.title = "Retry"
         startButton.addTarget(self, action: "startButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         views["startButton"] = startButton
         view.addSubview(startButton)
