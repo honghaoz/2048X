@@ -67,7 +67,7 @@ class ViewController: UIViewController {
     var isAiRunning: Bool = false {
         didSet {
             if runAIButton != nil {
-                runAIButton.title = isAiRunning ? "Stop" : "Run"
+                runAIButton.title = isAiRunning ? "Stop AI" : "Run AI"
             }
             if isAiRunning {
                 runAIforNextStep()
@@ -87,7 +87,7 @@ class ViewController: UIViewController {
     var aiRandom: AIRandom!
     var aiGreedy: AIGreedy!
     var aiExpectimax: AIExpectimax!
-    var TDLAi: TDLGame2048!
+//    var TDLAi: TDLGame2048!
     
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
@@ -110,9 +110,6 @@ class ViewController: UIViewController {
 //            var myGame = Game2048ExperimentTDL()
 //            myGame.RunMe()
 //        })
-        
-//        var myGame = Game2048ExperimentTDL()
-//        myGame.RunMe()
     }
     
     // MARK: Setups
@@ -280,18 +277,18 @@ class ViewController: UIViewController {
         let AIExpectimaxTuple = AITuple(description: "Mono 2", function: expectimax)
         aiChoices[3] = AIExpectimaxTuple
         
-        let backgroundReadingQueue = dispatch_queue_create("READING_FILE", DISPATCH_QUEUE_CONCURRENT)
-        dispatch_async(backgroundReadingQueue, { () -> Void in
-            // Do background process
-            logInfo("Loading TDLearning file")
-            self.TDLAi = TDLGame2048()
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                // Do on main thread
-                logInfo("Loading TDLearning file successfully")
-                let AITDLearningTuple = AITuple(description: "TDLearning", function: self.TDLearning)
-                self.aiChoices[4] = AITDLearningTuple
-            })
-        })
+//        let backgroundReadingQueue = dispatch_queue_create("READING_FILE", DISPATCH_QUEUE_CONCURRENT)
+//        dispatch_async(backgroundReadingQueue, { () -> Void in
+//            // Do background process
+//            logInfo("Loading TDLearning file")
+//            self.TDLAi = TDLGame2048()
+//            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                // Do on main thread
+//                logInfo("Loading TDLearning file successfully")
+//                let AITDLearningTuple = AITuple(description: "TDLearning", function: self.TDLearning)
+//                self.aiChoices[4] = AITDLearningTuple
+//            })
+//        })
     }
     
     func otherSetups() {
@@ -537,9 +534,9 @@ extension ViewController {
         return aiExpectimax.nextCommand()
     }
     
-    func TDLearning() -> MoveCommand? {
-        return TDLAi.playWithCurrentState(self.gameModel.currentGameBoard())
-    }
+//    func TDLearning() -> MoveCommand? {
+//        return TDLAi.playWithCurrentState(self.gameModel.currentGameBoard())
+//    }
 }
 
 // MARK: Command Queue
