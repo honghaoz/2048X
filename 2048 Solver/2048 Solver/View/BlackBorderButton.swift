@@ -44,7 +44,7 @@ class BlackBorderButton: UIButton {
         setupViews()
     }
     
-    override convenience init() {
+    convenience init() {
         self.init(frame: CGRectZero)
     }
     

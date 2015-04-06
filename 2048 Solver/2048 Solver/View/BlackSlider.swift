@@ -27,7 +27,7 @@ class BlackSlider: UISlider {
         setupViews()
     }
     
-    override convenience init() {
+    convenience init() {
         self.init(frame: CGRectZero)
     }
     

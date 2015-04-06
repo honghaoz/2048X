@@ -29,7 +29,7 @@ class BlackSelectionControl: UIControl {
         setupViews()
     }
     
-    override convenience init() {
+    convenience init() {
         self.init(frame: CGRectZero)
     }
     

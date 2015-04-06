@@ -1,13 +1,14 @@
 # Uncomment this line to define a global platform for your project
-source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, "7.0"
 
-# ignore all warnings from all pods
-# inhibit_all_warnings!
-
-target "2048X AI" do
+target '2048X AI' do
 
 pod 'Parse'
 pod "ARAnalytics/GoogleAnalytics"
 
 end
+
+target '2048 SolverTests' do
+
+end
+

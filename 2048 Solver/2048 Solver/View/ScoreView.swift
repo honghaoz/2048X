@@ -48,7 +48,7 @@ class ScoreView: UIView {
         setupViews()
     }
     
-    override convenience init() {
+    convenience init() {
         self.init(frame: CGRectZero)
     }
     
