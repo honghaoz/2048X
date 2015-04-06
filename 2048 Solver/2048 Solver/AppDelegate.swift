@@ -15,8 +15,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var mainViewController: ViewController?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        setupAnalytics(launchOptions)
         return true
+    }
+    
+    func setupAnalytics(launchOptions: [NSObject: AnyObject]?) {
+        // Parse set up
+        Parse.setApplicationId("lLvdoK6FzqguG7JWvo1FNFOd1SCBV1Gtn7dv4UIS", clientKey: "RmatCf74aAt43WbbNZWdK4jSq6k1E4865o2sIVFF")
+        PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
+        ZHHParseDevice.trackDevice()
+        
+        // GA
+        GAI.sharedInstance().trackUncaughtExceptions = true
+        GAI.sharedInstance().logger.logLevel = GAILogLevel.Verbose
+        GAI.sharedInstance().trackerWithTrackingId("UA-45146473-7")
     }
 
     func applicationWillResignActive(application: UIApplication) {

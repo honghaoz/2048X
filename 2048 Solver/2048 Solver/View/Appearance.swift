@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-var sharedAnimationDuration: NSTimeInterval = 0.12
+var sharedAnimationDuration: NSTimeInterval = 0.08
 
 struct SharedFontSize {
     static func tileFontSizeForDimension(dimension: Int) -> Int {

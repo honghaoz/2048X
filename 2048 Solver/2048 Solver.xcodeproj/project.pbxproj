@@ -22,6 +22,10 @@
 		023EDE871AAA325100F5B9C5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE861AAA325100F5B9C5 /* Images.xcassets */; };
 		023EDE8A1AAA325100F5B9C5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE881AAA325100F5B9C5 /* LaunchScreen.xib */; };
 		023EDE961AAA325100F5B9C5 /* _048_SolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */; };
+		0243DDE61AD341E0000CB475 /* UIApplication+AppVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 0243DDE31AD341E0000CB475 /* UIApplication+AppVersion.m */; };
+		0243DDE71AD341E0000CB475 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 0243DDE51AD341E0000CB475 /* UIDevice-Hardware.m */; };
+		0243DDEA1AD34330000CB475 /* ZHHParseDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 0243DDE91AD34330000CB475 /* ZHHParseDevice.m */; };
+		0243DDEC1AD34825000CB475 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0243DDEB1AD34825000CB475 /* CoreData.framework */; };
 		0249C9C51ACB1AE5000E954F /* AI-Expectimax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0249C9C41ACB1AE5000E954F /* AI-Expectimax.swift */; };
 		024FB1F51AD3300200C6453E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024FB1F41AD3300200C6453E /* AudioToolbox.framework */; };
 		028159611AAD07E500C795D9 /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028159601AAD07E500C795D9 /* TileView.swift */; };
@@ -97,6 +101,17 @@
 		023EDE8F1AAA325100F5B9C5 /* 2048 SolverTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "2048 SolverTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023EDE941AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _048_SolverTests.swift; sourceTree = "<group>"; };
+		0243DDDD1AD340BA000CB475 /* 2048X AI-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "2048X AI-Bridging-Header.h"; sourceTree = "<group>"; };
+		0243DDE21AD341E0000CB475 /* UIApplication+AppVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+AppVersion.h"; sourceTree = "<group>"; };
+		0243DDE31AD341E0000CB475 /* UIApplication+AppVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+AppVersion.m"; sourceTree = "<group>"; };
+		0243DDE41AD341E0000CB475 /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
+		0243DDE51AD341E0000CB475 /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
+		0243DDE81AD34330000CB475 /* ZHHParseDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZHHParseDevice.h; sourceTree = "<group>"; };
+		0243DDE91AD34330000CB475 /* ZHHParseDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZHHParseDevice.m; sourceTree = "<group>"; };
+		0243DDEB1AD34825000CB475 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		0243DDED1AD34851000CB475 /* libPods-2048X AI-GoogleAnalytics-iOS-SDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-2048X AI-GoogleAnalytics-iOS-SDK.a"; path = "Pods/../build/Debug-iphoneos/libPods-2048X AI-GoogleAnalytics-iOS-SDK.a"; sourceTree = "<group>"; };
+		0243DDEF1AD34884000CB475 /* libPods-2048X AI-GoogleAnalytics-iOS-SDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-2048X AI-GoogleAnalytics-iOS-SDK.a"; path = "Pods/../build/Debug-iphoneos/libPods-2048X AI-GoogleAnalytics-iOS-SDK.a"; sourceTree = "<group>"; };
+		0243DDF11AD348A3000CB475 /* libPods-2048X AI-GoogleAnalytics-iOS-SDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-2048X AI-GoogleAnalytics-iOS-SDK.a"; path = "Pods/../build/Debug-iphoneos/libPods-2048X AI-GoogleAnalytics-iOS-SDK.a"; sourceTree = "<group>"; };
 		0249C9C41ACB1AE5000E954F /* AI-Expectimax.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AI-Expectimax.swift"; sourceTree = "<group>"; };
 		024FB1F41AD3300200C6453E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		028159601AAD07E500C795D9 /* TileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileView.swift; sourceTree = "<group>"; };
@@ -150,10 +165,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02FA01661AD32ECC009F73AD /* SystemConfiguration.framework in Frameworks */,
+				0243DDEC1AD34825000CB475 /* CoreData.framework in Frameworks */,
 				024FB1F51AD3300200C6453E /* AudioToolbox.framework in Frameworks */,
 				02FA016A1AD32EDE009F73AD /* libsqlite3.dylib in Frameworks */,
 				02FA01681AD32ED2009F73AD /* libz.dylib in Frameworks */,
-				02FA01661AD32ECC009F73AD /* SystemConfiguration.framework in Frameworks */,
 				02FA01621AD32EBE009F73AD /* Security.framework in Frameworks */,
 				02FA01601AD32EB9009F73AD /* QuartzCore.framework in Frameworks */,
 				02FA015E1AD32EB3009F73AD /* MobileCoreServices.framework in Frameworks */,
@@ -202,6 +218,7 @@
 		0225A2471AB7DD8A00EA72C8 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				0243DDE11AD341E0000CB475 /* UIDevice */,
 				0225A2481AB7DD9000EA72C8 /* ZHLogger.swift */,
 			);
 			path = ThirdParty;
@@ -210,6 +227,7 @@
 		023EDE711AAA325100F5B9C5 = {
 			isa = PBXGroup;
 			children = (
+				0243DDDD1AD340BA000CB475 /* 2048X AI-Bridging-Header.h */,
 				023EDE7C1AAA325100F5B9C5 /* 2048 Solver */,
 				02DBF57F1AB269E7007EE133 /* Resource */,
 				023EDE921AAA325100F5B9C5 /* 2048 SolverTests */,
@@ -271,6 +289,19 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		0243DDE11AD341E0000CB475 /* UIDevice */ = {
+			isa = PBXGroup;
+			children = (
+				0243DDE81AD34330000CB475 /* ZHHParseDevice.h */,
+				0243DDE91AD34330000CB475 /* ZHHParseDevice.m */,
+				0243DDE21AD341E0000CB475 /* UIApplication+AppVersion.h */,
+				0243DDE31AD341E0000CB475 /* UIApplication+AppVersion.m */,
+				0243DDE41AD341E0000CB475 /* UIDevice-Hardware.h */,
+				0243DDE51AD341E0000CB475 /* UIDevice-Hardware.m */,
+			);
+			path = UIDevice;
+			sourceTree = "<group>";
+		};
 		02BC42751AC88B230089639B /* TDLearning */ = {
 			isa = PBXGroup;
 			children = (
@@ -320,6 +351,10 @@
 		754B25108EAF598101145E50 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0243DDF11AD348A3000CB475 /* libPods-2048X AI-GoogleAnalytics-iOS-SDK.a */,
+				0243DDEF1AD34884000CB475 /* libPods-2048X AI-GoogleAnalytics-iOS-SDK.a */,
+				0243DDED1AD34851000CB475 /* libPods-2048X AI-GoogleAnalytics-iOS-SDK.a */,
+				0243DDEB1AD34825000CB475 /* CoreData.framework */,
 				024FB1F41AD3300200C6453E /* AudioToolbox.framework */,
 				02FA01691AD32EDE009F73AD /* libsqlite3.dylib */,
 				02FA01671AD32ED2009F73AD /* libz.dylib */,
@@ -504,6 +539,7 @@
 				FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */,
 				0E1423B41ACB7C5A000E8B8B /* BoardPos.swift in Sources */,
 				02BC427F1AC88B230089639B /* Util.swift in Sources */,
+				0243DDEA1AD34330000CB475 /* ZHHParseDevice.m in Sources */,
 				0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */,
 				02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */,
 				0249C9C51ACB1AE5000E954F /* AI-Expectimax.swift in Sources */,
@@ -515,6 +551,7 @@
 				0E1423AA1ACACEBA000E8B8B /* Transition.swift in Sources */,
 				02C2A86D1AC9E9EF002DEB97 /* BlackSelectionControl.swift in Sources */,
 				0E1423A41ACA16E5000E8B8B /* State2048.swift in Sources */,
+				0243DDE61AD341E0000CB475 /* UIApplication+AppVersion.m in Sources */,
 				0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */,
 				0E1423BE1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift in Sources */,
 				02107CA11AAD244A00CFF8FF /* GameModelTypes.swift in Sources */,
@@ -525,6 +562,7 @@
 				0E1423B21ACB4ADE000E8B8B /* NTuplesAllStraightFactory.swift in Sources */,
 				0E1423AC1ACAE58A000E8B8B /* GameYS.swift in Sources */,
 				02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */,
+				0243DDE71AD341E0000CB475 /* UIDevice-Hardware.m in Sources */,
 				0297205E1AC65377009B86D2 /* BlackBorderButton.swift in Sources */,
 				023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */,
 				0E1423A61ACA17BE000E8B8B /* NTuples.swift in Sources */,
@@ -669,14 +707,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "2048 Solver/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "2048X AI-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -687,13 +732,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "2048 Solver/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "2048X AI-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

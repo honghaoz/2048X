@@ -4,7 +4,8 @@ platform :ios, "7.0"
 target '2048X AI' do
 
 pod 'Parse'
-pod "ARAnalytics/GoogleAnalytics"
+pod 'GoogleAnalytics-iOS-SDK'
+# pod "ARAnalytics/GoogleAnalytics"
 
 end
 
