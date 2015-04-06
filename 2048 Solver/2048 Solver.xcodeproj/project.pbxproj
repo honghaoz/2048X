@@ -37,7 +37,6 @@
 		02C2A86B1AC9DFF3002DEB97 /* BlackSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2A86A1AC9DFF3002DEB97 /* BlackSlider.swift */; };
 		02C2A86D1AC9E9EF002DEB97 /* BlackSelectionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2A86C1AC9E9EF002DEB97 /* BlackSelectionControl.swift */; };
 		02C2A86F1AC9EC10002DEB97 /* AIAlgorithmCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2A86E1AC9EC10002DEB97 /* AIAlgorithmCell.swift */; };
-		02D1339F1AB2A0BA00CE8ADA /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D1339E1AB2A0BA00CE8ADA /* AVKit.framework */; };
 		02DBF5811AB269E7007EE133 /* move.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02DBF5801AB269E7007EE133 /* move.wav */; };
 		02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */; };
 		02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAF1ABA51B800487782 /* AI-Greedy.swift */; };
@@ -78,7 +77,7 @@
 		0225A2481AB7DD9000EA72C8 /* ZHLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZHLogger.swift; sourceTree = "<group>"; };
 		0225A24A1AB8A6E300EA72C8 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AI-Random.swift"; sourceTree = "<group>"; };
-		023EDE7A1AAA325100F5B9C5 /* 2048 Solver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2048 Solver.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		023EDE7A1AAA325100F5B9C5 /* 2048X AI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2048X AI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023EDE7E1AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		023EDE841AAA325100F5B9C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -102,7 +101,6 @@
 		02C2A86A1AC9DFF3002DEB97 /* BlackSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackSlider.swift; sourceTree = "<group>"; };
 		02C2A86C1AC9E9EF002DEB97 /* BlackSelectionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackSelectionControl.swift; sourceTree = "<group>"; };
 		02C2A86E1AC9EC10002DEB97 /* AIAlgorithmCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AIAlgorithmCell.swift; sourceTree = "<group>"; };
-		02D1339E1AB2A0BA00CE8ADA /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		02DBF5801AB269E7007EE133 /* move.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = move.wav; sourceTree = "<group>"; };
 		02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModelHelper.swift; sourceTree = "<group>"; };
 		02F21BAF1ABA51B800487782 /* AI-Greedy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AI-Greedy.swift"; sourceTree = "<group>"; };
@@ -127,7 +125,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02D1339F1AB2A0BA00CE8ADA /* AVKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,7 +174,6 @@
 		023EDE711AAA325100F5B9C5 = {
 			isa = PBXGroup;
 			children = (
-				02D1339E1AB2A0BA00CE8ADA /* AVKit.framework */,
 				023EDE7C1AAA325100F5B9C5 /* 2048 Solver */,
 				02DBF57F1AB269E7007EE133 /* Resource */,
 				023EDE921AAA325100F5B9C5 /* 2048 SolverTests */,
@@ -188,7 +184,7 @@
 		023EDE7B1AAA325100F5B9C5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				023EDE7A1AAA325100F5B9C5 /* 2048 Solver.app */,
+				023EDE7A1AAA325100F5B9C5 /* 2048X AI.app */,
 				023EDE8F1AAA325100F5B9C5 /* 2048 SolverTests.xctest */,
 			);
 			name = Products;
@@ -299,9 +295,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		023EDE791AAA325100F5B9C5 /* 2048 Solver */ = {
+		023EDE791AAA325100F5B9C5 /* 2048X AI */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 023EDE991AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048 Solver" */;
+			buildConfigurationList = 023EDE991AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048X AI" */;
 			buildPhases = (
 				023EDE761AAA325100F5B9C5 /* Sources */,
 				023EDE771AAA325100F5B9C5 /* Frameworks */,
@@ -311,9 +307,9 @@
 			);
 			dependencies = (
 			);
-			name = "2048 Solver";
+			name = "2048X AI";
 			productName = "2048 Solver";
-			productReference = 023EDE7A1AAA325100F5B9C5 /* 2048 Solver.app */;
+			productReference = 023EDE7A1AAA325100F5B9C5 /* 2048X AI.app */;
 			productType = "com.apple.product-type.application";
 		};
 		023EDE8E1AAA325100F5B9C5 /* 2048 SolverTests */ = {
@@ -348,7 +344,6 @@
 					};
 					023EDE8E1AAA325100F5B9C5 = {
 						CreatedOnToolsVersion = 6.3;
-						TestTargetID = 023EDE791AAA325100F5B9C5;
 					};
 				};
 			};
@@ -365,7 +360,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				023EDE791AAA325100F5B9C5 /* 2048 Solver */,
+				023EDE791AAA325100F5B9C5 /* 2048X AI */,
 				023EDE8E1AAA325100F5B9C5 /* 2048 SolverTests */,
 			);
 		};
@@ -455,7 +450,7 @@
 /* Begin PBXTargetDependency section */
 		023EDE911AAA325100F5B9C5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 023EDE791AAA325100F5B9C5 /* 2048 Solver */;
+			target = 023EDE791AAA325100F5B9C5 /* 2048X AI */;
 			targetProxy = 023EDE901AAA325100F5B9C5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -516,7 +511,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -554,7 +549,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -565,10 +560,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "2048 Solver/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -581,10 +577,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "2048 Solver/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -595,7 +592,6 @@
 		023EDE9D1AAA325100F5B9C5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -608,14 +604,12 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/2048 Solver.app/2048 Solver";
 			};
 			name = Debug;
 		};
 		023EDE9E1AAA325100F5B9C5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -624,7 +618,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/2048 Solver.app/2048 Solver";
 			};
 			name = Release;
 		};
@@ -640,7 +633,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		023EDE991AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048 Solver" */ = {
+		023EDE991AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048X AI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				023EDE9A1AAA325100F5B9C5 /* Debug */,

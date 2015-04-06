@@ -122,7 +122,7 @@ class ViewController: UIViewController {
     func setupViews() {
         view.backgroundColor = SharedColors.BackgroundColor
 
-        metrics["padding"] = is3_5InchScreen ? 5.0 : 8.0
+        metrics["padding"] = is3_5InchScreen ? 3.0 : 8.0
         
         // GameBoardView
         gameBoardView = GameBoardView()
