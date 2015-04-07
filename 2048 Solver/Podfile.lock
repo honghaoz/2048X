@@ -1,4 +1,8 @@
 PODS:
+  - ARAnalytics/CoreIOS (3.0.0)
+  - ARAnalytics/GoogleAnalytics (3.0.0):
+    - ARAnalytics/CoreIOS
+    - GoogleAnalytics-iOS-SDK
   - Bolts (1.1.4)
   - GoogleAnalytics-iOS-SDK (3.10):
     - GoogleAnalytics-iOS-SDK/Core (= 3.10)
@@ -7,10 +11,12 @@ PODS:
     - Bolts (~> 1.1)
 
 DEPENDENCIES:
+  - ARAnalytics/GoogleAnalytics
   - GoogleAnalytics-iOS-SDK
   - Parse
 
 SPEC CHECKSUMS:
+  ARAnalytics: 9669efd110dd9a92c0b3f6e073f01f8eec9a8a21
   Bolts: f8e2f94edbf9fec7bb8de5ecaaa3aa6b7de6f64e
   GoogleAnalytics-iOS-SDK: 4f98a376c1d61e6ac4ca47951655820314856eef
   Parse: fa8ec29de6d82035635986c11946299fb1b38316

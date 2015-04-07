@@ -26,6 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         ZHHParseDevice.trackDevice()
         
+//        ARAnalytics.setupParseAnalyticsWithApplicationID("lLvdoK6FzqguG7JWvo1FNFOd1SCBV1Gtn7dv4UIS", clientKey: "RmatCf74aAt43WbbNZWdK4jSq6k1E4865o2sIVFF")
+//        ARAnalytics.setupGoogleAnalyticsWithID("UA-45146473-7")
+//        ARAnalytics.event("App Launch")
+        
         // GA
         GAI.sharedInstance().trackUncaughtExceptions = true
         GAI.sharedInstance().logger.logLevel = GAILogLevel.Verbose
