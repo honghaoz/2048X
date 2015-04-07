@@ -576,7 +576,7 @@ extension ViewController {
             }
             logDebug("Dequeue and Execute")
             let command = commandQueue[0]
-            GameModelHelper.printOutCommand(command, level: .Info)
+//            GameModelHelper.printOutCommand(command, level: .Info)
             commandQueue.removeAtIndex(0)
             logDebug("CommandQueue size: \(commandQueue.count)")
             gameModel.playWithCommand(command)
