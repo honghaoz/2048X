@@ -40,7 +40,7 @@ class ViewController: UIViewController {
     
     /// queue size for different mode
     var kUserCommandQueueSize: Int = 2
-    var kAiCommandQueueSize: Int = 10
+    var kAiCommandQueueSize: Int = 100
     
     // Game History
     typealias GameState = (stateId: Int, gameBoard: [[Int]], score: Int)
