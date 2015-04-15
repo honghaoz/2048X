@@ -29,6 +29,12 @@ class GameEndViewController: UIViewController {
         presentingAnimator.presentingViewSize = CGSize(width: ceil(screenWidth * 0.7), height: 120.0)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        GAI.sharedInstance().defaultTracker.set(kGAIScreenName, value: "Game End View")
+        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createScreenView().build() as Dictionary)
+    }
+    
     private func setupViews() {
         view.backgroundColor = SharedColors.BackgroundColor
         view.layer.borderColor = UIColor.blackColor().CGColor

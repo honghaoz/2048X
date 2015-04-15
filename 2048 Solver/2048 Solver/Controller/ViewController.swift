@@ -112,6 +112,16 @@ class ViewController: UIViewController {
 //        })
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        GAI.sharedInstance().defaultTracker.set(kGAIScreenName, value: "Main View")
+        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createScreenView().build() as Dictionary)
+    }
+    
     // MARK: Setups
     func setupGameModel() {
         gameModel = Game2048(dimension: dimension, target: 0)
@@ -364,10 +374,16 @@ extension ViewController {
     private func startNewGame() {
         self.gameModel.reset()
         self.gameModel.start()
+        
+        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "start_new_game", value: nil).build() as Dictionary
+        GAI.sharedInstance().defaultTracker.send(eventDict)
     }
     
     func runAIButtonTapped(sender: UIButton?) {
         logDebug()
+        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "run_ai", value: nil).build() as Dictionary
+        GAI.sharedInstance().defaultTracker.send(eventDict)
+        
         if !isGameEnd {
             isAiRunning = !isAiRunning
             if !isAiRunning {
@@ -455,6 +471,9 @@ extension ViewController {
     }
     
     func undoButtonTapped(sender: UIButton?) {
+        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "undo", value: nil).build() as Dictionary
+        GAI.sharedInstance().defaultTracker.send(eventDict)
+        
         logDebug()
         let count = gameStateHistory.count
         if count <= 1 {
@@ -480,6 +499,9 @@ extension ViewController {
     }
     
     func hintButtonTapped(sender: UIButton) {
+        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "hint", value: nil).build() as Dictionary
+        GAI.sharedInstance().defaultTracker.send(eventDict)
+        
         logDebug()
         if isGameEnd || isAiRunning {
             return

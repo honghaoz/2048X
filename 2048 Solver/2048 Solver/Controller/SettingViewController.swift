@@ -65,6 +65,12 @@ class SettingViewController: UIViewController {
         aiAlgorithmTableView.selectRowAtIndexPath(selectedIndexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        GAI.sharedInstance().defaultTracker.set(kGAIScreenName, value: "Setting View")
+        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createScreenView().build() as Dictionary)
+    }
+    
     private func setupViews() {
         view.backgroundColor = SharedColors.BackgroundColor
         view.layer.borderColor = UIColor.blackColor().CGColor
@@ -238,6 +244,9 @@ class SettingViewController: UIViewController {
     }
     
     func saveButtonTapped(sender: UIButton) {
+        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "save_setting", value: nil).build() as Dictionary
+        GAI.sharedInstance().defaultTracker.send(eventDict)
+        
         logDebug()
         sharedAnimationDuration = NSTimeInterval(animationDurationSlider.value)
         mainViewController.aiSelectedChoiceIndex = aiAlgorithmTableView.indexPathForSelectedRow()!.row
@@ -249,6 +258,9 @@ class SettingViewController: UIViewController {
     }
     
     func cancelButtonTapped(sender: UIButton) {
+        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "cancel_setting", value: nil).build() as Dictionary
+        GAI.sharedInstance().defaultTracker.send(eventDict)
+        
         logDebug()
         cancelClosure?()
         dismissClosure?()

@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        ARAnalytics.event("App Launch")
         
         // GA
+        GAI.sharedInstance().dispatchInterval = 15
         GAI.sharedInstance().trackUncaughtExceptions = true
         GAI.sharedInstance().logger.logLevel = GAILogLevel.Verbose
         GAI.sharedInstance().trackerWithTrackingId("UA-45146473-7")
