@@ -92,9 +92,7 @@ class ViewController: UIViewController {
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        logLevel = ZHLogLevel.Off
-        logLevel = .Info
-//        logLevel = .Debug
+        logLevel = .Debug
         
         readData()
         setupGameModel()
