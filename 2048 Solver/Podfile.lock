@@ -1,24 +1,32 @@
 PODS:
-  - ARAnalytics/CoreIOS (3.0.0)
-  - ARAnalytics/GoogleAnalytics (3.0.0):
-    - ARAnalytics/CoreIOS
-    - GoogleAnalytics-iOS-SDK
   - Bolts (1.1.4)
-  - GoogleAnalytics-iOS-SDK (3.10):
-    - GoogleAnalytics-iOS-SDK/Core (= 3.10)
-  - GoogleAnalytics-iOS-SDK/Core (3.10)
+  - Google/Analytics (1.0.7):
+    - Google/Core
+    - GoogleAnalytics (~> 3.12)
+  - Google/Core (1.0.7):
+    - GoogleNetworkingUtilities (~> 1.0)
+    - GoogleSymbolUtilities (~> 1.0)
+    - GoogleUtilities (~> 1.0)
+  - GoogleAnalytics (3.13.0)
+  - GoogleNetworkingUtilities (1.0.0):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleSymbolUtilities (1.0.0)
+  - GoogleUtilities (1.0.1):
+    - GoogleSymbolUtilities (~> 1.0)
   - Parse (1.7.1):
     - Bolts (~> 1.1)
 
 DEPENDENCIES:
-  - ARAnalytics/GoogleAnalytics
-  - GoogleAnalytics-iOS-SDK
+  - Google/Analytics
   - Parse
 
 SPEC CHECKSUMS:
-  ARAnalytics: 9669efd110dd9a92c0b3f6e073f01f8eec9a8a21
   Bolts: f8e2f94edbf9fec7bb8de5ecaaa3aa6b7de6f64e
-  GoogleAnalytics-iOS-SDK: 4f98a376c1d61e6ac4ca47951655820314856eef
+  Google: 875f5a8ade86dd02e36586e4a54814843938c7f6
+  GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
+  GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
+  GoogleSymbolUtilities: a7b0feed1fe667c8d5e647177938d0ecd62d6948
+  GoogleUtilities: e3475cd4d45134221d2f3f3626095a1c49b62041
   Parse: fa8ec29de6d82035635986c11946299fb1b38316
 
-COCOAPODS: 0.36.3
+COCOAPODS: 0.38.2

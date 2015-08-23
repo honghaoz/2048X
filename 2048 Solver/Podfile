@@ -1,11 +1,12 @@
 # Uncomment this line to define a global platform for your project
 platform :ios, "7.0"
+use_frameworks!
 
 target '2048X AI' do
 
+# Analytics
 pod 'Parse'
-pod 'GoogleAnalytics-iOS-SDK'
-pod "ARAnalytics/GoogleAnalytics"
+pod 'Google/Analytics'
 
 end
 
