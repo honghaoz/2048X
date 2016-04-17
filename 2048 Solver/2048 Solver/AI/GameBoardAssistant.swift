@@ -8,7 +8,7 @@
 
 import Foundation
 
-class GameboardAssistant: Printable {
+class GameboardAssistant: CustomStringConvertible {
     private let _goal:Int = 2048
     
     private var _won:Bool = false
@@ -139,9 +139,9 @@ class GameboardAssistant: Printable {
         var hasMoved = false
         var score: Int = 0
         
-        var setFun = dir == .Up || dir == .Down ? setRow : setCol
-        var getFun = dir == .Up || dir == .Down ? getRow : getRow
-        
+//        var setFun = dir == .Up || dir == .Down ? setRow : setCol
+//        var getFun = dir == .Up || dir == .Down ? getRow : getRow
+		
         // Move col
         if dir == .Left || dir == .Right {
             for j in 0..<_size {
@@ -249,7 +249,7 @@ class GameboardAssistant: Printable {
             offset = 1
         }
         else {
-            range = (1..._size - 1).map{$0}.reverse()
+            range = Array((1..._size - 1).map{$0}.reverse())
             offset = -1
         }
 
@@ -285,7 +285,7 @@ class GameboardAssistant: Printable {
             offset = 1
         }
         else {
-            range = (1..._size - 1).map{$0}.reverse()
+            range = Array((1..._size - 1).map{$0}.reverse())
             offset = -1
         }
 

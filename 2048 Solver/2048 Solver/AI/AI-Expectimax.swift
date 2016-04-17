@@ -30,13 +30,13 @@ class AIExpectimax {
         var choosenCommand: MoveCommand? = nil
         var maxScore: Double = 0.0
         
-        var commands = GameModelHelper.validMoveCommandsInGameBoard(&gameBoard, shuffle: false)
+        let commands = GameModelHelper.validMoveCommandsInGameBoard(&gameBoard, shuffle: false)
         for command in commands {            
             // Copy a new board, Alloc
             var copyGameBoard = GameModelHelper.copyGameBoard(&gameBoard)
             
             // Perform command
-            let (a, b) = GameModelHelper.performMoveCommand(command, onGameBoard: &copyGameBoard)
+            let (_, _) = GameModelHelper.performMoveCommand(command, onGameBoard: &copyGameBoard)
             
 //            var (score, (x, y)) = evaluateUsingMonoHeuristic(GameModelHelper.intGameBoardFromGameBoard(&copyGameBoard))
 //            GameModelHelper.insertTile(&copyGameBoard, pos: (y, x), value: 2)
@@ -44,7 +44,7 @@ class AIExpectimax {
             GameModelHelper.insertTileAtRandomLocation(&copyGameBoard)
 
             if level < maxDepth {
-                var (nextCommand, nextLevelScore) = _nextCommand(&copyGameBoard, level: level + 1, maxDepth: maxDepth)
+                let (nextCommand, nextLevelScore) = _nextCommand(&copyGameBoard, level: level + 1, maxDepth: maxDepth)
                 if nextCommand != nil {
                     score += nextLevelScore * pow(0.9, Double(level) + 1.0)
                 }
@@ -99,7 +99,7 @@ class AIExpectimax {
     }
     
     func heuristicSMonotonic(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Double {
-        var ratio: Double = 0.25
+        let ratio: Double = 0.25
         var maxScore: Double = -1.0
         
         // Construct 8 different patterns into one linear array
@@ -110,27 +110,27 @@ class AIExpectimax {
                 // Whether it's row or column
                 for rOrC in 0 ..< 2 {
                     var oneDimension = [UnsafeMutablePointer<Tile>]()
-                    for row in stride(from: 0, to: dimension, by: 2) {
+                    for row in 0.stride(to: dimension, by: 2) {
                         let firstRow = Bool(flip) ? (dimension - 1 - row) : row
                         if Bool(rOrC) {
-                            oneDimension.extend(gameBoard.getRow(firstRow, reversed: Bool(startDirection)))
+                            oneDimension.appendContentsOf(gameBoard.getRow(firstRow, reversed: Bool(startDirection)))
                         } else {
-                            oneDimension.extend(gameBoard.getColumn(firstRow, reversed: Bool(startDirection)))
+                            oneDimension.appendContentsOf(gameBoard.getColumn(firstRow, reversed: Bool(startDirection)))
                         }
                         
                         let secondRow = Bool(flip) ? (dimension - 1 - row - 1) : row + 1
                         if 0 <= secondRow && secondRow < dimension {
                             if Bool(rOrC) {
-                                oneDimension.extend(gameBoard.getRow(firstRow, reversed: !Bool(startDirection)))
+                                oneDimension.appendContentsOf(gameBoard.getRow(firstRow, reversed: !Bool(startDirection)))
                             } else {
-                                oneDimension.extend(gameBoard.getColumn(firstRow, reversed: !Bool(startDirection)))
+                                oneDimension.appendContentsOf(gameBoard.getColumn(firstRow, reversed: !Bool(startDirection)))
                             }
                         }
                     }
                     
                     var weight: Double = 1.0
                     var result: Double = 0.0
-                    for (index, tile) in enumerate(oneDimension){
+                    for (_, tile) in oneDimension.enumerate(){
                         switch tile.memory {
                         case .Empty:
                             break
@@ -178,11 +178,11 @@ class AIExpectimax {
         // Top Right
         result = 0
         for i in 0 ..< dimension {
-            for j in stride(from: dimension - 1, to: -1, by: -1) {
+            for j in (dimension - 1).stride(to: -1, by: -1) {
                 switch gameBoard[i, j].memory {
                 case .Empty:
                     continue
-                case let .Number(num):
+                case .Number(_):
                     result += pow(r, Float(i + j))
                 }
             }
@@ -193,12 +193,12 @@ class AIExpectimax {
         
         // Bottom Left
         result = 0
-        for i in stride(from: dimension - 1, to: -1, by: -1) {
+        for i in (dimension - 1).stride(to: -1, by: -1) {
             for j in 0 ..< dimension {
                 switch gameBoard[i, j].memory {
                 case .Empty:
                     continue
-                case let .Number(num):
+                case .Number(_):
                     result += pow(r, Float(i + j))
                 }
             }
@@ -209,12 +209,12 @@ class AIExpectimax {
         
         // Bottom Right
         result = 0
-        for i in stride(from: dimension - 1, to: -1, by: -1) {
-            for j in stride(from: dimension - 1, to: -1, by: -1) {
+        for i in (dimension - 1).stride(to: -1, by: -1) {
+            for j in (dimension - 1).stride(to: -1, by: -1) {
                 switch gameBoard[i, j].memory {
                 case .Empty:
                     continue
-                case let .Number(num):
+                case .Number(_):
                     result += pow(r, Float(i + j))
                 }
             }
@@ -240,7 +240,7 @@ class AIExpectimax {
         assert(hasZero == true, "")
         
         let yRange = (0...gameboard.count - 1).map{$0}
-        let yRangeReverse = (0...gameboard.count - 1).map{$0}.reverse()
+        let yRangeReverse = Array((0...gameboard.count - 1).map{$0}.reverse())
         let xRange = yRange
         let xRangeReverse = yRangeReverse
         let size = gameboard.count

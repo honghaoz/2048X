@@ -9,7 +9,7 @@
 import Foundation
 
 func == (lhs:NTuples, rhs:NTuples) -> Bool {
-    return allItemsMatch(lhs.mainNTuples, rhs.mainNTuples)
+    return allItemsMatch(lhs.mainNTuples, container2: rhs.mainNTuples)
 }
 
 class NTuples: Equatable{
@@ -20,11 +20,11 @@ class NTuples: Equatable{
     
     class func getNTuplesFromPath(path:String) -> NTuples? {
         var documentDirectories = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        var documentDirectory = documentDirectories[0] as! String
-        var path = documentDirectory.stringByAppendingPathComponent(path)
+        let documentDirectory = documentDirectories[0] 
+        let path = (documentDirectory as NSString).stringByAppendingPathComponent(path)
         
         if let archievedNTuples = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? Array<NTuple> {
-            println("Here we enter here")
+            print("Here we enter here")
             return NTuples(tuples: archievedNTuples)
         }
         return nil
@@ -32,8 +32,8 @@ class NTuples: Equatable{
     
     func saveNTuplesForPath(path:String) -> Bool {
         var documentDirectories = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        var documentDirectory = documentDirectories[0] as! String
-        var path = documentDirectory.stringByAppendingPathComponent(path)
+        let documentDirectory = documentDirectories[0] 
+        let path = (documentDirectory as NSString).stringByAppendingPathComponent(path)
         
         if NSKeyedArchiver.archiveRootObject(self.mainNTuples, toFile: path) {
             return true
@@ -90,17 +90,17 @@ class NTuples: Equatable{
     
     // get the value for a board
     func getValue(input:[Double]) -> Double {
-        var evaluator = DefaultNTupleEvaluator()
+        let evaluator = DefaultNTupleEvaluator()
         return evaluator.evaluate(self, board: Game2048Board(input: input))
     }
     
     // update NTuples
     func update(input:[Double], expectedValue:Double, learningRate:Double) {
-        var evaluator = DefaultNTupleEvaluator()
-        var val = evaluator.evaluate(self, board: Game2048Board(input: input))
-        var error = expectedValue - val
-        var delta = error * learningRate
-        var board = Game2048Board(input: input)
+        let evaluator = DefaultNTupleEvaluator()
+        let val = evaluator.evaluate(self, board: Game2048Board(input: input))
+        let error = expectedValue - val
+        let delta = error * learningRate
+        let board = Game2048Board(input: input)
         for tuple in getMain() {
             tuple.update(board, delta: delta)
         }

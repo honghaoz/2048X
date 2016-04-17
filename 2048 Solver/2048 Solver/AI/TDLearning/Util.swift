@@ -23,18 +23,18 @@ public extension Float {
 
 extension Int {
     func format(f:String) -> String {
-        return NSString(format: "%\(f)d", self) as! String
+        return NSString(format: "%\(f)d", self) as String
     }
 }
 
 extension Double {
     func format(f:String) -> String {
-        return NSString(format: "%\(f).2f", self) as! String
+        return NSString(format: "%\(f).2f", self) as String
     }
 }
 
 protocol Container {
-    typealias ItemType
+    associatedtype ItemType
     mutating func append(item:ItemType)
     var count:Int {get}
     subscript(i: Int) -> ItemType {get}

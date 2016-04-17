@@ -10,19 +10,19 @@ import Foundation
 
 class Game2048ExperimentTDL {
     func RunMe() {
-        println("Run Me")
+        print("Run Me")
         
-        var tdlGame2048 = TDLGame2048()
+        let tdlGame2048 = TDLGame2048()
         
-        var path = "NTuples.archieves"
+        let path = "NTuples.archieves"
         var vFunction:NTuples
         
         if let archived = tdlGame2048.currentNTuples {
             vFunction = archived
         } else {
-            var lines = NTuplesAllStraightFactory(tupleLength: 4, boardSize: State2048.METRIC.BOARD_SIZE, numValues: 15, minWeight: 0, maxWeight: 0).createRandomIndividual()
+            let lines = NTuplesAllStraightFactory(tupleLength: 4, boardSize: State2048.METRIC.BOARD_SIZE, numValues: 15, minWeight: 0, maxWeight: 0).createRandomIndividual()
             
-            var squares = NTuplesAllRectanglesFactory(rectSize: RectSize(size: 2), boardSize: State2048.METRIC.BOARD_SIZE, numValue: 15, minWeight: 0, maxWeight: 0).createRandomIndividual()
+            let squares = NTuplesAllRectanglesFactory(rectSize: RectSize(size: 2), boardSize: State2048.METRIC.BOARD_SIZE, numValue: 15, minWeight: 0, maxWeight: 0).createRandomIndividual()
             
             // Question1, vFunction is passed by value not reference
             vFunction = lines.add(squares)
@@ -30,9 +30,9 @@ class Game2048ExperimentTDL {
         
         
         for i in 1..<100000 {
-            println("Start a NEW ONE ---------\(i)")
+            print("Start a NEW ONE ---------\(i)")
             tdlGame2048.TDAfterstateLearn(vFunction, explorationRate: 0.001, learningRate: 0.01)
-            println("Finish this ONE ---------\(i)")
+            print("Finish this ONE ---------\(i)")
             if (i % 20 == 0) {
                 vFunction.saveNTuplesForPath(path)
                 evaluatePerformance(tdlGame2048, vFunctions: vFunction, numEpisodes: 10, e: i)
@@ -45,8 +45,8 @@ class Game2048ExperimentTDL {
         var ratio = 0
         var maxTile = 0
         
-        for i in 0..<numEpisodes {
-            var res = game.playByAfterstates(vFunctions)
+        for _ in 0..<numEpisodes {
+            let res = game.playByAfterstates(vFunctions)
             
             performance += res.score()
             
@@ -56,12 +56,12 @@ class Game2048ExperimentTDL {
             if res.maxTile() > maxTile {
                 maxTile = res.maxTile()
             }
-            println("This time we got \(res.maxTile())")
+            print("This time we got \(res.maxTile())")
         }
-        var eF = e.format("5")
-        var sF = (Double(performance)/Double(numEpisodes)).format("6")
-        var rF = (Double(ratio)/Double(numEpisodes)).format("6")
-        println("After \(eF) games: avg score = \(sF), avg ratio = \(rF), maxtile = \(maxTile)")
+        let eF = e.format("5")
+        let sF = (Double(performance)/Double(numEpisodes)).format("6")
+        let rF = (Double(ratio)/Double(numEpisodes)).format("6")
+        print("After \(eF) games: avg score = \(sF), avg ratio = \(rF), maxtile = \(maxTile)")
     }
     
 }

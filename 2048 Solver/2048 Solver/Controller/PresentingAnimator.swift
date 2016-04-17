@@ -14,7 +14,7 @@ class PresentingAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     var presentingViewSize: CGSize!
     var animationDuration: NSTimeInterval = 0.8
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return animationDuration
     }
     
@@ -23,7 +23,7 @@ class PresentingAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         let fromView = fromViewController.view
         let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
         let toView = toViewController.view
-        let containerView = transitionContext.containerView()
+        let containerView = transitionContext.containerView()!
         
         // Final Frame
         let x = (containerView.bounds.width - presentingViewSize.width) / 2.0
@@ -37,7 +37,7 @@ class PresentingAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             // Start Frame
             let toViewStartFrame = CGRect(x: toViewFinalFrame.origin.x, y: -(presentingViewSize.height + 5), width: toViewFinalFrame.width, height: toViewFinalFrame.height)
             toView.frame = toViewStartFrame
-            transitionContext.containerView().addSubview(toView)
+            transitionContext.containerView()!.addSubview(toView)
             
             UIView.animateWithDuration(animationDuration, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
                 toView.frame = toViewFinalFrame
@@ -48,7 +48,7 @@ class PresentingAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             toView.tintAdjustmentMode = UIViewTintAdjustmentMode.Normal
             toView.zhRemoveDimmedOverlayView(animated: true)
             
-            transitionContext.containerView().addSubview(fromView)
+            transitionContext.containerView()!.addSubview(fromView)
             let toViewFinalFrame = CGRect(x: toViewFinalFrame.origin.x, y: screenHeight + presentingViewSize.height + 5, width: toViewFinalFrame.width, height: toViewFinalFrame.height)
             
             UIView.animateWithDuration(animationDuration, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
@@ -62,7 +62,7 @@ class PresentingAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 }
 
 extension UIView {
-    func zhAddDimmedOverlayView(#animated: Bool, completion: ((Bool) -> ())? = nil) {
+    func zhAddDimmedOverlayView(animated animated: Bool, completion: ((Bool) -> ())? = nil) {
         let overlayView = UIView()
         overlayView.frame = self.bounds
         overlayView.backgroundColor = UIColor(white: 0.0, alpha: 0.1)
@@ -83,7 +83,7 @@ extension UIView {
         }
     }
     
-    func zhRemoveDimmedOverlayView(#animated: Bool, completion: ((Bool) -> ())? = nil) {
+    func zhRemoveDimmedOverlayView(animated animated: Bool, completion: ((Bool) -> ())? = nil) {
         let overlayView = self.viewWithTag(142301)
         if !animated {
             overlayView?.removeFromSuperview()

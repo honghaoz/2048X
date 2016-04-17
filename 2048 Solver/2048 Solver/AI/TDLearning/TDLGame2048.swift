@@ -36,19 +36,19 @@ class TDLGame2048 {
         game = GameYS()
         
         // get current NTuples
-        var path = "NTuples.archieves"
+        let path = "NTuples.archieves"
         if let archived = NTuples.getNTuplesFromPath(path) {
             currentNTuples = archived
         }
     }
     
     func getBestValueAction(state:State2048,ntuples:NTuples) -> Double {
-        var actions = game.getPossibleActions(state)
+        let actions = game.getPossibleActions(state)
         
         var bestValue = -Double.infinity
         for action in actions {
-            var transition = game.computeTransition(state, action: action)
-            var value = transition.getReward() + ntuples.getValue(transition.getAfterState().getFeatures())
+            let transition = game.computeTransition(state, action: action)
+            let value = transition.getReward() + ntuples.getValue(transition.getAfterState().getFeatures())
             if value > bestValue {
                 bestValue = value
             }
@@ -57,14 +57,14 @@ class TDLGame2048 {
     }
     
     func chooseBestTransitionAfterstate(state:State2048, ntuples:NTuples) -> Transition? {
-        var actions = game.getPossibleActions(state)
+        let actions = game.getPossibleActions(state)
         
         var bestTransition:Transition? = nil
         
         var bestValue = -Double.infinity
         for action in actions {
-            var transition = game.computeTransition(state, action: action)
-            var value = transition.getReward() + ntuples.getValue(transition.getAfterState().getFeatures())
+            let transition = game.computeTransition(state, action: action)
+            let value = transition.getReward() + ntuples.getValue(transition.getAfterState().getFeatures())
             if value > bestValue {
                 bestValue = value
                 bestTransition = transition
@@ -75,7 +75,7 @@ class TDLGame2048 {
     
     // give a state return the best move
     func playWithCurrentState(board:[[Int]]) -> MoveCommand? {
-        var state = State2048(data: board)
+        let state = State2048(data: board)
         if let tmpNTuples = self.currentNTuples {
             if let transition = chooseBestTransitionAfterstate(state, ntuples: tmpNTuples) {
                 return transition.getAction().toMoveCommand()
@@ -105,17 +105,17 @@ class TDLGame2048 {
         var state = game.sampleInitialStateDistribution()
         
         while(!game.isTerminalState(state)) {
-            var actions = game.getPossibleActions(state)
+            _ = game.getPossibleActions(state)
             var transition:Transition? = nil
             
-            if (Double(Float.random(lower: 0.0, upper: 1.0)) < explorationRate) {
-                var randomAction = Action2048.randomAction()
+            if (Double(Float.random(0.0, upper: 1.0)) < explorationRate) {
+                let randomAction = Action2048.randomAction()
                 transition = game.computeTransition(state, action: randomAction)
             } else {
                 transition = chooseBestTransitionAfterstate(state, ntuples: ntuples)
             }
             
-            var nextState = game.getNextState(transition!.getAfterState())
+            let nextState = game.getNextState(transition!.getAfterState())
             
             var correctActionValue = 0.0
             if (!game.isTerminalState(nextState)) {

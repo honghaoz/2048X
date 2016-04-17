@@ -24,13 +24,11 @@ enum Action2048 {
             return (2, 0, 1)
         case .LEFT:
             return (3, -1, 0)
-        default:
-            return (-1, -1, -1)
         }
     }
     
     static func randomAction() -> Action2048 {
-        var rd =  arc4random_uniform(4)
+        let rd =  arc4random_uniform(4)
         
         switch(rd) {
         case 0:
@@ -56,10 +54,7 @@ enum Action2048 {
             return MoveCommand(direction:MoveDirection.Right)
         case .LEFT:
             return MoveCommand(direction:MoveDirection.Left)
-        default:
-            return MoveCommand(direction:MoveDirection.Left)
         }
-        
     }
     
 }

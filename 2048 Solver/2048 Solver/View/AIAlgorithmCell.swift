@@ -23,7 +23,7 @@ class AIAlgorithmCell: UITableViewCell {
         setupViews()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
     
@@ -33,7 +33,7 @@ class AIAlgorithmCell: UITableViewCell {
         selectionStyle = UITableViewCellSelectionStyle.None
         
         titleLabel = UILabel()
-        titleLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(titleLabel)
         
         titleLabel.text = "(Title)"
@@ -48,7 +48,7 @@ class AIAlgorithmCell: UITableViewCell {
         contentView.addConstraint(cLeading)
         
         selectionControl = BlackSelectionControl()
-        selectionControl.setTranslatesAutoresizingMaskIntoConstraints(false)
+        selectionControl.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(selectionControl)
         selectionControl.userInteractionEnabled = false
         

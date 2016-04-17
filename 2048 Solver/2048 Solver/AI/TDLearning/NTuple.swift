@@ -17,17 +17,17 @@ func ** (left:Double, right:Double) -> Double {
 
 func == (lhs:NTuple, rhs:NTuple) -> Bool {
     
-    if !allItemsMatch(lhs.locations, rhs.locations) {
+    if !allItemsMatch(lhs.locations, container2: rhs.locations) {
         return false
     }
     
-    if !allItemsMatch(lhs.LUT, rhs.LUT) {
+    if !allItemsMatch(lhs.LUT, container2: rhs.LUT) {
         return false
     }
     return true
 }
 
-class NTuple:NSObject, Equatable {
+class NTuple: NSObject {
     var numValues:Int
     var locations:[Int]
     var LUT:[Double] // LUT Table
@@ -41,7 +41,7 @@ class NTuple:NSObject, Equatable {
     class func newWithRandomWeights(numValues:Int, locations:[Int], minWeight:Double, maxWeight:Double) -> NTuple {
         var weights = Array(count: NTuple.computeNumWeights(numValues, numFields: locations.count), repeatedValue: 0.0)
         for i in 0..<weights.count {
-            weights[i] = Double(Float.random(lower: Float(minWeight), upper: Float(maxWeight)))
+            weights[i] = Double(Float.random(Float(minWeight), upper: Float(maxWeight)))
         }
         return NTuple(numValues: numValues, locations: locations, weights: weights)
     }
@@ -50,7 +50,7 @@ class NTuple:NSObject, Equatable {
         var weights = Array(count: NTuple.computeNumWeights(numValues, numFields: locations.count), repeatedValue: 0.0)
         
         for i in 0..<weights.count {
-            weights[i] = Double(Float.random(lower: Float(minWeight), upper: Float(maxWeight)))
+            weights[i] = Double(Float.random(Float(minWeight), upper: Float(maxWeight)))
         }
         self.init(numValues: numValues, locations: locations, weights: weights)
     }
@@ -119,8 +119,8 @@ class NTuple:NSObject, Equatable {
     
     // string representation of location
     func toString() -> String {
-        var locs = ",".join(locations.map{"\($0)"})
-        var tmp = "LOC=[" + locs + "]"
+        let locs = locations.map{"\($0)"}.joinWithSeparator(",")
+        let tmp = "LOC=[" + locs + "]"
         return tmp
     }
     

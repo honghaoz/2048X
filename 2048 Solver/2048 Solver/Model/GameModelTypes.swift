@@ -105,11 +105,11 @@ struct SquareGameBoard<T> {
         precondition(row >= 0 && row < dimension, "")
         var result = [T]()
         if reversed {
-            for col in stride(from: dimension - 1, to: -1, by: -1) {
+            for col in (dimension - 1).stride(to: -1, by: -1) {
                 result.append(boardArray[row * dimension + col])
             }
         } else {
-            for col in stride(from: 0, to: dimension, by: 1) {
+            for col in 0.stride(to: dimension, by: 1) {
                 result.append(boardArray[row * dimension + col])
             }
         }
@@ -121,11 +121,11 @@ struct SquareGameBoard<T> {
         precondition(col >= 0 && col < dimension, "")
         var result = [T]()
         if reversed {
-            for row in stride(from: dimension - 1, to: -1, by: -1) {
+            for row in (dimension - 1).stride(to: -1, by: -1) {
                 result.append(boardArray[row * dimension + col])
             }
         } else {
-            for row in stride(from: 0, to: dimension, by: 1) {
+            for row in 0.stride(to: dimension, by: 1) {
                 result.append(boardArray[row * dimension + col])
             }
         }

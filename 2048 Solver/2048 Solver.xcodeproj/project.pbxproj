@@ -14,7 +14,6 @@
 		02107C9F1AAD240400CFF8FF /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107C9E1AAD240400CFF8FF /* GameModel.swift */; };
 		02107CA11AAD244A00CFF8FF /* GameModelTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107CA01AAD244A00CFF8FF /* GameModelTypes.swift */; };
 		0225A2421AB7D74500EA72C8 /* GameBoardAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A2411AB7D74500EA72C8 /* GameBoardAssistant.swift */; };
-		0225A2491AB7DD9000EA72C8 /* ZHLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A2481AB7DD9000EA72C8 /* ZHLogger.swift */; };
 		0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A24A1AB8A6E300EA72C8 /* Extension.swift */; };
 		0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */; };
 		023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */; };
@@ -39,6 +38,10 @@
 		02BC42891AC8F18C0089639B /* PresentingAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42861AC8F18C0089639B /* PresentingAnimator.swift */; };
 		02BC428A1AC8F18C0089639B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42871AC8F18C0089639B /* ViewController.swift */; };
 		02BC428C1AC8F20B0089639B /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC428B1AC8F20B0089639B /* SettingViewController.swift */; };
+		02BCF02D1CC1721A002125B6 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BCF02A1CC1721A002125B6 /* Color.swift */; };
+		02BCF02E1CC1721A002125B6 /* Loggerithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BCF02B1CC1721A002125B6 /* Loggerithm.swift */; };
+		02BCF02F1CC1721A002125B6 /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BCF02C1CC1721A002125B6 /* Type.swift */; };
+		02BCF0311CC17275002125B6 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BCF0301CC17275002125B6 /* Constant.swift */; };
 		02C2A86B1AC9DFF3002DEB97 /* BlackSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2A86A1AC9DFF3002DEB97 /* BlackSlider.swift */; };
 		02C2A86D1AC9E9EF002DEB97 /* BlackSelectionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2A86C1AC9E9EF002DEB97 /* BlackSelectionControl.swift */; };
 		02C2A86F1AC9EC10002DEB97 /* AIAlgorithmCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2A86E1AC9EC10002DEB97 /* AIAlgorithmCell.swift */; };
@@ -90,7 +93,6 @@
 		02107C9E1AAD240400CFF8FF /* GameModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		02107CA01AAD244A00CFF8FF /* GameModelTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModelTypes.swift; sourceTree = "<group>"; };
 		0225A2411AB7D74500EA72C8 /* GameBoardAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoardAssistant.swift; sourceTree = "<group>"; };
-		0225A2481AB7DD9000EA72C8 /* ZHLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZHLogger.swift; sourceTree = "<group>"; };
 		0225A24A1AB8A6E300EA72C8 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AI-Random.swift"; sourceTree = "<group>"; };
 		023EDE7A1AAA325100F5B9C5 /* 2048X AI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2048X AI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +128,10 @@
 		02BC42861AC8F18C0089639B /* PresentingAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentingAnimator.swift; sourceTree = "<group>"; };
 		02BC42871AC8F18C0089639B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		02BC428B1AC8F20B0089639B /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		02BCF02A1CC1721A002125B6 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		02BCF02B1CC1721A002125B6 /* Loggerithm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loggerithm.swift; sourceTree = "<group>"; };
+		02BCF02C1CC1721A002125B6 /* Type.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Type.swift; sourceTree = "<group>"; };
+		02BCF0301CC17275002125B6 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		02C2A86A1AC9DFF3002DEB97 /* BlackSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackSlider.swift; sourceTree = "<group>"; };
 		02C2A86C1AC9E9EF002DEB97 /* BlackSelectionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackSelectionControl.swift; sourceTree = "<group>"; };
 		02C2A86E1AC9EC10002DEB97 /* AIAlgorithmCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AIAlgorithmCell.swift; sourceTree = "<group>"; };
@@ -220,8 +226,8 @@
 		0225A2471AB7DD8A00EA72C8 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				02BCF0291CC1721A002125B6 /* Loggerithm */,
 				0243DDE11AD341E0000CB475 /* UIDevice */,
-				0225A2481AB7DD9000EA72C8 /* ZHLogger.swift */,
 			);
 			path = ThirdParty;
 			sourceTree = "<group>";
@@ -253,6 +259,7 @@
 			children = (
 				023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */,
 				0225A24A1AB8A6E300EA72C8 /* Extension.swift */,
+				02BCF0301CC17275002125B6 /* Constant.swift */,
 				0225A2471AB7DD8A00EA72C8 /* ThirdParty */,
 				FF5C5DD81AAF77C600CE6981 /* AI */,
 				02107C9D1AAD238D00CFF8FF /* Model */,
@@ -339,6 +346,16 @@
 				020BAE151ACA54220074EFE4 /* GameEndViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		02BCF0291CC1721A002125B6 /* Loggerithm */ = {
+			isa = PBXGroup;
+			children = (
+				02BCF02A1CC1721A002125B6 /* Color.swift */,
+				02BCF02B1CC1721A002125B6 /* Loggerithm.swift */,
+				02BCF02C1CC1721A002125B6 /* Type.swift */,
+			);
+			path = Loggerithm;
 			sourceTree = "<group>";
 		};
 		02DBF57F1AB269E7007EE133 /* Resource */ = {
@@ -443,7 +460,9 @@
 		023EDE721AAA325100F5B9C5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastSwiftMigration = 0730;
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Honghao Zhang";
 				TargetAttributes = {
 					023EDE791AAA325100F5B9C5 = {
@@ -557,11 +576,13 @@
 				02107C9C1AAD220800CFF8FF /* Appearance.swift in Sources */,
 				02BC427E1AC88B230089639B /* RectSize.swift in Sources */,
 				FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */,
+				02BCF02E1CC1721A002125B6 /* Loggerithm.swift in Sources */,
 				0E1423B41ACB7C5A000E8B8B /* BoardPos.swift in Sources */,
 				02BC427F1AC88B230089639B /* Util.swift in Sources */,
 				0243DDEA1AD34330000CB475 /* ZHHParseDevice.m in Sources */,
 				0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */,
 				02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */,
+				02BCF02D1CC1721A002125B6 /* Color.swift in Sources */,
 				0249C9C51ACB1AE5000E954F /* AI-Expectimax.swift in Sources */,
 				02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */,
 				0E1423B01ACB4707000E8B8B /* Game2048ExperimentTDL.swift in Sources */,
@@ -569,6 +590,7 @@
 				02BC428A1AC8F18C0089639B /* ViewController.swift in Sources */,
 				0E1423BA1ACBA1F9000E8B8B /* NTuplesBuilder.swift in Sources */,
 				0E1423AA1ACACEBA000E8B8B /* Transition.swift in Sources */,
+				02BCF02F1CC1721A002125B6 /* Type.swift in Sources */,
 				02C2A86D1AC9E9EF002DEB97 /* BlackSelectionControl.swift in Sources */,
 				0E1423A41ACA16E5000E8B8B /* State2048.swift in Sources */,
 				0243DDE61AD341E0000CB475 /* UIApplication+AppVersion.m in Sources */,
@@ -586,6 +608,7 @@
 				0297205E1AC65377009B86D2 /* BlackBorderButton.swift in Sources */,
 				023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */,
 				0E1423A61ACA17BE000E8B8B /* NTuples.swift in Sources */,
+				02BCF0311CC17275002125B6 /* Constant.swift in Sources */,
 				0E1423AE1ACAF879000E8B8B /* TDLGame2048.swift in Sources */,
 				02BC42881AC8F18C0089639B /* ConfirmViewController.swift in Sources */,
 				028159611AAD07E500C795D9 /* TileView.swift in Sources */,
@@ -596,7 +619,6 @@
 				02BC427B1AC88B230089639B /* Action2048.swift in Sources */,
 				02107C9F1AAD240400CFF8FF /* GameModel.swift in Sources */,
 				02107C9A1AAD1F0000CFF8FF /* ScoreView.swift in Sources */,
-				0225A2491AB7DD9000EA72C8 /* ZHLogger.swift in Sources */,
 				020BAE161ACA54220074EFE4 /* GameEndViewController.swift in Sources */,
 				0225A2421AB7D74500EA72C8 /* GameBoardAssistant.swift in Sources */,
 			);
@@ -661,6 +683,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -735,6 +758,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honghaoz.2048X-AI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "137a0314-d71f-4fc2-86ad-4a70f632816e";
 				SDKROOT = iphoneos;
@@ -757,6 +781,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honghaoz.2048X-AI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "956cf9ac-d79b-499e-a7d8-6c0faa1e9219";
 				SDKROOT = iphoneos;
@@ -779,6 +804,7 @@
 				INFOPLIST_FILE = "2048 SolverTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "honghaoz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -793,6 +819,7 @@
 				INFOPLIST_FILE = "2048 SolverTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "honghaoz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

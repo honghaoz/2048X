@@ -26,10 +26,10 @@ class NTuplesBuilder {
     
     func addTuple(locations:[Int]) {
         var sortedLocations = locations
-        sortedLocations.sort{$0 < $1}
+        sortedLocations.sortInPlace{$0 < $1}
         
         for sortedTuple in CollectionUtils.flatten(all) {
-            if allItemsMatch(sortedTuple, sortedLocations) {
+            if allItemsMatch(sortedTuple, container2: sortedLocations) {
                 return
             }
         }
@@ -46,7 +46,7 @@ class NTuplesBuilder {
         var newMain = Array<[Int]>()
         newMain += main
         
-        var mainTuples = createNTuplesFromLocations(newMain)
+        let mainTuples = createNTuplesFromLocations(newMain)
         return NTuples(tuples: mainTuples)
     }
     

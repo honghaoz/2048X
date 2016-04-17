@@ -42,7 +42,7 @@ class GameEndViewController: UIViewController {
         
         // Title Label
         titleLabel = UILabel()
-        titleLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         views["titleLabel"] = titleLabel
         view.addSubview(titleLabel)
         
@@ -54,7 +54,7 @@ class GameEndViewController: UIViewController {
         
         // undoButton
         undoButton = BlackBorderButton()
-        undoButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        undoButton.translatesAutoresizingMaskIntoConstraints = false
         undoButton.title = "Undo"
         undoButton.addTarget(self, action: "undoButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         views["undoButton"] = undoButton
@@ -62,7 +62,7 @@ class GameEndViewController: UIViewController {
         
         // Start a new game button
         startButton = BlackBorderButton()
-        startButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        startButton.translatesAutoresizingMaskIntoConstraints = false
         startButton.title = "Retry"
         startButton.addTarget(self, action: "startButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         views["startButton"] = startButton
@@ -70,23 +70,23 @@ class GameEndViewController: UIViewController {
         
         // Auto Layout
         // H:
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[titleLabel]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[undoButton]-(-5)-[startButton(==undoButton)]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[titleLabel]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[undoButton]-(-5)-[startButton(==undoButton)]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
         
         // V:
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[titleLabel][undoButton(50)]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[titleLabel][startButton]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[titleLabel][undoButton(50)]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[titleLabel][startButton]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
     }
     
     func undoButtonTapped(sender: UIButton) {
-        logDebug()
+        log.debug()
         self.dismissViewControllerAnimated(true, completion: nil)
         undoClosure?()
         dismissClosure?()
     }
     
     func startButtonTapped(sender: UIButton) {
-        logDebug()
+        log.debug()
         self.dismissViewControllerAnimated(true, completion: nil)
         startClosure?()
         dismissClosure?()

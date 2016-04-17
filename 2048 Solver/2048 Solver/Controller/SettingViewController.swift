@@ -78,13 +78,13 @@ class SettingViewController: UIViewController {
         
         // MainContainerView
         mainContainerView = UIView()
-        mainContainerView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        mainContainerView.translatesAutoresizingMaskIntoConstraints = false
         views["mainContainerView"] = mainContainerView
         view.addSubview(mainContainerView)
         
         // Animation Duration Title Label
         animationDurationTitleLabel = UILabel()
-        animationDurationTitleLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        animationDurationTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         views["animationDurationTitleLabel"] = animationDurationTitleLabel
         mainContainerView.addSubview(animationDurationTitleLabel)
         
@@ -96,7 +96,7 @@ class SettingViewController: UIViewController {
         
         // Animation Duration Number Label
         animationDurationNumberLabel = UILabel()
-        animationDurationNumberLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        animationDurationNumberLabel.translatesAutoresizingMaskIntoConstraints = false
         views["animationDurationNumberLabel"] = animationDurationNumberLabel
         mainContainerView.addSubview(animationDurationNumberLabel)
         
@@ -108,7 +108,7 @@ class SettingViewController: UIViewController {
         
         // Animation Duration Under score view
         animationDurationNumberUnderscoreView = UIView()
-        animationDurationNumberUnderscoreView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        animationDurationNumberUnderscoreView.translatesAutoresizingMaskIntoConstraints = false
         views["animationDurationNumberUnderscoreView"] = animationDurationNumberUnderscoreView
         mainContainerView.addSubview(animationDurationNumberUnderscoreView)
         
@@ -123,7 +123,7 @@ class SettingViewController: UIViewController {
         
         // Animation Duration Unit Label
         animationDurationUnitLabel = UILabel()
-        animationDurationUnitLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        animationDurationUnitLabel.translatesAutoresizingMaskIntoConstraints = false
         views["animationDurationUnitLabel"] = animationDurationUnitLabel
         mainContainerView.addSubview(animationDurationUnitLabel)
         
@@ -140,17 +140,17 @@ class SettingViewController: UIViewController {
         
         // Animation Duration Slider
         animationDurationSlider = BlackSlider()
-        animationDurationSlider.setTranslatesAutoresizingMaskIntoConstraints(false)
+        animationDurationSlider.translatesAutoresizingMaskIntoConstraints = false
         views["animationDurationSlider"] = animationDurationSlider
         mainContainerView.addSubview(animationDurationSlider)
         animationDurationSlider.minimumValue = 0.0
         animationDurationSlider.maximumValue = 1.0
         animationDurationSlider.value = Float(sharedAnimationDuration)
-        animationDurationSlider.addTarget(self, action: "animationDurationSliderValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        animationDurationSlider.addTarget(self, action: #selector(SettingViewController.animationDurationSliderValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         
         // Dimension Title Label
         dimensionTitleLabel = UILabel()
-        dimensionTitleLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        dimensionTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         views["dimensionTitleLabel"] = dimensionTitleLabel
         mainContainerView.addSubview(dimensionTitleLabel)
         
@@ -162,7 +162,7 @@ class SettingViewController: UIViewController {
         
         // Dimension Number Label
         dimensionNumberLabel = UILabel()
-        dimensionNumberLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        dimensionNumberLabel.translatesAutoresizingMaskIntoConstraints = false
         views["dimensionNumberLabel"] = dimensionNumberLabel
         mainContainerView.addSubview(dimensionNumberLabel)
         
@@ -174,17 +174,17 @@ class SettingViewController: UIViewController {
         
         // Dimension Slider
         dimensionSlider = BlackSlider()
-        dimensionSlider.setTranslatesAutoresizingMaskIntoConstraints(false)
+        dimensionSlider.translatesAutoresizingMaskIntoConstraints = false
         views["dimensionSlider"] = dimensionSlider
         mainContainerView.addSubview(dimensionSlider)
         dimensionSlider.minimumValue = 2
         dimensionSlider.maximumValue = 12
         dimensionSlider.value = Float(dimension)
-        dimensionSlider.addTarget(self, action: "dimensionSliderValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        dimensionSlider.addTarget(self, action: #selector(SettingViewController.dimensionSliderValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         
         // aiAlgorithmTitleLabel
         aiAlgorithmTitleLabel = UILabel()
-        aiAlgorithmTitleLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        aiAlgorithmTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         views["aiAlgorithmTitleLabel"] = aiAlgorithmTitleLabel
         mainContainerView.addSubview(aiAlgorithmTitleLabel)
         
@@ -196,42 +196,42 @@ class SettingViewController: UIViewController {
         
         // aiAlgorithmTableView
         aiAlgorithmTableView = UITableView()
-        aiAlgorithmTableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        aiAlgorithmTableView.translatesAutoresizingMaskIntoConstraints = false
         views["aiAlgorithmTableView"] = aiAlgorithmTableView
         mainContainerView.addSubview(aiAlgorithmTableView)
         setupTableView()
         
         // Save button
         saveButton = BlackBorderButton()
-        saveButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.title = "Save"
-        saveButton.addTarget(self, action: "saveButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        saveButton.addTarget(self, action: #selector(SettingViewController.saveButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         views["saveButton"] = saveButton
         view.addSubview(saveButton)
         
         // Cancel button
         cancelButton = BlackBorderButton()
-        cancelButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.title = "Cancel"
-        cancelButton.addTarget(self, action: "cancelButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        cancelButton.addTarget(self, action: #selector(SettingViewController.cancelButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         views["cancelButton"] = cancelButton
         view.addSubview(cancelButton)
         
         // Auto Layout
         // H:
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[mainContainerView]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-12-[animationDurationTitleLabel]-3-[animationDurationNumberLabel]-2-[animationDurationUnitLabel]-(>=12)-|", options: NSLayoutFormatOptions.AlignAllFirstBaseline, metrics: metrics, views: views))
-        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-32-[animationDurationSlider]-32-|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-12-[dimensionTitleLabel]-3-[dimensionNumberLabel]-(>=12)-|", options: NSLayoutFormatOptions.AlignAllFirstBaseline, metrics: metrics, views: views))
-        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-32-[dimensionSlider]-32-|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-12-[aiAlgorithmTitleLabel]", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-24-[aiAlgorithmTableView]-24-|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[saveButton]-(-5)-[cancelButton(==saveButton)]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[mainContainerView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-12-[animationDurationTitleLabel]-3-[animationDurationNumberLabel]-2-[animationDurationUnitLabel]-(>=12)-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: metrics, views: views))
+        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-32-[animationDurationSlider]-32-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-12-[dimensionTitleLabel]-3-[dimensionNumberLabel]-(>=12)-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: metrics, views: views))
+        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-32-[dimensionSlider]-32-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-12-[aiAlgorithmTitleLabel]", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-24-[aiAlgorithmTableView]-24-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[saveButton]-(-5)-[cancelButton(==saveButton)]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
         
         // V:
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[mainContainerView][saveButton(50)]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[mainContainerView][cancelButton]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[animationDurationTitleLabel]-10-[animationDurationSlider]-10-[dimensionTitleLabel]-10-[dimensionSlider]-10-[aiAlgorithmTitleLabel]-10-[aiAlgorithmTableView]|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[mainContainerView][saveButton(50)]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[mainContainerView][cancelButton]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        mainContainerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[animationDurationTitleLabel]-10-[animationDurationSlider]-10-[dimensionTitleLabel]-10-[dimensionSlider]-10-[aiAlgorithmTitleLabel]-10-[aiAlgorithmTableView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
     }
     
     func animationDurationSliderValueChanged(sender: UISlider) {
@@ -247,9 +247,9 @@ class SettingViewController: UIViewController {
         let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "save_setting", value: nil).build() as Dictionary
         GAI.sharedInstance().defaultTracker.send(eventDict)
         
-        logDebug()
+        log.debug()
         sharedAnimationDuration = NSTimeInterval(animationDurationSlider.value)
-        mainViewController.aiSelectedChoiceIndex = aiAlgorithmTableView.indexPathForSelectedRow()!.row
+        mainViewController.aiSelectedChoiceIndex = aiAlgorithmTableView.indexPathForSelectedRow!.row
         mainViewController.dimension = dimension
         
         saveClosure?()
@@ -261,7 +261,7 @@ class SettingViewController: UIViewController {
         let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "cancel_setting", value: nil).build() as Dictionary
         GAI.sharedInstance().defaultTracker.send(eventDict)
         
-        logDebug()
+        log.debug()
         cancelClosure?()
         dismissClosure?()
         self.dismissViewControllerAnimated(true, completion: nil)

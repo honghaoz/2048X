@@ -43,7 +43,7 @@ class GameBoardView: UIView {
     }
     
     // MARK:- Init Methods
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupViews()
     }
@@ -114,7 +114,7 @@ class GameBoardView: UIView {
         // Update background tiles' frame
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                logDebug("i: \(i), j: \(j)")
+                log.debug("i: \(i), j: \(j)")
                 backgroundTiles[i][j].frame = tileFrameForCoordinate((i, j))
             }
         }
@@ -166,11 +166,11 @@ extension GameBoardView {
 //        logDebug("removeWithRemoveActions: ")
 //        GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
         let count = removeActions.count
-        for (index, action) in enumerate(removeActions) {
+        for (index, action) in removeActions.enumerate() {
             let i = action.removeCoordinate.0
             let j = action.removeCoordinate.1
             
-            logDebug("Removed: (\(i), \(j))")
+            log.debug("Removed: (\(i), \(j))")
             let tile = forgroundTiles[i][j].0!
             let underneathTile = forgroundTiles[i][j].1
             self.forgroundTiles[i][j] = (nil, nil)
@@ -197,8 +197,8 @@ extension GameBoardView {
     When game model is updated, view controller should call this method and passed in corresponding MoveActions and InitActions
     Note: this method will update MoveActions first and then InitActions
     
-    :param: moveActions a list of actions which specify how tiles are merged or moved
-    :param: initActions a list of actions which specify how new tiles are inserted
+    - parameter moveActions: a list of actions which specify how tiles are merged or moved
+    - parameter initActions: a list of actions which specify how new tiles are inserted
     */
     func updateWithMoveActions(moveActions: [MoveAction], initActions: [InitAction], completion: (() -> ())? = nil) {
         updateWithMoveActions(moveActions, completion: {
@@ -211,10 +211,10 @@ extension GameBoardView {
     /**
     Insert new tile views using InitActions
     
-    :param: initActions a list of actions which specify how new tiles are inserted
+    - parameter initActions: a list of actions which specify how new tiles are inserted
     */
     private func updateWithInitActions(initActions: [InitAction], completion: (() -> ())? = nil) {
-        logDebug("updateWithInitActions: ")
+        log.debug("updateWithInitActions: ")
         GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
         let count = initActions.count
         if count == 0 {
@@ -222,11 +222,11 @@ extension GameBoardView {
             return
         }
         
-        for (index, action) in enumerate(initActions) {
+        for (index, action) in initActions.enumerate() {
             let initCoordinate = action.initCoordinate
             let number = action.initNumber
             
-            logDebug("Init: \(initCoordinate), \(number)")
+            log.debug("Init: \(initCoordinate), \(number)")
             let tile = TileView(frame: tileFrameForCoordinate(initCoordinate))
             tile.number = number
             tile.numberLabel.font = tile.numberLabel.font.fontWithSize(CGFloat(SharedFontSize.tileFontSizeForDimension(dimension)))
@@ -253,11 +253,11 @@ extension GameBoardView {
     /**
     Move or merge tile views using MoveActions
     
-    :param: moveActions a list of actions which specify how tiles are merged or moved
-    :param: completion  an optional completion clousure, which will be called once all move actions are done
+    - parameter moveActions: a list of actions which specify how tiles are merged or moved
+    - parameter completion:  an optional completion clousure, which will be called once all move actions are done
     */
     private func updateWithMoveActions(moveActions: [MoveAction], completion: (() -> ())? = nil) {
-        logDebug("updateWithMoveActions: ")
+        log.debug("updateWithMoveActions: ")
         GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
         
         let count = moveActions.count
@@ -267,13 +267,13 @@ extension GameBoardView {
             return
         }
         
-        for (index, action) in enumerate(moveActions) {
+        for (index, action) in moveActions.enumerate() {
             if action.fromCoordinates.count == 1 {
                 // Move Action
                 let from = action.fromCoordinates[0]
                 let to = action.toCoordinate
                 
-                logDebug("Move: from: \(from) -> to: \(to)")
+                log.debug("Move: from: \(from) -> to: \(to)")
                 
                 let fromView = forgroundTiles[from.0][from.1].0!
                 // There may exist an underneath tile
@@ -300,7 +300,7 @@ extension GameBoardView {
                 let from2 = action.fromCoordinates[1]
                 let to = action.toCoordinate
                 
-                logDebug("Move: from1: \(from1) + from2: \(from2) -> to: \(to)")
+                log.debug("Move: from1: \(from1) + from2: \(from2) -> to: \(to)")
                 
                 // Make sure the inserting tile are under the inserted tile
                 self.insertSubview(forgroundTiles[from1.0][from1.1].0!, belowSubview: forgroundTiles[from2.0][from2.1].0!)
@@ -352,9 +352,9 @@ extension GameBoardView {
     /**
     Return the tile frame for a tile coordinate
     
-    :param: coordinate tile coordinate, within range [0 ..< dimension, 0 ..< dimension]
+    - parameter coordinate: tile coordinate, within range [0 ..< dimension, 0 ..< dimension]
     
-    :returns: CGRect frame
+    - returns: CGRect frame
     */
     func tileFrameForCoordinate(coordinate: (Int, Int)) -> CGRect {
         let y = padding + (tilePadding + tileWidth) * CGFloat(coordinate.0)

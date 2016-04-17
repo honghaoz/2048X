@@ -34,8 +34,8 @@ class AI {
     
     /// Calculate next optimal movement using Mono Heuristic
     func nextMoveUsingMonoHeuristic(curState: [[Int]], searchDepth: Int = 3) -> MoveCommand? {
-        var gameboardAssistant = GameboardAssistant(cells: curState)
-        let (direction, score) = monoHeuristicRecursion(gameboardAssistant, curDepth: searchDepth, searchDepth: searchDepth)
+        let gameboardAssistant = GameboardAssistant(cells: curState)
+        let (direction, _) = monoHeuristicRecursion(gameboardAssistant, curDepth: searchDepth, searchDepth: searchDepth)
         return direction
     }
     
@@ -49,7 +49,7 @@ class AI {
             let dir = rawValToDirection[i]!.direction
             // Current direction is valid
             if gameboardAssistant.isMoveValid(dir) {
-                var newAssistant = gameboardAssistant.copy()
+                let newAssistant = gameboardAssistant.copy()
                 newAssistant.makeMove(dir, toAddNewTile: false)
                 var (evaluateVal, initialTile) = evaluateUsingMonoHeuristic(newAssistant.cell)
                 newAssistant.setCell(initialTile.0, y: initialTile.1, val: 2)
@@ -77,7 +77,7 @@ class AI {
     /// be assigned with 2.
     private func evaluateUsingMonoHeuristic(gameboard: [[Int]], ratio: Double = 0.25) -> (Double, (Int, Int)) {
         let yRange = (0...gameboard.count - 1).map{$0}
-        let yRangeReverse = (0...gameboard.count - 1).map{$0}.reverse()
+        let yRangeReverse = Array((0...gameboard.count - 1).map{$0}.reverse())
         let xRange = yRange
         let xRangeReverse = yRangeReverse
         let size = gameboard.count
@@ -261,8 +261,8 @@ class AI {
     
     /// Calculate next optimal movement using Combined Heuristic
     func nextMoveUsingCombinedStrategy(curState: [[Int]], searchDepth: Int = 3) -> MoveCommand? {
-        var gameboardAssistant = GameboardAssistant(cells: curState)
-        let (direction, score) = combinedHeuristicRecursion(gameboardAssistant, curDepth: searchDepth, searchDepth: searchDepth)
+        let gameboardAssistant = GameboardAssistant(cells: curState)
+        let (direction, _) = combinedHeuristicRecursion(gameboardAssistant, curDepth: searchDepth, searchDepth: searchDepth)
         return direction
     }
     
@@ -276,7 +276,7 @@ class AI {
             let dir = rawValToDirection[i]!.direction
             // Current direction is valid
             if gameboardAssistant.isMoveValid(dir) {
-                var newAssistant = gameboardAssistant.copy()
+                let newAssistant = gameboardAssistant.copy()
                 newAssistant.makeMove(dir)
                 var evaluateVal = evaluateUsingCombinedHeuristic(newAssistant.cell)
                 if curDepth != 0 {
@@ -337,7 +337,7 @@ class AI {
     
     /// Calculate optimal movement for method "minimax alpha-beta pruning"
     func nextMoveUsingAlphaBetaPruning(curState: [[Int]], depth: Int = 10) -> MoveCommand? {
-        var gameboardAssistant = GameboardAssistant(cells: curState)
+        let gameboardAssistant = GameboardAssistant(cells: curState)
         
         var bestDirection: MoveDirection?
         
@@ -356,10 +356,13 @@ class AI {
     
     /// Calculate optimal movement for method "minimax alpha-beta pruning" using recursion
     private func minimaxAlphaBetaPruning(gameboardAssistant: GameboardAssistant, curDepth: Int, player: Player,
-        alpha: Double, beta: Double, var lastPositions: Int, var lastCutoffs: Int) -> (bestDirection: MoveDirection?, score: Double, positions: Int, cutoffs: Int) {
+        alpha: Double, beta: Double, lastPositions: Int, lastCutoffs: Int) -> (bestDirection: MoveDirection?, score: Double, positions: Int, cutoffs: Int) {
             // Size of the board
             let size = gameboardAssistant.cell[0].count
-            
+		
+			var lastPositions = lastPositions
+			var lastCutoffs = lastCutoffs
+		
             var bestScore = 0.0
             var bestMove: MoveDirection?
             
@@ -371,9 +374,9 @@ class AI {
                 for i in 0..<size {
                     let nextDirection = rawValToDirection[i]!.direction
                     if gameboardAssistant.isMoveValid(nextDirection) {
-                        var newAssistant = gameboardAssistant.copy()
+                        let newAssistant = gameboardAssistant.copy()
                         newAssistant.makeMove(nextDirection, toAddNewTile: false)
-                        lastPositions++
+                        lastPositions += 1
                         if curDepth == 0 {
                             tempResult = (nextDirection, evaluateUsingSmoothnessAndMonotonicity(newAssistant), lastPositions, lastCutoffs)
                         }
@@ -381,7 +384,7 @@ class AI {
                             tempResult = minimaxAlphaBetaPruning(newAssistant, curDepth: curDepth - 1, player: .Min, alpha: alpha, beta: beta, lastPositions: lastPositions, lastCutoffs: lastCutoffs)
                             // Penalize score achieved with higher depth
                             if tempResult.score > 9900.0 {
-                                tempResult.score--
+                                tempResult.score -= 1
                             }
                             // Update parameters
                             lastPositions = tempResult.positions
@@ -393,7 +396,7 @@ class AI {
                             bestMove = nextDirection
                         }
                         if bestScore > beta {
-                            lastCutoffs++
+                            lastCutoffs += 1
                             return (bestMove, beta, lastPositions, lastCutoffs)
                         }
                     }
@@ -416,12 +419,12 @@ class AI {
                     for emptyPos in emptyCells {
                         gameboardAssistant.setCell(emptyPos.x, y: emptyPos.y, val: key)
                         // Once assign 2 or 4 to an emtpy cell, evaluate the current board
-                        newValToScore[key]!.append(pos: (row: emptyPos.x, col: emptyPos.y), val: -smoothness(gameboardAssistant.cell) + Double(numberOfIsolated(gameboardAssistant.cell)))
+                        newValToScore[key]!.append((pos: (row: emptyPos.x, col: emptyPos.y), val: -smoothness(gameboardAssistant.cell) + Double(numberOfIsolated(gameboardAssistant.cell))))
                         gameboardAssistant.setCell(emptyPos.x, y: emptyPos.y, val: 0)
                     }
                 }
                 
-                var maxScore = max(newValToScore[2]!.maxVal(), newValToScore[4]!.maxVal())
+                let maxScore = max(newValToScore[2]!.maxVal(), newValToScore[4]!.maxVal())
                 
                 for key in newValToScore.keys {
                     for value in newValToScore[key]! {
@@ -434,10 +437,10 @@ class AI {
                 for value in candidates {
                     let emptyCellPos = value.pos
                     
-                    var newAssistant = gameboardAssistant.copy()
+                    let newAssistant = gameboardAssistant.copy()
                     newAssistant.setCell(emptyCellPos.row, y: emptyCellPos.col, val: value.tileVal)
                     
-                    lastPositions++
+                    lastPositions += 1
                     
                     tempResult = minimaxAlphaBetaPruning(newAssistant, curDepth: curDepth, player: .Max, alpha: alpha, beta: bestScore, lastPositions: lastPositions, lastCutoffs: lastCutoffs)
                     lastPositions = tempResult.positions
@@ -447,7 +450,7 @@ class AI {
                         bestScore = tempResult.score
                     }
                     if bestScore < alpha {
-                        lastCutoffs++
+                        lastCutoffs += 1
                         return (nil, alpha, lastPositions, lastCutoffs)
                     }
                 }
@@ -489,7 +492,7 @@ class AI {
         for row in 0..<size {
             for col in 0..<size {
                 if gameboard[row][col] != 0 && !marked[row][col] {
-                    numOfIsolated++
+                    numOfIsolated += 1
                     deMark(row, col: col, val: gameboard[row][col], gameboard: gameboard, marked: &marked)                }
             }
         }
@@ -506,7 +509,7 @@ class AI {
         for row in 0..<size {
             for col in 0..<size {
                 if gameboard[row][col] != 0 {
-                    var curVal = log2(Double(gameboard[row][col]))
+                    let curVal = log2(Double(gameboard[row][col]))
                     // Only check successive cells below or to the right of the current cell
                     for nextDirection in [1, 3] {
                         var targetVal = Double(getNextAdjCellVal(gameboard, curRow: row, curCol: col, offset: directionToOffset[rawValToDirection[nextDirection]!.direction]!))
@@ -535,13 +538,13 @@ class AI {
             var nextRow = 1
             while nextRow < size {
                 while nextRow < size && gameboard[nextRow][col] == 0 {
-                    nextRow++
+                    nextRow += 1
                 }
                 if nextRow == size {
-                    nextRow--
+                    nextRow -= 1
                 }
-                var curVal = gameboard[curRow][col] != 0 ? log2(Double(gameboard[curRow][col])) : 0.0
-                var nextVal = gameboard[nextRow][col] != 0 ? log2(Double(gameboard[nextRow][col])) : 0.0
+                let curVal = gameboard[curRow][col] != 0 ? log2(Double(gameboard[curRow][col])) : 0.0
+                let nextVal = gameboard[nextRow][col] != 0 ? log2(Double(gameboard[nextRow][col])) : 0.0
                 if curVal > nextVal {
                     monoInFourDirection[0] += nextVal - curVal
                 }
@@ -549,7 +552,7 @@ class AI {
                     monoInFourDirection[1] += curVal - nextVal
                 }
                 curRow = nextRow
-                nextRow++
+                nextRow += 1
             }
         }
         
@@ -559,13 +562,13 @@ class AI {
             var nextCol = 1
             while nextCol < size {
                 while nextCol < size && gameboard[row][nextCol] != 0 {
-                    nextCol++
+                    nextCol += 1
                 }
                 if nextCol == size {
-                    nextCol--
+                    nextCol -= 1
                 }
-                var curVal = gameboard[row][curCol] != 0 ? log2(Double(gameboard[row][curCol])) : 0.0
-                var nextVal = gameboard[row][curCol] != 0 ? log2(Double(gameboard[row][curCol])) : 0.0
+                let curVal = gameboard[row][curCol] != 0 ? log2(Double(gameboard[row][curCol])) : 0.0
+                let nextVal = gameboard[row][curCol] != 0 ? log2(Double(gameboard[row][curCol])) : 0.0
                 if curVal > nextVal {
                     monoInFourDirection[2] += nextVal - curVal
                 }
@@ -573,7 +576,7 @@ class AI {
                     monoInFourDirection[3] += curVal - nextVal
                 }
                 curCol = nextCol
-                nextCol++
+                nextCol += 1
             }
         }
         

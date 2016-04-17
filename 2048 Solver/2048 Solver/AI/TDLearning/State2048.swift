@@ -52,7 +52,8 @@ final class State2048 {
         var index = 0
         for i in 0..<size {
             for j in 0..<size {
-                self.board[i][j] = Int(feature[index++])
+                self.board[i][j] = Int(feature[index])
+				index += 1
             }
         }
     }
@@ -63,7 +64,8 @@ final class State2048 {
         var index = 0
         for i in 0..<size {
             for j in 0..<size {
-                self.board[i][j] = Int(features[index++])
+                self.board[i][j] = Int(features[index])
+				index += 1
             }
         }
     }
@@ -95,7 +97,8 @@ final class State2048 {
         
         for i in 0..<size {
             for j in 0..<size {
-                features[index++] = Double(board[i][j])
+                features[index] = Double(board[i][j])
+				index += 1
             }
         }
         return features
@@ -125,7 +128,7 @@ final class State2048 {
             return
         }
         
-        var randomLoc = emptyLocations[Int(arc4random_uniform(UInt32(emptyLocations.count)))]
+        let randomLoc = emptyLocations[Int(arc4random_uniform(UInt32(emptyLocations.count)))]
         
         let isFour:Bool = (Int(arc4random_uniform(10)) < four_probability)
         if (isFour) {
@@ -149,14 +152,15 @@ final class State2048 {
                 }
                 
                 if(firstFreeRow > 0 && !alreadyAggregated && board[firstFreeRow - 1][col] == board[row][col]) {
-                    board[firstFreeRow - 1][col]++
+                    board[firstFreeRow - 1][col] += 1
                     board[row][col] = 0
                     reward += rewards[board[firstFreeRow - 1][col]]
                     alreadyAggregated = true
                 } else {
                     let tmp = board[row][col]
                     board[row][col] = 0
-                    board[firstFreeRow++][col] = tmp
+                    board[firstFreeRow][col] = tmp
+					firstFreeRow += 1
                     alreadyAggregated = false
                 }
             }
@@ -355,17 +359,17 @@ final class State2048 {
         for row in 0..<size {
             for col in 0..<size {
                 
-                print("\(rewards[board[row][col]].format(DisplayFormat))       ")
+                print("\(rewards[board[row][col]].format(DisplayFormat))       ", terminator: "")
             }
-            println()
+            print("")
         }
-        println()   
+        print("")   
     }
     
     // Factory Method Return an initial State
     class func getInitialState(numLocations:Int)->State2048 {
-        var state = State2048()
-        for i in 0..<numLocations {
+        let state = State2048()
+        for _ in 0..<numLocations {
             state.addRandomTile()
         }
         return state

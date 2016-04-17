@@ -11,13 +11,13 @@ import Foundation
 class GameYS {
     
     func computeTransition(state:State2048, action:Action2048) -> Transition{
-        var afterState = State2048(state: state)
-        var reward:Double = Double(afterState.makeMove(action))
+        let afterState = State2048(state: state)
+        let reward:Double = Double(afterState.makeMove(action))
         return Transition(state: state, action: action, afterState: afterState, reward: reward)
     }
     
     func getNextState(state:State2048) -> State2048 {
-        var nextState = State2048(state: state)
+        let nextState = State2048(state: state)
         nextState.addRandomTile()
         return nextState
     }

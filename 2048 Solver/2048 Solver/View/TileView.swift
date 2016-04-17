@@ -55,7 +55,7 @@ class TileView: UIView {
         setupViews()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupViews()
     }
@@ -74,7 +74,7 @@ class TileView: UIView {
         self.layer.borderWidth = 3.0
         
         numberLabel = UILabel()
-        numberLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        numberLabel.translatesAutoresizingMaskIntoConstraints = false
         numberLabel.numberOfLines = 1
         numberLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 40)
         numberLabel.minimumScaleFactor = 12.0 / numberLabel.font.pointSize
@@ -95,8 +95,8 @@ class TileView: UIView {
         self.addConstraint(NSLayoutConstraint(item: numberLabel, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0.0))
         self.addConstraint(NSLayoutConstraint(item: numberLabel, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0))
         
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(>=padding)-[numberLabel]-(>=padding)-|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(>=padding)-[numberLabel]-(>=padding)-|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(>=padding)-[numberLabel]-(>=padding)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(>=padding)-[numberLabel]-(>=padding)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
     }
     
     func flashTile(completion: ((Bool) -> Void)? = nil) {

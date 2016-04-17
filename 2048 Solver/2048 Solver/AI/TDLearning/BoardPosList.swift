@@ -16,7 +16,7 @@ class BoardPosList {
     }
     
     func getAligned() -> BoardPosList {
-        var minPos = getMinCorner()
+        let minPos = getMinCorner()
         return getShifted(-minPos.row(), shiftColumn: -minPos.column())
     }
     

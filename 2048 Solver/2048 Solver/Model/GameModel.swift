@@ -37,10 +37,10 @@ class Game2048: NSObject {
     /**
     Init a new game2048
     
-    :param: d dimensin of game
-    :param: t target value, e.g. 2048. if pass in 0, means target is unlimited
+    - parameter d: dimensin of game
+    - parameter t: target value, e.g. 2048. if pass in 0, means target is unlimited
     
-    :returns: an initialized Game2048
+    - returns: an initialized Game2048
     */
     init(dimension d: Int, target t: Int) {
         dimension = d
@@ -78,7 +78,7 @@ extension Game2048 {
         precondition(!GameModelHelper.gameBoardFull(&gameBoard), "Game is not empty, before starting a new game, please reset a game")
         
         // TODO: Different dimension could insert different numbers of tiles
-        var resultInitActions = GameModelHelper.performInsertCommand(&gameBoard, multipleTimes: 2)
+        let resultInitActions = GameModelHelper.performInsertCommand(&gameBoard, multipleTimes: 2)
         
         delegate?.game2048DidStartNewGame(self)
         delegate?.game2048DidUpdate(self, moveActions: [], initActions: resultInitActions, score: self.score)
@@ -155,7 +155,7 @@ extension Game2048 {
     /**
     Return a copy of gameBoard (a 2d matrix contains integers, 0 stands for .Empty)
     
-    :returns: 2d array of Int
+    - returns: 2d array of Int
     */
     func currentGameBoard() -> [[Int]] {
         var result = [[Int]]()
@@ -177,10 +177,10 @@ extension Game2048 {
     /**
     Get next state for a game board
     
-    :param: gameBoard 2d array with Int type, representation for a game board
-    :param: command   a valid command
+    - parameter gameBoard: 2d array with Int type, representation for a game board
+    - parameter command:   a valid command
     
-    :returns: next game board and increased scores
+    - returns: next game board and increased scores
     */
     func nextStateFromGameBoard(gameBoard: [[Int]], withCommand command: MoveCommand, shouldCheckGameEnd: Bool = false, shouldInsertNewTile: Bool = false) -> ([[Int]], Int) {
         precondition(gameBoard.count == dimension, "dimension must be equal")

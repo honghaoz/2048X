@@ -32,8 +32,8 @@ class BoardUtils {
     }
     
     class func isValidPosition(pos:Int, rows:Int, cols:Int) -> Bool {
-        var row = rowFromPos(pos, boardWidth: cols)
-        var col = colFromPos(pos, boardWidth: cols)
+        let row = rowFromPos(pos, boardWidth: cols)
+        let col = colFromPos(pos, boardWidth: cols)
         return 0 <= row && row < rows && 0 <= col && col < cols
     }
     

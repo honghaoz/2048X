@@ -18,7 +18,7 @@ class AIGreedy {
         var choosenCommand: MoveCommand!
         var max = -1
         
-        let commands = GameModelHelper.moveCommands(shuffle: true)
+        let commands = GameModelHelper.moveCommands(true)
         for command in commands {
             GameModelHelper.printOutCommand(command)
             var copy = GameModelHelper.copyGameBoard(&gameModel.gameBoard)

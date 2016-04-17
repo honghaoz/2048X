@@ -20,7 +20,7 @@ class AIRandom {
     }
     
     func nextCommand() -> MoveCommand? {
-        logDebug("Calculate next step")
+        log.debug("Calculate next step")
         if GameModelHelper.isGameEnded(&gameModel.gameBoard) {
             return nil
         }
@@ -30,7 +30,7 @@ class AIRandom {
         
         let commands = GameModelHelper.moveCommands()
         for command in commands {
-            var (averageScore, averageMoves) = multipleRandomRun(&gameModel.gameBoard, withCommand: command, runTimes: runsPerMove)
+            let (averageScore, _) = multipleRandomRun(&gameModel.gameBoard, withCommand: command, runTimes: runsPerMove)
             if averageScore > bestScore {
                 bestScore = averageScore
                 choosenCommand = command
@@ -45,7 +45,7 @@ class AIRandom {
         var total: Float = 0.0
         var totalMoves = 0
         
-        for i in 0 ..< runTimes {
+        for _ in 0 ..< runTimes {
             let (score, moves) = randomRun(&gameBoard, withCommand: command)
             if score == -1 {
                 return (-1, 0)
@@ -86,7 +86,7 @@ class AIRandom {
             }
             
             score += increasedScore
-            moves++
+            moves += 1
         }
         
         // Done

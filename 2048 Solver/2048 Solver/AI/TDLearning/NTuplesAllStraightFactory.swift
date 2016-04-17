@@ -32,12 +32,12 @@ class NTuplesGenericFactory {
     }
     
     func createRandomIndividual() -> NTuples {
-        var builder = NTuplesBuilder(numValues: numValue, minWeight: minWeight, maxWeight: maxWeight)
+        let builder = NTuplesBuilder(numValues: numValue, minWeight: minWeight, maxWeight: maxWeight)
         
         for position in positionsList {
             for r in 0..<self.boardSize.rows {
                 for c in 0..<self.boardSize.columns {
-                    var nextPositions = position.getAligned().getShifted(r, shiftColumn: c)
+                    let nextPositions = position.getAligned().getShifted(r, shiftColumn: c)
                     if (nextPositions.fitOnBoard(boardSize)) {
                         builder.addTuple(nextPositions.toLocations(boardSize))
                     }

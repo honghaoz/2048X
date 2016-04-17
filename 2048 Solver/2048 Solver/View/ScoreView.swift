@@ -43,7 +43,7 @@ class ScoreView: UIView {
         setupViews()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupViews()
     }
@@ -63,7 +63,7 @@ class ScoreView: UIView {
         
         // TitleLabel
         titleLabel = UILabel()
-        titleLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         views["titleLabel"] = titleLabel
         self.addSubview(titleLabel)
         
@@ -80,7 +80,7 @@ class ScoreView: UIView {
         
         // NumberLabel
         numberLabel = UILabel()
-        numberLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        numberLabel.translatesAutoresizingMaskIntoConstraints = false
         views["numberLabel"] = numberLabel
         self.addSubview(numberLabel)
         
@@ -102,12 +102,12 @@ class ScoreView: UIView {
         metrics["padding"] = padding
         
         // TitleLabel constraints
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[titleLabel]", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[titleLabel]", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[titleLabel]", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[titleLabel]", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
         
         // ScoreLabel constraints
         self.addConstraint(NSLayoutConstraint(item: numberLabel, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(padding)-[numberLabel]-(padding)-|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(>=8)-[numberLabel]-(>=8)-|", options: NSLayoutFormatOptions(0), metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(padding)-[numberLabel]-(padding)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(>=8)-[numberLabel]-(>=8)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
     }
 }
