@@ -1,12 +1,7 @@
 # 2048-Solver-AI
 2048 Game Solver in iOS
 
-# Task:
-* UI Implementation
-* Solver Algorithm
-* Report
-
-# Participant
+# Contributors
 * [Honghao Zhang](https://github.com/honghaoz)
 * [Yong Xiao](https://github.com/LostZebra)
 * [Yansong Li](https://github.com/jindulys)
