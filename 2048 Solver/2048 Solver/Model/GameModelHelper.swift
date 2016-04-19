@@ -71,7 +71,7 @@ struct GameModelHelper {
             return false
         }
         
-        let dimension = gameBoard.dimension
+        _ = gameBoard.dimension
         let canMove = (moveCommand(MoveCommand(direction: .Up), isValidInGameBoard: &gameBoard) || moveCommand(MoveCommand(direction: .Left), isValidInGameBoard: &gameBoard))
         
         return !canMove
@@ -106,7 +106,7 @@ struct GameModelHelper {
     // * Game board is not mutated
     static func validMoveCommandsInGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, shuffle: Bool = false) -> [MoveCommand] {
         var commands = [MoveCommand]()
-        var fullCommands = moveCommands(false)
+        let fullCommands = moveCommands(false)
         for command in fullCommands {
             if moveCommand(command, isValidInGameBoard: &gameBoard) {
                 commands.append(command)
@@ -319,7 +319,7 @@ extension GameModelHelper {
         precondition(times > 0, "Times must be greater than 0")
         var resultInitActions = [InitAction]()
         
-        for i in 0 ..< times {
+        for _ in 0 ..< times {
             resultInitActions.append(GameModelHelper.performInsertCommand(&gameBoard))
         }
         
@@ -487,7 +487,7 @@ extension GameModelHelper {
                             tiles[i].memory = Tile.Empty
                             resultActions.append(Action1D(fromIndexs: [i], toIndex: rightIndex - 1))
                         }
-                    case let .Number(rightTileNumber):
+                    case .Number(_):
                         // Exist rightTile
                         if rightIndex > i + 1 {
                             // Move

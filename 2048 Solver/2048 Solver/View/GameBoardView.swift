@@ -79,7 +79,7 @@ class GameBoardView: UIView {
     private func setupBackgroundTileViews() {
         precondition(gameModel != nil, "GameModel must not be nil")
         // Remove old ones
-        backgroundTiles.map{ $0.map { $0.removeFromSuperview() }}
+        backgroundTiles.forEach { $0.forEach { $0.removeFromSuperview() }}
         backgroundTiles.removeAll(keepCapacity: false)
         // Layout tiles
         for i in 0 ..< dimension {
@@ -96,13 +96,13 @@ class GameBoardView: UIView {
     
     private func setupForgroundTileViews() {
         precondition(gameModel != nil, "GameModel must not be nil")
-        forgroundTiles.map { $0.map { $0.0?.removeFromSuperview() } }
-        forgroundTiles.map { $0.map { $0.1?.removeFromSuperview() } }
+        forgroundTiles.forEach { $0.forEach { $0.0?.removeFromSuperview() } }
+        forgroundTiles.forEach { $0.forEach { $0.1?.removeFromSuperview() } }
         forgroundTiles.removeAll(keepCapacity: false)
         
-        for i in 0 ..< dimension {
+        for _ in 0 ..< dimension {
             var tiles = [(TileView?, TileView?)]()
-            for j in 0 ..< dimension {
+            for _ in 0 ..< dimension {
                 tiles.append((nil, nil))
             }
             forgroundTiles.append(tiles)

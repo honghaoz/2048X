@@ -194,7 +194,7 @@ class ViewController: UIViewController {
         newGameButton = BlackBorderButton()
         newGameButton.translatesAutoresizingMaskIntoConstraints = false
         newGameButton.title = "New Game"
-        newGameButton.addTarget(self, action: "newGameButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        newGameButton.addTarget(self, action: #selector(ViewController.newGameButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         views["newGameButton"] = newGameButton
         view.addSubview(newGameButton)
         
@@ -202,8 +202,8 @@ class ViewController: UIViewController {
         runAIButton = BlackBorderButton()
         runAIButton.translatesAutoresizingMaskIntoConstraints = false
         runAIButton.title = "Run"
-        runAIButton.addTarget(self, action: "runAIButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: "runAIButtonLongPressed:")
+        runAIButton.addTarget(self, action: #selector(ViewController.runAIButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.runAIButtonLongPressed(_:)))
         runAIButton.addGestureRecognizer(longPressGesture)
         views["runAIButton"] = runAIButton
         view.addSubview(runAIButton)
@@ -212,7 +212,7 @@ class ViewController: UIViewController {
         undoButton = BlackBorderButton()
         undoButton.translatesAutoresizingMaskIntoConstraints = false
         undoButton.title = "Undo"
-        undoButton.addTarget(self, action: "undoButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        undoButton.addTarget(self, action: #selector(ViewController.undoButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         views["undoButton"] = undoButton
         view.addSubview(undoButton)
         
@@ -220,7 +220,7 @@ class ViewController: UIViewController {
         hintButton = BlackBorderButton()
         hintButton.translatesAutoresizingMaskIntoConstraints = false
         hintButton.title = "Hint"
-        hintButton.addTarget(self, action: "hintButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        hintButton.addTarget(self, action: #selector(ViewController.hintButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         views["hintButton"] = hintButton
         view.addSubview(hintButton)
         
@@ -245,22 +245,22 @@ class ViewController: UIViewController {
     }
     
     func setupSwipeGestures() {
-        let upSwipe = UISwipeGestureRecognizer(target: self, action: Selector("up:"))
+        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.upCommand(_:)))
         upSwipe.numberOfTouchesRequired = 1
         upSwipe.direction = UISwipeGestureRecognizerDirection.Up
         gameBoardView.addGestureRecognizer(upSwipe)
         
-        let downSwipe = UISwipeGestureRecognizer(target: self, action: Selector("down:"))
+        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.downCommand(_:)))
         downSwipe.numberOfTouchesRequired = 1
         downSwipe.direction = UISwipeGestureRecognizerDirection.Down
         gameBoardView.addGestureRecognizer(downSwipe)
         
-        let leftSwipe = UISwipeGestureRecognizer(target: self, action: Selector("left:"))
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.leftCommand(_:)))
         leftSwipe.numberOfTouchesRequired = 1
         leftSwipe.direction = UISwipeGestureRecognizerDirection.Left
         gameBoardView.addGestureRecognizer(leftSwipe)
         
-        let rightSwipe = UISwipeGestureRecognizer(target: self, action: Selector("right:"))
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.rightCommand(_:)))
         rightSwipe.numberOfTouchesRequired = 1
         rightSwipe.direction = UISwipeGestureRecognizerDirection.Right
         gameBoardView.addGestureRecognizer(rightSwipe)
@@ -391,7 +391,7 @@ extension ViewController {
                 log.debug("cancelAllOperations")
                 commandCalculationQueue.cancelAllOperations()
                 
-                let currentDisplayingGameBoard = self.gameBoardView.currentDisplayingGameBoard()
+                _ = self.gameBoardView.currentDisplayingGameBoard()
                 // If not animatiing, reset game model immediately
                 if !isAnimating {
                     resetGameState()
@@ -433,7 +433,7 @@ extension ViewController {
                 runAIButtonTapped(nil)
             }
             
-            var dimensionBefore = dimension
+            let dimensionBefore = dimension
             
             let settingVC = SettingViewController()
             settingVC.transitioningDelegate = settingVC

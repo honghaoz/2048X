@@ -50,7 +50,7 @@ class ConfirmViewController: UIViewController {
         okButton = BlackBorderButton()
         okButton.translatesAutoresizingMaskIntoConstraints = false
         okButton.title = "Yes"
-        okButton.addTarget(self, action: "okButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        okButton.addTarget(self, action: #selector(ConfirmViewController.okButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         views["okButton"] = okButton
         view.addSubview(okButton)
         
@@ -58,7 +58,7 @@ class ConfirmViewController: UIViewController {
         cancelButton = BlackBorderButton()
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.title = "No"
-        cancelButton.addTarget(self, action: "cancelButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        cancelButton.addTarget(self, action: #selector(ConfirmViewController.cancelButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         views["cancelButton"] = cancelButton
         view.addSubview(cancelButton)
         

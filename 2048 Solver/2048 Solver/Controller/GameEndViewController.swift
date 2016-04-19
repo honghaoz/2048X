@@ -56,7 +56,7 @@ class GameEndViewController: UIViewController {
         undoButton = BlackBorderButton()
         undoButton.translatesAutoresizingMaskIntoConstraints = false
         undoButton.title = "Undo"
-        undoButton.addTarget(self, action: "undoButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        undoButton.addTarget(self, action: #selector(GameEndViewController.undoButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         views["undoButton"] = undoButton
         view.addSubview(undoButton)
         
@@ -64,7 +64,7 @@ class GameEndViewController: UIViewController {
         startButton = BlackBorderButton()
         startButton.translatesAutoresizingMaskIntoConstraints = false
         startButton.title = "Retry"
-        startButton.addTarget(self, action: "startButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        startButton.addTarget(self, action: #selector(GameEndViewController.startButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         views["startButton"] = startButton
         view.addSubview(startButton)
         

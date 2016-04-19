@@ -199,25 +199,25 @@ extension Game2048 {
         case .Up:
             for i in 0 ..< dimension {
                 var tilePointers = tempGameBoard.getColumn(i, reversed: true)
-                let (actions, score) = GameModelHelper.processOneDimensionTiles(&tilePointers)
+                let (_, score) = GameModelHelper.processOneDimensionTiles(&tilePointers)
                 increasedScore += score
             }
         case .Down:
             for i in 0 ..< dimension {
                 var tilePointers = tempGameBoard.getColumn(i, reversed: false)
-                let (actions, score) = GameModelHelper.processOneDimensionTiles(&tilePointers)
+                let (_, score) = GameModelHelper.processOneDimensionTiles(&tilePointers)
                 increasedScore += score
             }
         case .Left:
             for i in 0 ..< dimension {
                 var tilePointers = tempGameBoard.getRow(i, reversed: true)
-                let (actions, score) = GameModelHelper.processOneDimensionTiles(&tilePointers)
+                let (_, score) = GameModelHelper.processOneDimensionTiles(&tilePointers)
                 increasedScore += score
             }
         case .Right:
             for i in 0 ..< dimension {
                 var tilePointers = tempGameBoard.getRow(i, reversed: false)
-                let (actions, score) = GameModelHelper.processOneDimensionTiles(&tilePointers)
+                let (_, score) = GameModelHelper.processOneDimensionTiles(&tilePointers)
                 increasedScore += score
             }
         }
