@@ -21,7 +21,6 @@
 		023EDE871AAA325100F5B9C5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE861AAA325100F5B9C5 /* Images.xcassets */; };
 		023EDE8A1AAA325100F5B9C5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE881AAA325100F5B9C5 /* LaunchScreen.xib */; };
 		023EDE961AAA325100F5B9C5 /* _048_SolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */; };
-		0243DDEC1AD34825000CB475 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0243DDEB1AD34825000CB475 /* CoreData.framework */; };
 		0249C9C51ACB1AE5000E954F /* AI-Expectimax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0249C9C41ACB1AE5000E954F /* AI-Expectimax.swift */; };
 		024FB1F51AD3300200C6453E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024FB1F41AD3300200C6453E /* AudioToolbox.framework */; };
 		028159611AAD07E500C795D9 /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028159601AAD07E500C795D9 /* TileView.swift */; };
@@ -35,9 +34,6 @@
 		02BC42891AC8F18C0089639B /* PresentingAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42861AC8F18C0089639B /* PresentingAnimator.swift */; };
 		02BC428A1AC8F18C0089639B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42871AC8F18C0089639B /* ViewController.swift */; };
 		02BC428C1AC8F20B0089639B /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC428B1AC8F20B0089639B /* SettingViewController.swift */; };
-		02BCF02D1CC1721A002125B6 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BCF02A1CC1721A002125B6 /* Color.swift */; };
-		02BCF02E1CC1721A002125B6 /* Loggerithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BCF02B1CC1721A002125B6 /* Loggerithm.swift */; };
-		02BCF02F1CC1721A002125B6 /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BCF02C1CC1721A002125B6 /* Type.swift */; };
 		02BCF0311CC17275002125B6 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BCF0301CC17275002125B6 /* Constant.swift */; };
 		02C2A86B1AC9DFF3002DEB97 /* BlackSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2A86A1AC9DFF3002DEB97 /* BlackSlider.swift */; };
 		02C2A86D1AC9E9EF002DEB97 /* BlackSelectionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2A86C1AC9E9EF002DEB97 /* BlackSelectionControl.swift */; };
@@ -45,15 +41,6 @@
 		02DBF5811AB269E7007EE133 /* move.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02DBF5801AB269E7007EE133 /* move.wav */; };
 		02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */; };
 		02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAF1ABA51B800487782 /* AI-Greedy.swift */; };
-		02FA01581AD32EA0009F73AD /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02FA01571AD32EA0009F73AD /* CFNetwork.framework */; };
-		02FA015A1AD32EA6009F73AD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02FA01591AD32EA6009F73AD /* CoreGraphics.framework */; };
-		02FA015C1AD32EAC009F73AD /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02FA015B1AD32EAC009F73AD /* CoreLocation.framework */; };
-		02FA015E1AD32EB3009F73AD /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02FA015D1AD32EB3009F73AD /* MobileCoreServices.framework */; };
-		02FA01601AD32EB9009F73AD /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02FA015F1AD32EB9009F73AD /* QuartzCore.framework */; };
-		02FA01621AD32EBE009F73AD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02FA01611AD32EBE009F73AD /* Security.framework */; };
-		02FA01661AD32ECC009F73AD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02FA01651AD32ECC009F73AD /* SystemConfiguration.framework */; };
-		02FA01681AD32ED2009F73AD /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 02FA01671AD32ED2009F73AD /* libz.dylib */; };
-		02FA016A1AD32EDE009F73AD /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 02FA01691AD32EDE009F73AD /* libsqlite3.dylib */; };
 		0E1423A41ACA16E5000E8B8B /* State2048.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423A31ACA16E5000E8B8B /* State2048.swift */; };
 		0E1423A61ACA17BE000E8B8B /* NTuples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423A51ACA17BE000E8B8B /* NTuples.swift */; };
 		0E1423A81ACA4C4E000E8B8B /* DefaultNTupleEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423A71ACA4C4E000E8B8B /* DefaultNTupleEvaluator.swift */; };
@@ -119,9 +106,6 @@
 		02BC42861AC8F18C0089639B /* PresentingAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentingAnimator.swift; sourceTree = "<group>"; };
 		02BC42871AC8F18C0089639B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		02BC428B1AC8F20B0089639B /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
-		02BCF02A1CC1721A002125B6 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
-		02BCF02B1CC1721A002125B6 /* Loggerithm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loggerithm.swift; sourceTree = "<group>"; };
-		02BCF02C1CC1721A002125B6 /* Type.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Type.swift; sourceTree = "<group>"; };
 		02BCF0301CC17275002125B6 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		02C2A86A1AC9DFF3002DEB97 /* BlackSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackSlider.swift; sourceTree = "<group>"; };
 		02C2A86C1AC9E9EF002DEB97 /* BlackSelectionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackSelectionControl.swift; sourceTree = "<group>"; };
@@ -167,17 +151,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02FA01661AD32ECC009F73AD /* SystemConfiguration.framework in Frameworks */,
-				0243DDEC1AD34825000CB475 /* CoreData.framework in Frameworks */,
 				024FB1F51AD3300200C6453E /* AudioToolbox.framework in Frameworks */,
-				02FA016A1AD32EDE009F73AD /* libsqlite3.dylib in Frameworks */,
-				02FA01681AD32ED2009F73AD /* libz.dylib in Frameworks */,
-				02FA01621AD32EBE009F73AD /* Security.framework in Frameworks */,
-				02FA01601AD32EB9009F73AD /* QuartzCore.framework in Frameworks */,
-				02FA015E1AD32EB3009F73AD /* MobileCoreServices.framework in Frameworks */,
-				02FA015C1AD32EAC009F73AD /* CoreLocation.framework in Frameworks */,
-				02FA015A1AD32EA6009F73AD /* CoreGraphics.framework in Frameworks */,
-				02FA01581AD32EA0009F73AD /* CFNetwork.framework in Frameworks */,
 				B3946ED754105FE83B7898ED /* Pods_2048X_AI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,14 +192,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		0225A2471AB7DD8A00EA72C8 /* ThirdParty */ = {
-			isa = PBXGroup;
-			children = (
-				02BCF0291CC1721A002125B6 /* Loggerithm */,
-			);
-			path = ThirdParty;
-			sourceTree = "<group>";
-		};
 		023EDE711AAA325100F5B9C5 = {
 			isa = PBXGroup;
 			children = (
@@ -253,7 +219,6 @@
 				023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */,
 				0225A24A1AB8A6E300EA72C8 /* Extension.swift */,
 				02BCF0301CC17275002125B6 /* Constant.swift */,
-				0225A2471AB7DD8A00EA72C8 /* ThirdParty */,
 				FF5C5DD81AAF77C600CE6981 /* AI */,
 				02107C9D1AAD238D00CFF8FF /* Model */,
 				02107C961AACCC4400CFF8FF /* View */,
@@ -326,16 +291,6 @@
 				020BAE151ACA54220074EFE4 /* GameEndViewController.swift */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		02BCF0291CC1721A002125B6 /* Loggerithm */ = {
-			isa = PBXGroup;
-			children = (
-				02BCF02A1CC1721A002125B6 /* Color.swift */,
-				02BCF02B1CC1721A002125B6 /* Loggerithm.swift */,
-				02BCF02C1CC1721A002125B6 /* Type.swift */,
-			);
-			path = Loggerithm;
 			sourceTree = "<group>";
 		};
 		02DBF57F1AB269E7007EE133 /* Resource */ = {
@@ -607,12 +562,10 @@
 				02107C9C1AAD220800CFF8FF /* Appearance.swift in Sources */,
 				02BC427E1AC88B230089639B /* RectSize.swift in Sources */,
 				FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */,
-				02BCF02E1CC1721A002125B6 /* Loggerithm.swift in Sources */,
 				0E1423B41ACB7C5A000E8B8B /* BoardPos.swift in Sources */,
 				02BC427F1AC88B230089639B /* Util.swift in Sources */,
 				0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */,
 				02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */,
-				02BCF02D1CC1721A002125B6 /* Color.swift in Sources */,
 				0249C9C51ACB1AE5000E954F /* AI-Expectimax.swift in Sources */,
 				02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */,
 				0E1423B01ACB4707000E8B8B /* Game2048ExperimentTDL.swift in Sources */,
@@ -620,7 +573,6 @@
 				02BC428A1AC8F18C0089639B /* ViewController.swift in Sources */,
 				0E1423BA1ACBA1F9000E8B8B /* NTuplesBuilder.swift in Sources */,
 				0E1423AA1ACACEBA000E8B8B /* Transition.swift in Sources */,
-				02BCF02F1CC1721A002125B6 /* Type.swift in Sources */,
 				02C2A86D1AC9E9EF002DEB97 /* BlackSelectionControl.swift in Sources */,
 				0E1423A41ACA16E5000E8B8B /* State2048.swift in Sources */,
 				0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */,
@@ -785,7 +737,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.honghaoz.2048X-AI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "137a0314-d71f-4fc2-86ad-4a70f632816e";

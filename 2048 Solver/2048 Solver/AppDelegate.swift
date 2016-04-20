@@ -21,12 +21,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func setupAnalytics(launchOptions: [NSObject: AnyObject]?) {        
+    func setupAnalytics(launchOptions: [NSObject: AnyObject]?) {
         // GA
-        GAI.sharedInstance().dispatchInterval = 5
-        GAI.sharedInstance().trackUncaughtExceptions = true
-        GAI.sharedInstance().logger.logLevel = GAILogLevel.Verbose
-        GAI.sharedInstance().trackerWithTrackingId("UA-45146473-7")
+		let gai = GAI.sharedInstance()
+        gai.trackUncaughtExceptions = true
+		gai.dispatchInterval = 5
+		gai.logger.logLevel = DEBUG ? .Verbose : .Warning
+        gai.trackerWithTrackingId("UA-45146473-7")
     }
 
     func applicationWillResignActive(application: UIApplication) {

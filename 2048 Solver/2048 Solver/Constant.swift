@@ -7,6 +7,19 @@
 //
 
 import Foundation
+import Loggerithm
 
-var log = Loggerithm()
-var verboseLog = Loggerithm()
+class Global {
+	static let log = Loggerithm()
+	static let verboseLog = Loggerithm()
+	
+	#if DEBUG
+	static let DEBUG = true
+	#else
+	static let DEBUG = false
+	#endif
+}
+
+var log = Global.log
+var verboseLog = Global.verboseLog
+let DEBUG = Global.DEBUG

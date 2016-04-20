@@ -15,9 +15,20 @@ PODS:
   - GoogleSymbolUtilities (1.1.0)
   - GoogleUtilities (1.3.0):
     - GoogleSymbolUtilities (~> 1.0)
+  - Loggerithm (1.3.1)
 
 DEPENDENCIES:
   - Google/Analytics
+  - Loggerithm (from `https://github.com/honghaoz/Loggerithm.git`)
+
+EXTERNAL SOURCES:
+  Loggerithm:
+    :git: https://github.com/honghaoz/Loggerithm.git
+
+CHECKOUT OPTIONS:
+  Loggerithm:
+    :commit: ce99a735d6220f854719138325c9e6324894a555
+    :git: https://github.com/honghaoz/Loggerithm.git
 
 SPEC CHECKSUMS:
   Google: d0932824c5b97c96be489aa6f4e8cd6c294d637d
@@ -26,7 +37,8 @@ SPEC CHECKSUMS:
   GoogleNetworkingUtilities: ec1e9911aca811eb18b7144394fee6168b607785
   GoogleSymbolUtilities: eb3965ea12710569c7b80db198a39e39b18613f7
   GoogleUtilities: 5c653f7df2eedf0ce0efdfe5afe4f831f375fd7a
+  Loggerithm: 77387be2aef81974bfeb135991cfabac12700d9a
 
-PODFILE CHECKSUM: 9250037ada678a2ed80c0df73c6b7972117c4f0f
+PODFILE CHECKSUM: 504dae4beb4421d3aa7ad6151a975a29012858b9
 
-COCOAPODS: 1.0.0.beta.6
+COCOAPODS: 1.0.0.beta.8
