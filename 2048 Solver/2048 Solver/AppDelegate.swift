@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Google
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,12 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func setupAnalytics(launchOptions: [NSObject: AnyObject]?) {
-        // Parse set up
-        Parse.setApplicationId("lLvdoK6FzqguG7JWvo1FNFOd1SCBV1Gtn7dv4UIS", clientKey: "RmatCf74aAt43WbbNZWdK4jSq6k1E4865o2sIVFF")
-        PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
-        ZHHParseDevice.trackDevice()
-        
+    func setupAnalytics(launchOptions: [NSObject: AnyObject]?) {        
         // GA
         GAI.sharedInstance().dispatchInterval = 5
         GAI.sharedInstance().trackUncaughtExceptions = true

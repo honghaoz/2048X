@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Google
 
 class SettingViewController: UIViewController {
 

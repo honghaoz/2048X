@@ -21,9 +21,6 @@
 		023EDE871AAA325100F5B9C5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE861AAA325100F5B9C5 /* Images.xcassets */; };
 		023EDE8A1AAA325100F5B9C5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE881AAA325100F5B9C5 /* LaunchScreen.xib */; };
 		023EDE961AAA325100F5B9C5 /* _048_SolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */; };
-		0243DDE61AD341E0000CB475 /* UIApplication+AppVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 0243DDE31AD341E0000CB475 /* UIApplication+AppVersion.m */; };
-		0243DDE71AD341E0000CB475 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 0243DDE51AD341E0000CB475 /* UIDevice-Hardware.m */; };
-		0243DDEA1AD34330000CB475 /* ZHHParseDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 0243DDE91AD34330000CB475 /* ZHHParseDevice.m */; };
 		0243DDEC1AD34825000CB475 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0243DDEB1AD34825000CB475 /* CoreData.framework */; };
 		0249C9C51ACB1AE5000E954F /* AI-Expectimax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0249C9C41ACB1AE5000E954F /* AI-Expectimax.swift */; };
 		024FB1F51AD3300200C6453E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024FB1F41AD3300200C6453E /* AudioToolbox.framework */; };
@@ -70,7 +67,8 @@
 		0E1423BA1ACBA1F9000E8B8B /* NTuplesBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423B91ACBA1F9000E8B8B /* NTuplesBuilder.swift */; };
 		0E1423BC1ACBA7B8000E8B8B /* CollectionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423BB1ACBA7B8000E8B8B /* CollectionUtils.swift */; };
 		0E1423BE1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423BD1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift */; };
-		895DF833217BE0DBE594D5D5 /* Pods_2048X_AI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4451BCDDEA52C8EDF6C993AA /* Pods_2048X_AI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		B3946ED754105FE83B7898ED /* Pods_2048X_AI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4EF4C88FD5A3D3F3E8BF2BF /* Pods_2048X_AI.framework */; };
+		C9C4CC7E727DB54415A89BAE /* Pods_2048_SolverTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3113F9201CCAA35BCD8983C /* Pods_2048_SolverTests.framework */; };
 		E431E4911B896E6700B28290 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = E431E4901B896E6700B28290 /* Podfile */; };
 		FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5C5DD91AAF782A00CE6981 /* AI.swift */; };
 /* End PBXBuildFile section */
@@ -104,13 +102,6 @@
 		023EDE8F1AAA325100F5B9C5 /* 2048 SolverTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "2048 SolverTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023EDE941AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _048_SolverTests.swift; sourceTree = "<group>"; };
-		0243DDDD1AD340BA000CB475 /* 2048X AI-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "2048X AI-Bridging-Header.h"; sourceTree = "<group>"; };
-		0243DDE21AD341E0000CB475 /* UIApplication+AppVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+AppVersion.h"; sourceTree = "<group>"; };
-		0243DDE31AD341E0000CB475 /* UIApplication+AppVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+AppVersion.m"; sourceTree = "<group>"; };
-		0243DDE41AD341E0000CB475 /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
-		0243DDE51AD341E0000CB475 /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
-		0243DDE81AD34330000CB475 /* ZHHParseDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZHHParseDevice.h; sourceTree = "<group>"; };
-		0243DDE91AD34330000CB475 /* ZHHParseDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZHHParseDevice.m; sourceTree = "<group>"; };
 		0243DDEB1AD34825000CB475 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		0243DDED1AD34851000CB475 /* libPods-2048X AI-GoogleAnalytics-iOS-SDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-2048X AI-GoogleAnalytics-iOS-SDK.a"; path = "Pods/../build/Debug-iphoneos/libPods-2048X AI-GoogleAnalytics-iOS-SDK.a"; sourceTree = "<group>"; };
 		0243DDEF1AD34884000CB475 /* libPods-2048X AI-GoogleAnalytics-iOS-SDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-2048X AI-GoogleAnalytics-iOS-SDK.a"; path = "Pods/../build/Debug-iphoneos/libPods-2048X AI-GoogleAnalytics-iOS-SDK.a"; sourceTree = "<group>"; };
@@ -148,6 +139,7 @@
 		02FA01651AD32ECC009F73AD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		02FA01671AD32ED2009F73AD /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		02FA01691AD32EDE009F73AD /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		0531437AE1E2C476FD8D7902 /* Pods-2048 SolverTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048 SolverTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-2048 SolverTests/Pods-2048 SolverTests.debug.xcconfig"; sourceTree = "<group>"; };
 		0E1423A31ACA16E5000E8B8B /* State2048.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State2048.swift; sourceTree = "<group>"; };
 		0E1423A51ACA17BE000E8B8B /* NTuples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuples.swift; sourceTree = "<group>"; };
 		0E1423A71ACA4C4E000E8B8B /* DefaultNTupleEvaluator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultNTupleEvaluator.swift; sourceTree = "<group>"; };
@@ -161,9 +153,11 @@
 		0E1423B91ACBA1F9000E8B8B /* NTuplesBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuplesBuilder.swift; sourceTree = "<group>"; };
 		0E1423BB1ACBA7B8000E8B8B /* CollectionUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionUtils.swift; sourceTree = "<group>"; };
 		0E1423BD1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuplesAllRectanglesFactory.swift; sourceTree = "<group>"; };
-		4451BCDDEA52C8EDF6C993AA /* Pods_2048X_AI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_2048X_AI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4D1C6648B51A6D9F17DE554B /* Pods-2048X AI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048X AI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-2048X AI/Pods-2048X AI.debug.xcconfig"; sourceTree = "<group>"; };
-		5332D551904BF20FAA74301A /* Pods-2048X AI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048X AI.release.xcconfig"; path = "Pods/Target Support Files/Pods-2048X AI/Pods-2048X AI.release.xcconfig"; sourceTree = "<group>"; };
+		35E1AD304AA5C71D83F4679B /* Pods-2048 SolverTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048 SolverTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-2048 SolverTests/Pods-2048 SolverTests.release.xcconfig"; sourceTree = "<group>"; };
+		62F4EF6554B600BCFE68170D /* Pods-2048X AI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048X AI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-2048X AI/Pods-2048X AI.debug.xcconfig"; sourceTree = "<group>"; };
+		A3113F9201CCAA35BCD8983C /* Pods_2048_SolverTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_2048_SolverTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C049BFB8E328A928EC62D15C /* Pods-2048X AI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048X AI.release.xcconfig"; path = "Pods/Target Support Files/Pods-2048X AI/Pods-2048X AI.release.xcconfig"; sourceTree = "<group>"; };
+		D4EF4C88FD5A3D3F3E8BF2BF /* Pods_2048X_AI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_2048X_AI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E431E4901B896E6700B28290 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		FF5C5DD91AAF782A00CE6981 /* AI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -184,7 +178,7 @@
 				02FA015C1AD32EAC009F73AD /* CoreLocation.framework in Frameworks */,
 				02FA015A1AD32EA6009F73AD /* CoreGraphics.framework in Frameworks */,
 				02FA01581AD32EA0009F73AD /* CFNetwork.framework in Frameworks */,
-				895DF833217BE0DBE594D5D5 /* Pods_2048X_AI.framework in Frameworks */,
+				B3946ED754105FE83B7898ED /* Pods_2048X_AI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,6 +186,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9C4CC7E727DB54415A89BAE /* Pods_2048_SolverTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,7 +222,6 @@
 			isa = PBXGroup;
 			children = (
 				02BCF0291CC1721A002125B6 /* Loggerithm */,
-				0243DDE11AD341E0000CB475 /* UIDevice */,
 			);
 			path = ThirdParty;
 			sourceTree = "<group>";
@@ -235,7 +229,6 @@
 		023EDE711AAA325100F5B9C5 = {
 			isa = PBXGroup;
 			children = (
-				0243DDDD1AD340BA000CB475 /* 2048X AI-Bridging-Header.h */,
 				023EDE7C1AAA325100F5B9C5 /* 2048 Solver */,
 				02DBF57F1AB269E7007EE133 /* Resource */,
 				023EDE921AAA325100F5B9C5 /* 2048 SolverTests */,
@@ -296,19 +289,6 @@
 				023EDE941AAA325100F5B9C5 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		0243DDE11AD341E0000CB475 /* UIDevice */ = {
-			isa = PBXGroup;
-			children = (
-				0243DDE81AD34330000CB475 /* ZHHParseDevice.h */,
-				0243DDE91AD34330000CB475 /* ZHHParseDevice.m */,
-				0243DDE21AD341E0000CB475 /* UIApplication+AppVersion.h */,
-				0243DDE31AD341E0000CB475 /* UIApplication+AppVersion.m */,
-				0243DDE41AD341E0000CB475 /* UIDevice-Hardware.h */,
-				0243DDE51AD341E0000CB475 /* UIDevice-Hardware.m */,
-			);
-			path = UIDevice;
 			sourceTree = "<group>";
 		};
 		02BC42751AC88B230089639B /* TDLearning */ = {
@@ -385,7 +365,8 @@
 				02FA01591AD32EA6009F73AD /* CoreGraphics.framework */,
 				02FA01571AD32EA0009F73AD /* CFNetwork.framework */,
 				02FA01551AD32E99009F73AD /* AudioUnit.framework */,
-				4451BCDDEA52C8EDF6C993AA /* Pods_2048X_AI.framework */,
+				A3113F9201CCAA35BCD8983C /* Pods_2048_SolverTests.framework */,
+				D4EF4C88FD5A3D3F3E8BF2BF /* Pods_2048X_AI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -394,8 +375,10 @@
 			isa = PBXGroup;
 			children = (
 				E431E4901B896E6700B28290 /* Podfile */,
-				4D1C6648B51A6D9F17DE554B /* Pods-2048X AI.debug.xcconfig */,
-				5332D551904BF20FAA74301A /* Pods-2048X AI.release.xcconfig */,
+				0531437AE1E2C476FD8D7902 /* Pods-2048 SolverTests.debug.xcconfig */,
+				35E1AD304AA5C71D83F4679B /* Pods-2048 SolverTests.release.xcconfig */,
+				62F4EF6554B600BCFE68170D /* Pods-2048X AI.debug.xcconfig */,
+				C049BFB8E328A928EC62D15C /* Pods-2048X AI.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -420,12 +403,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 023EDE991AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048X AI" */;
 			buildPhases = (
-				5BE1AD25FC305C47553BDFE3 /* Check Pods Manifest.lock */,
+				E4B8DF992CA9384DD212AC17 /* 📦 Check Pods Manifest.lock */,
 				023EDE761AAA325100F5B9C5 /* Sources */,
 				023EDE771AAA325100F5B9C5 /* Frameworks */,
 				023EDE781AAA325100F5B9C5 /* Resources */,
-				EF8C5DA85035CE74E425C10D /* Copy Pods Resources */,
-				B13D22CB524FCC9FAD4AD1C2 /* Embed Pods Frameworks */,
+				04A2F599995964918148BBC1 /* 📦 Embed Pods Frameworks */,
+				5B50F755443C9938BC93AD62 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -440,9 +423,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 023EDE9C1AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048 SolverTests" */;
 			buildPhases = (
+				1582B43C5C66E3C5BDD783F9 /* 📦 Check Pods Manifest.lock */,
 				023EDE8B1AAA325100F5B9C5 /* Sources */,
 				023EDE8C1AAA325100F5B9C5 /* Frameworks */,
 				023EDE8D1AAA325100F5B9C5 /* Resources */,
+				8DBF989C18D8046C18FCDE57 /* 📦 Embed Pods Frameworks */,
+				66600594CFDBA312D2D846C9 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -521,29 +507,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5BE1AD25FC305C47553BDFE3 /* Check Pods Manifest.lock */ = {
+		04A2F599995964918148BBC1 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		B13D22CB524FCC9FAD4AD1C2 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -551,19 +522,79 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-2048X AI/Pods-2048X AI-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EF8C5DA85035CE74E425C10D /* Copy Pods Resources */ = {
+		1582B43C5C66E3C5BDD783F9 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		5B50F755443C9938BC93AD62 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-2048X AI/Pods-2048X AI-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		66600594CFDBA312D2D846C9 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-2048 SolverTests/Pods-2048 SolverTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8DBF989C18D8046C18FCDE57 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-2048 SolverTests/Pods-2048 SolverTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E4B8DF992CA9384DD212AC17 /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -579,7 +610,6 @@
 				02BCF02E1CC1721A002125B6 /* Loggerithm.swift in Sources */,
 				0E1423B41ACB7C5A000E8B8B /* BoardPos.swift in Sources */,
 				02BC427F1AC88B230089639B /* Util.swift in Sources */,
-				0243DDEA1AD34330000CB475 /* ZHHParseDevice.m in Sources */,
 				0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */,
 				02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */,
 				02BCF02D1CC1721A002125B6 /* Color.swift in Sources */,
@@ -593,7 +623,6 @@
 				02BCF02F1CC1721A002125B6 /* Type.swift in Sources */,
 				02C2A86D1AC9E9EF002DEB97 /* BlackSelectionControl.swift in Sources */,
 				0E1423A41ACA16E5000E8B8B /* State2048.swift in Sources */,
-				0243DDE61AD341E0000CB475 /* UIApplication+AppVersion.m in Sources */,
 				0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */,
 				0E1423BE1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift in Sources */,
 				02107CA11AAD244A00CFF8FF /* GameModelTypes.swift in Sources */,
@@ -604,7 +633,6 @@
 				0E1423B21ACB4ADE000E8B8B /* NTuplesAllStraightFactory.swift in Sources */,
 				0E1423AC1ACAE58A000E8B8B /* GameYS.swift in Sources */,
 				02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */,
-				0243DDE71AD341E0000CB475 /* UIDevice-Hardware.m in Sources */,
 				0297205E1AC65377009B86D2 /* BlackBorderButton.swift in Sources */,
 				023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */,
 				0E1423A61ACA17BE000E8B8B /* NTuples.swift in Sources */,
@@ -699,7 +727,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -737,7 +765,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -746,7 +774,7 @@
 		};
 		023EDE9A1AAA325100F5B9C5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4D1C6648B51A6D9F17DE554B /* Pods-2048X AI.debug.xcconfig */;
+			baseConfigurationReference = 62F4EF6554B600BCFE68170D /* Pods-2048X AI.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -754,7 +782,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Honghao Zhang (ND7KHND8PQ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "2048 Solver/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "";
@@ -762,7 +790,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "137a0314-d71f-4fc2-86ad-4a70f632816e";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "2048X AI-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -770,7 +797,7 @@
 		};
 		023EDE9B1AAA325100F5B9C5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5332D551904BF20FAA74301A /* Pods-2048X AI.release.xcconfig */;
+			baseConfigurationReference = C049BFB8E328A928EC62D15C /* Pods-2048X AI.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -778,20 +805,20 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Honghao Zhang";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "2048 Solver/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.honghaoz.2048X-AI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "956cf9ac-d79b-499e-a7d8-6c0faa1e9219";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "2048X AI-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 		023EDE9D1AAA325100F5B9C5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0531437AE1E2C476FD8D7902 /* Pods-2048 SolverTests.debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -811,6 +838,7 @@
 		};
 		023EDE9E1AAA325100F5B9C5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 35E1AD304AA5C71D83F4679B /* Pods-2048 SolverTests.release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
