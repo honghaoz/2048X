@@ -12,12 +12,13 @@ class BlackBorderButton: UIButton {
     
     var title: String = "Button" {
         didSet {
-            self.setTitle(title, forState: UIControlState.Normal)
+            setTitle(title, forState: .Normal)
         }
     }
+    
     var titleLabelMaxFontSize: CGFloat = 24 {
         didSet {
-            self.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: titleLabelMaxFontSize)
+            titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: titleLabelMaxFontSize)
         }
     }
     
@@ -26,49 +27,44 @@ class BlackBorderButton: UIButton {
     override var enabled: Bool {
         didSet {
             if enabled {
-                self.layer.borderColor = UIColor.blackColor().CGColor
+                layer.borderColor = UIColor.blackColor().CGColor
             } else {
-                self.layer.borderColor = disabledColor.CGColor
+                layer.borderColor = disabledColor.CGColor
             }
         }
     }
     
-    // MARK:- Init Methods
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        setupViews()
-    }
-    
+    // MARK:- Init Methods    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupViews()
-    }
-    
-    convenience init() {
-        self.init(frame: CGRectZero)
+        commonInit()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        commonInit()
+    }
+    
+    private func commonInit() {
         setupViews()
     }
     
     private func setupViews() {
-        self.layer.borderColor = UIColor.blackColor().CGColor
-        self.layer.borderWidth = 5.0
+        layer.borderColor = UIColor.blackColor().CGColor
+        layer.borderWidth = 5.0
         
-        self.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: titleLabelMaxFontSize)
-        self.titleLabel?.textAlignment = .Center
-        self.titleLabel?.numberOfLines = 1
-        self.titleLabel?.adjustsFontSizeToFitWidth = true
-        self.titleLabel?.minimumScaleFactor = 12.0 / self.titleLabel!.font.pointSize // Mini font: 12.0
-        self.titleLabel?.baselineAdjustment = UIBaselineAdjustment.AlignCenters
+        titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: titleLabelMaxFontSize)
+        titleLabel?.textAlignment = .Center
+        titleLabel?.numberOfLines = 1
+        titleLabel?.adjustsFontSizeToFitWidth = true
+        titleLabel?.minimumScaleFactor = 12.0 / (titleLabel?.font.pointSize ?? 24.0) // Mini font: 12.0
+        titleLabel?.baselineAdjustment = .AlignCenters
         
-        self.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        self.setTitleColor(SharedColors.BackgroundColor, forState: UIControlState.Highlighted)
-        self.setTitleColor(disabledColor, forState: UIControlState.Disabled)
+        setTitleColor(UIColor.blackColor(), forState: .Normal)
+        setTitleColor(SharedColors.BackgroundColor, forState: .Highlighted)
+        setTitleColor(disabledColor, forState: .Disabled)
         
-        self.setBackgroundColor(SharedColors.BackgroundColor, forUIControlState: UIControlState.Normal)
-        self.setBackgroundColor(UIColor.blackColor(), forUIControlState: UIControlState.Highlighted)
+        setBackgroundColor(SharedColors.BackgroundColor, forUIControlState: .Normal)
+        setBackgroundColor(UIColor.blackColor(), forUIControlState: .Highlighted)
     }
 }

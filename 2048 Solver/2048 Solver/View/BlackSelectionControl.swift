@@ -10,7 +10,7 @@ import UIKit
 
 class BlackSelectionControl: UIControl {
     
-    private var selectionDotView: UIView!
+    private let selectionDotView = UIView()
     
     override var bounds: CGRect {
         didSet {
@@ -19,34 +19,28 @@ class BlackSelectionControl: UIControl {
     }
     
     // MARK:- Init Methods
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        setupViews()
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupViews()
-    }
-    
-    convenience init() {
-        self.init(frame: CGRectZero)
+        commonInit()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        commonInit()
+    }
+    
+    private func commonInit() {
         setupViews()
     }
     
     private func setupViews() {
-        self.layer.borderColor = UIColor.blackColor().CGColor
-        self.layer.borderWidth = 5.0
+        layer.borderColor = UIColor.blackColor().CGColor
+        layer.borderWidth = 5.0
         
-        selectionDotView = UIView()
         selectionDotView.backgroundColor = UIColor.blackColor()
         updateSelectionDotView()
         
-        self.addSubview(selectionDotView)
+        addSubview(selectionDotView)
     }
     
     func updateSelectionDotView() {

@@ -10,59 +10,54 @@ import UIKit
 
 class AIAlgorithmCell: UITableViewCell {
 
-    var titleLabel: UILabel!
-    var selectionControl: BlackSelectionControl!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+    let titleLabel = UILabel()
+    let selectionControl = BlackSelectionControl()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupViews()
+        commonInit()
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) is not supported")
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+    
+    private func commonInit() {
+        setupViews()
+        setupConstraints()
     }
     
     private func setupViews() {
         backgroundColor = UIColor.clearColor()
-        contentView.backgroundColor = UIColor.clearColor()
         selectionStyle = UITableViewCellSelectionStyle.None
         
-        titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(titleLabel)
         
         titleLabel.text = "(Title)"
         titleLabel.textColor = UIColor.blackColor()
         titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
-        titleLabel.textAlignment = NSTextAlignment.Left
+        titleLabel.textAlignment = .Left
         titleLabel.numberOfLines = 1
         
-        let cCenterY = NSLayoutConstraint(item: titleLabel, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0)
-        contentView.addConstraint(cCenterY)
-        let cLeading = NSLayoutConstraint(item: titleLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 8)
-        contentView.addConstraint(cLeading)
-        
-        selectionControl = BlackSelectionControl()
         selectionControl.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(selectionControl)
         selectionControl.userInteractionEnabled = false
+    }
+    
+    private func setupConstraints() {
+        let constraints = [
+            NSLayoutConstraint(item: titleLabel, attribute: .CenterY, relatedBy: .Equal, toItem: contentView, attribute: .CenterY, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: titleLabel, attribute: .Leading, relatedBy: .Equal, toItem: contentView, attribute: .LeadingMargin, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: selectionControl, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 0.0, constant: 26),
+            NSLayoutConstraint(item: selectionControl, attribute: .Width, relatedBy: .Equal, toItem: selectionControl, attribute: .Height, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: titleLabel, attribute: .CenterY, relatedBy: .Equal, toItem: selectionControl, attribute: .CenterY, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: selectionControl, attribute: .Trailing, relatedBy: .Equal, toItem: contentView, attribute: .TrailingMargin, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: titleLabel, attribute: .Trailing, relatedBy: .LessThanOrEqual, toItem: selectionControl, attribute: .Leading, multiplier: 1.0, constant: -10)
+        ]
         
-        let cWidth = NSLayoutConstraint(item: selectionControl, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 0.0, constant: 26)
-        let cRatio = NSLayoutConstraint(item: selectionControl, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: selectionControl, attribute: NSLayoutAttribute.Height, multiplier: 1.0, constant: 0.0)
-        selectionControl.addConstraints([cWidth, cRatio])
-        
-        let cCenterY1 = NSLayoutConstraint(item: titleLabel, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: selectionControl, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0)
-        contentView.addConstraint(cCenterY1)
-        let cTrailing = NSLayoutConstraint(item: selectionControl, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: -8)
-        contentView.addConstraint(cTrailing)
-        
-        let cHorizontalSpacing = NSLayoutConstraint(item: titleLabel, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: selectionControl, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: -10)
-        contentView.addConstraint(cHorizontalSpacing)
+        NSLayoutConstraint.activateConstraints(constraints)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
