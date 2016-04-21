@@ -8,6 +8,7 @@
 
 import UIKit
 import Google
+import ChouTi
 //import AVFoundation
 
 class ViewController: UIViewController {

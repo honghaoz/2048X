@@ -14,7 +14,6 @@
 		02107C9F1AAD240400CFF8FF /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107C9E1AAD240400CFF8FF /* GameModel.swift */; };
 		02107CA11AAD244A00CFF8FF /* GameModelTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107CA01AAD244A00CFF8FF /* GameModelTypes.swift */; };
 		0225A2421AB7D74500EA72C8 /* GameBoardAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A2411AB7D74500EA72C8 /* GameBoardAssistant.swift */; };
-		0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A24A1AB8A6E300EA72C8 /* Extension.swift */; };
 		0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */; };
 		023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */; };
 		023EDE851AAA325100F5B9C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE831AAA325100F5B9C5 /* Main.storyboard */; };
@@ -78,7 +77,6 @@
 		02107C9E1AAD240400CFF8FF /* GameModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		02107CA01AAD244A00CFF8FF /* GameModelTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModelTypes.swift; sourceTree = "<group>"; };
 		0225A2411AB7D74500EA72C8 /* GameBoardAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoardAssistant.swift; sourceTree = "<group>"; };
-		0225A24A1AB8A6E300EA72C8 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AI-Random.swift"; sourceTree = "<group>"; };
 		023EDE7A1AAA325100F5B9C5 /* 2048X AI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2048X AI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023EDE7E1AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -142,7 +140,7 @@
 		A3113F9201CCAA35BCD8983C /* Pods_2048_SolverTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_2048_SolverTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C049BFB8E328A928EC62D15C /* Pods-2048X AI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048X AI.release.xcconfig"; path = "Pods/Target Support Files/Pods-2048X AI/Pods-2048X AI.release.xcconfig"; sourceTree = "<group>"; };
 		D4EF4C88FD5A3D3F3E8BF2BF /* Pods_2048X_AI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_2048X_AI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E431E4901B896E6700B28290 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		E431E4901B896E6700B28290 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		FF5C5DD91AAF782A00CE6981 /* AI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -217,7 +215,6 @@
 			isa = PBXGroup;
 			children = (
 				023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */,
-				0225A24A1AB8A6E300EA72C8 /* Extension.swift */,
 				02BCF0301CC17275002125B6 /* Constant.swift */,
 				FF5C5DD81AAF77C600CE6981 /* AI */,
 				02107C9D1AAD238D00CFF8FF /* Model */,
@@ -564,7 +561,6 @@
 				FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */,
 				0E1423B41ACB7C5A000E8B8B /* BoardPos.swift in Sources */,
 				02BC427F1AC88B230089639B /* Util.swift in Sources */,
-				0225A24B1AB8A6E300EA72C8 /* Extension.swift in Sources */,
 				02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */,
 				0249C9C51ACB1AE5000E954F /* AI-Expectimax.swift in Sources */,
 				02107C981AACCC4400CFF8FF /* GameBoardView.swift in Sources */,

@@ -5,7 +5,7 @@ target '2048X AI' do
 
 # Utility
 pod 'Loggerithm', :configurations => ['Debug'], :git => 'https://github.com/honghaoz/Loggerithm.git'
-# pod 'ChouTi', :git => 'https://github.com/honghaoz/ChouTi.git'
+pod 'ChouTi', :configurations => ['Debug'], :git => 'https://github.com/honghaoz/ChouTi.git'
 
 # Analytics
 pod 'Google/Analytics'
@@ -16,3 +16,17 @@ target '2048 SolverTests' do
 
 end
 
+# post_install_hooks
+#post_install do |installer|
+#    installer.pods_project.targets.each do |target|
+#        if target.name == 'Loggerithm'
+#            target.build_configurations.each do |config|
+#                if config.name == 'Debug'
+#                    config.build_settings['OTHER_SWIFT_FLAGS'] = '-D DEBUG'
+#				else
+#                    config.build_settings['OTHER_SWIFT_FLAGS'] = ''
+#                end
+#            end
+#        end
+#    end
+#end

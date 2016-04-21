@@ -17,28 +17,27 @@ class BlackSlider: UISlider {
     }
     
     // MARK:- Init Methods
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        setupViews()
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupViews()
-    }
-    
-    convenience init() {
-        self.init(frame: CGRectZero)
+        commonInit()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        commonInit()
+    }
+    
+    private func commonInit() {
         setupViews()
     }
     
     private func setupViews() {        
-        self.setMinimumTrackImage(UIImage.imageWithColor(UIColor.blackColor()), forState: UIControlState.Normal)
-        self.setMaximumTrackImage(UIImage.imageWithColor(UIColor.blackColor()), forState: UIControlState.Normal)
-        self.setThumbImage(UIImage.imageWithBorderRectangle(CGSize(width: 26, height: 26), borderWidth: 10.0, borderColor: UIColor.blackColor(), fillColor: SharedColors.BackgroundColor) , forState: UIControlState.Normal)
+        self.setMinimumTrackImage(UIImage.imageWithColor(UIColor.blackColor()), forState: .Normal)
+        self.setMaximumTrackImage(UIImage.imageWithColor(UIColor.blackColor()), forState: .Normal)
+        let thumbImage = UIImage.imageWithBorderRectangle(CGSize(width: 26, height: 26),
+                                                          borderWidth: 10.0,
+                                                          borderColor: UIColor.blackColor(),
+                                                          fillColor: SharedColors.BackgroundColor)
+        self.setThumbImage(thumbImage, forState: .Normal)
     }
 }

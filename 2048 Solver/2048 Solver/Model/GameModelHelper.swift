@@ -8,6 +8,7 @@
 
 import Foundation
 import Loggerithm
+import ChouTi
 
 struct GameModelHelper {
     /**
