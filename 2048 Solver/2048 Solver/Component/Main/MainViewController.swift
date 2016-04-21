@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainViewController.swift
 //  2048 Solver
 //
 //  Created by Honghao Zhang on 3/6/15.
@@ -11,7 +11,7 @@ import Google
 import ChouTi
 //import AVFoundation
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
 
     // MARK: Views
     var scoreView: ScoreView!
@@ -101,7 +101,9 @@ class ViewController: UIViewController {
         setupViews()
         setupSwipeGestures()
         setupAI()
-        otherSetups()
+        
+        // Make sure operation queue is serial
+        commandCalculationQueue.maxConcurrentOperationCount = 1
         
         startNewGame()
         
@@ -196,7 +198,7 @@ class ViewController: UIViewController {
         newGameButton = BlackBorderButton()
         newGameButton.translatesAutoresizingMaskIntoConstraints = false
         newGameButton.title = "New Game"
-        newGameButton.addTarget(self, action: #selector(ViewController.newGameButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        newGameButton.addTarget(self, action: #selector(MainViewController.newGameButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         views["newGameButton"] = newGameButton
         view.addSubview(newGameButton)
         
@@ -204,8 +206,8 @@ class ViewController: UIViewController {
         runAIButton = BlackBorderButton()
         runAIButton.translatesAutoresizingMaskIntoConstraints = false
         runAIButton.title = "Run"
-        runAIButton.addTarget(self, action: #selector(ViewController.runAIButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.runAIButtonLongPressed(_:)))
+        runAIButton.addTarget(self, action: #selector(MainViewController.runAIButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(MainViewController.runAIButtonLongPressed(_:)))
         runAIButton.addGestureRecognizer(longPressGesture)
         views["runAIButton"] = runAIButton
         view.addSubview(runAIButton)
@@ -214,7 +216,7 @@ class ViewController: UIViewController {
         undoButton = BlackBorderButton()
         undoButton.translatesAutoresizingMaskIntoConstraints = false
         undoButton.title = "Undo"
-        undoButton.addTarget(self, action: #selector(ViewController.undoButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        undoButton.addTarget(self, action: #selector(MainViewController.undoButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         views["undoButton"] = undoButton
         view.addSubview(undoButton)
         
@@ -222,7 +224,7 @@ class ViewController: UIViewController {
         hintButton = BlackBorderButton()
         hintButton.translatesAutoresizingMaskIntoConstraints = false
         hintButton.title = "Hint"
-        hintButton.addTarget(self, action: #selector(ViewController.hintButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        hintButton.addTarget(self, action: #selector(MainViewController.hintButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         views["hintButton"] = hintButton
         view.addSubview(hintButton)
         
@@ -247,22 +249,22 @@ class ViewController: UIViewController {
     }
     
     func setupSwipeGestures() {
-        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.upCommand(_:)))
+        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MainViewController.upCommand(_:)))
         upSwipe.numberOfTouchesRequired = 1
         upSwipe.direction = UISwipeGestureRecognizerDirection.Up
         gameBoardView.addGestureRecognizer(upSwipe)
         
-        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.downCommand(_:)))
+        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MainViewController.downCommand(_:)))
         downSwipe.numberOfTouchesRequired = 1
         downSwipe.direction = UISwipeGestureRecognizerDirection.Down
         gameBoardView.addGestureRecognizer(downSwipe)
         
-        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.leftCommand(_:)))
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MainViewController.leftCommand(_:)))
         leftSwipe.numberOfTouchesRequired = 1
         leftSwipe.direction = UISwipeGestureRecognizerDirection.Left
         gameBoardView.addGestureRecognizer(leftSwipe)
         
-        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.rightCommand(_:)))
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MainViewController.rightCommand(_:)))
         rightSwipe.numberOfTouchesRequired = 1
         rightSwipe.direction = UISwipeGestureRecognizerDirection.Right
         gameBoardView.addGestureRecognizer(rightSwipe)
@@ -300,17 +302,10 @@ class ViewController: UIViewController {
 //            })
 //        })
     }
-    
-    func otherSetups() {
-        // Make sure operation queue is serial
-        commandCalculationQueue.maxConcurrentOperationCount = 1
-        
-        (UIApplication.sharedApplication().delegate as! AppDelegate).mainViewController = self
-    }
 }
 
 // MARK: Swipe Gestures
-extension ViewController {
+extension MainViewController {
     @objc(up:)
     func upCommand(r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
@@ -345,7 +340,7 @@ extension ViewController {
 }
 
 // MARK: Button Actions
-extension ViewController {
+extension MainViewController {
     func newGameButtonTapped(sender: AnyObject?) {
         log.debug()
         
@@ -355,20 +350,20 @@ extension ViewController {
             runAIButtonTapped(nil)
         }
         
-        let confirmVC = ConfirmViewController()
-        confirmVC.transitioningDelegate = confirmVC
-        confirmVC.modalPresentationStyle = .Custom
-        confirmVC.okClosure = {
+        let newGameVC = NewGameViewController()
+        newGameVC.transitioningDelegate = newGameVC
+        newGameVC.modalPresentationStyle = .Custom
+        newGameVC.okClosure = {
             self.startNewGame()
         }
         
-        confirmVC.cancelClosure = {
+        newGameVC.cancelClosure = {
             if aiIsRunningBefore && !self.isAiRunning{
                 self.runAIButtonTapped(nil)
             }
         }
         
-        self.presentViewController(confirmVC, animated: true, completion: nil)
+        self.presentViewController(newGameVC, animated: true, completion: nil)
     }
     
     private func startNewGame() {
@@ -511,7 +506,7 @@ extension ViewController {
 }
 
 // MARK: AI Calculation
-extension ViewController {
+extension MainViewController {
     // If ignoreIsAIRunning is true, command calculated will be queued anyway
     func runAIforNextStep(ignoreIsAIRunning: Bool = false) {
         if isGameEnd {
@@ -562,7 +557,7 @@ extension ViewController {
 }
 
 // MARK: Command Queue
-extension ViewController {
+extension MainViewController {
     func queueCommand(command: MoveCommand) {
         // If user just stopped AI, stop queueing command
         if userStoppedAI {
@@ -685,10 +680,10 @@ extension ViewController {
                 let gameEndVC = GameEndViewController()
                 gameEndVC.transitioningDelegate = gameEndVC
                 gameEndVC.modalPresentationStyle = .Custom
-                gameEndVC.undoClosure = {
+                gameEndVC.cancelClosure = {
                     self.undoButtonTapped(nil)
                 }
-                gameEndVC.startClosure = {
+                gameEndVC.okClosure = {
                     self.startNewGame()
                 }
                 
@@ -715,7 +710,7 @@ extension ViewController {
 }
 
 // MARK: Game 2048 Delegate
-extension ViewController: Game2048Delegate {
+extension MainViewController: Game2048Delegate {
     func game2048DidReset(game2048: Game2048, removeActions: [RemoveAction]) {
         log.debug("Reseted")
         isGameEnd = true
@@ -761,7 +756,7 @@ extension ViewController: Game2048Delegate {
 }
 
 // MARK: Others
-extension ViewController {
+extension MainViewController {
 //    func playSoundEffect() {
 //        // Play sound effect
 //        let path = NSBundle.mainBundle().pathForResource("move", ofType: "wav")

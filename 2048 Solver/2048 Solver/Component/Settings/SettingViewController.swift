@@ -43,7 +43,7 @@ class SettingViewController: UIViewController {
     
     let presentingAnimator = PresentingAnimator()
     
-    var mainViewController: ViewController!
+    var mainViewController: MainViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
