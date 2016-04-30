@@ -351,8 +351,6 @@ extension MainViewController {
         }
         
         let newGameVC = NewGameViewController()
-        newGameVC.transitioningDelegate = newGameVC
-        newGameVC.modalPresentationStyle = .Custom
         newGameVC.okClosure = {
             self.startNewGame()
         }
@@ -363,7 +361,7 @@ extension MainViewController {
             }
         }
         
-        self.presentViewController(newGameVC, animated: true, completion: nil)
+        presentViewController(newGameVC, animated: true, completion: nil)
     }
     
     private func startNewGame() {
@@ -432,10 +430,7 @@ extension MainViewController {
             
             let dimensionBefore = dimension
             
-            let settingVC = SettingViewController()
-            settingVC.transitioningDelegate = settingVC
-            settingVC.modalPresentationStyle = .Custom
-            settingVC.mainViewController = self
+            let settingVC = SettingViewController(mainViewController: self)
             settingVC.saveClosure = {
                 self.saveData()
             }
@@ -678,8 +673,6 @@ extension MainViewController {
             log.debug("Queue is empty")
             if isGameEnd {
                 let gameEndVC = GameEndViewController()
-                gameEndVC.transitioningDelegate = gameEndVC
-                gameEndVC.modalPresentationStyle = .Custom
                 gameEndVC.cancelClosure = {
                     self.undoButtonTapped(nil)
                 }

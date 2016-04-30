@@ -15,18 +15,37 @@ class ConfirmViewController: UIViewController {
     let okButton = BlackBorderButton()
     let cancelButton = BlackBorderButton()
     
-    let presentingAnimator = PresentingAnimator()
+    let animator = DropPresentingAnimator()
     
     var okClosure: (() -> ())? = nil
     var cancelClosure: (() -> ())? = nil
     var dismissClosure: (() -> ())? = nil
     
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        commonInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func commonInit() {
+        animator.animationDuration = 0.75
+        animator.allowDragToDismiss = false
+        animator.shouldDismissOnTappingOutsideView = true
+        animator.presentingViewSize = CGSize(width: ceil(screenWidth * 0.7), height: 120.0)
+        animator.overlayViewStyle = .Normal(UIColor(white: 0.0, alpha: 0.7))
+        
+        modalPresentationStyle = .Custom
+        transitioningDelegate = animator
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupViews()
         setupConstraints()
-        
-        presentingAnimator.presentingViewSize = CGSize(width: ceil(screenWidth * 0.7), height: 120.0)
     }
     
     private func setupViews() {
@@ -95,15 +114,15 @@ extension ConfirmViewController {
     }
 }
 
-extension ConfirmViewController: UIViewControllerTransitioningDelegate {
-    // MARK: - UIViewControllerTransitioningDelegate
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        presentingAnimator.presenting = true
-        return presentingAnimator
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        presentingAnimator.presenting = false
-        return presentingAnimator
-    }
-}
+//extension ConfirmViewController: UIViewControllerTransitioningDelegate {
+//    // MARK: - UIViewControllerTransitioningDelegate
+//    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        presentingAnimator.presenting = true
+//        return presentingAnimator
+//    }
+//    
+//    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        presentingAnimator.presenting = false
+//        return presentingAnimator
+//    }
+//}

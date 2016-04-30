@@ -41,19 +41,32 @@ class SettingViewController: UIViewController {
     var cancelClosure: (() -> ())? = nil
     var dismissClosure: (() -> ())? = nil
     
-    let presentingAnimator = PresentingAnimator()
+    let animator = DropPresentingAnimator()
     
-    var mainViewController: MainViewController!
+    weak var mainViewController: MainViewController!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    convenience init(mainViewController: MainViewController) {
+        self.init()
+        
+        self.mainViewController = mainViewController
+        
         // 230 is height without table view rows, 10 bottom spacing
         var height: CGFloat = 230 + 10
         height += CGFloat(mainViewController.aiChoices.count) * kTableViewRowHeight
-        presentingAnimator.presentingViewSize = CGSize(width: ceil(screenWidth * (is320ScreenWidth ? 0.82 : 0.7) + 24), height: height)
         
-        //
+        animator.animationDuration = 0.75
+        animator.allowDragToDismiss = false
+        animator.shouldDismissOnTappingOutsideView = true
+        animator.overlayViewStyle = .Normal(UIColor(white: 0.0, alpha: 0.7))
+        animator.presentingViewSize = CGSize(width: ceil(screenWidth * (is320ScreenWidth ? 0.82 : 0.7) + 24), height: height)
+        
+        modalPresentationStyle = .Custom
+        transitioningDelegate = animator
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
         dimension = mainViewController.dimension
         
         setupViews()
@@ -267,19 +280,6 @@ class SettingViewController: UIViewController {
         cancelClosure?()
         dismissClosure?()
         self.dismissViewControllerAnimated(true, completion: nil)
-    }
-}
-
-extension SettingViewController: UIViewControllerTransitioningDelegate {
-    // MARK: - UIViewControllerTransitioningDelegate
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        presentingAnimator.presenting = true
-        return presentingAnimator
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        presentingAnimator.presenting = false
-        return presentingAnimator
     }
 }
 
