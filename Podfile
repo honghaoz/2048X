@@ -4,11 +4,11 @@ use_frameworks!
 target '2048X AI' do
 
 # Utility
-pod 'Loggerithm', :configurations => ['Debug']
-pod 'ChouTi', :configurations => ['Debug'], :git => 'https://github.com/honghaoz/ChouTi.git'
+# pod 'Loggerithm', :configurations => ['Debug']
+pod 'ChouTi', :configurations => ['Debug'], :git => 'https://github.com/honghaoz/ChouTi.git', :commit => '10a7d63b1505df4a351b499f47d1e9481484e001'
 
 # Analytics
-pod 'Google/Analytics'
+# pod 'Google/Analytics'
 
 end
 
