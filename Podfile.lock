@@ -1,62 +1,30 @@
 PODS:
-  - ChouTi (0.1):
-    - ChouTi/Unsafe (= 0.1)
-  - ChouTi/ChouTi (0.1):
-    - ChouTi/ChouTi/Animators (= 0.1)
-    - ChouTi/ChouTi/CodeSnippets (= 0.1)
-    - ChouTi/ChouTi/CollectionViewLayouts (= 0.1)
-    - ChouTi/ChouTi/Extensions (= 0.1)
-    - ChouTi/ChouTi/Protocols (= 0.1)
-    - ChouTi/ChouTi/Utilities (= 0.1)
-  - ChouTi/ChouTi/Animators (0.1)
-  - ChouTi/ChouTi/CodeSnippets (0.1)
-  - ChouTi/ChouTi/CollectionViewLayouts (0.1)
-  - ChouTi/ChouTi/Extensions (0.1)
-  - ChouTi/ChouTi/Protocols (0.1)
-  - ChouTi/ChouTi/Utilities (0.1):
-    - "ChouTi/ChouTi/Utilities/TableView+SectionRowExtensions (= 0.1)"
-  - "ChouTi/ChouTi/Utilities/TableView+SectionRowExtensions (0.1)"
-  - ChouTi/UI (0.1):
-    - ChouTi/UI/AutoLinesLabel (= 0.1)
-    - ChouTi/UI/CollectionViewCells (= 0.1)
-    - ChouTi/UI/DatePickerViewController (= 0.1)
-    - ChouTi/UI/DropDownMenu (= 0.1)
-    - ChouTi/UI/MenuPageViewController (= 0.1)
-    - ChouTi/UI/NavigationBarStatusBar (= 0.1)
-    - ChouTi/UI/SegmentedControl (= 0.1)
-    - ChouTi/UI/TableViewCells (= 0.1)
-  - ChouTi/UI-App-Extension-API-Unsafe (0.1):
-    - ChouTi/UI-App-Extension-API-Unsafe/SlideController (= 0.1)
-  - ChouTi/UI-App-Extension-API-Unsafe/SlideController (0.1)
-  - ChouTi/UI/AutoLinesLabel (0.1)
-  - ChouTi/UI/CollectionViewCells (0.1)
-  - ChouTi/UI/DatePickerViewController (0.1)
-  - ChouTi/UI/DropDownMenu (0.1)
-  - ChouTi/UI/MenuPageViewController (0.1)
-  - ChouTi/UI/NavigationBarStatusBar (0.1)
-  - ChouTi/UI/SegmentedControl (0.1)
-  - ChouTi/UI/TableViewCells (0.1)
-  - ChouTi/Unsafe (0.1):
-    - ChouTi/ChouTi
-    - ChouTi/UI
-    - ChouTi/UI-App-Extension-API-Unsafe
+  - ChouTi (0.6.2)
+  - ChouTiUI (0.6.2):
+    - ChouTi (~> 0.6)
+  - SwiftFormat/CLI (0.40.11)
+  - Then (2.5.0)
 
 DEPENDENCIES:
-  - ChouTi (from `https://github.com/honghaoz/ChouTi.git`, commit `10a7d63b1505df4a351b499f47d1e9481484e001`)
+  - ChouTi (~> 0.6)
+  - ChouTiUI (~> 0.6)
+  - SwiftFormat/CLI
+  - Then (~> 2.5)
 
-EXTERNAL SOURCES:
-  ChouTi:
-    :commit: 10a7d63b1505df4a351b499f47d1e9481484e001
-    :git: https://github.com/honghaoz/ChouTi.git
-
-CHECKOUT OPTIONS:
-  ChouTi:
-    :commit: 10a7d63b1505df4a351b499f47d1e9481484e001
-    :git: https://github.com/honghaoz/ChouTi.git
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - SwiftFormat
+    - Then
+  trunk:
+    - ChouTi
+    - ChouTiUI
 
 SPEC CHECKSUMS:
-  ChouTi: a59601f0b7de0dfb197fccea7c3ebefb2b16bb99
+  ChouTi: 0eefad9be6f783893b5070791744354bfb5ce290
+  ChouTiUI: cf6907642695eac57aee103d72fecb662171ac48
+  SwiftFormat: 304f39cab266d39c9d60f4fceec37ed6f43b931c
+  Then: 0157115e883545c77967b452fe74a1d25fb796e1
 
-PODFILE CHECKSUM: 8d5ffc23fae124fb0f805fa411d6d96478774b54
+PODFILE CHECKSUM: 6a5681212fb189e9ab0c22ddf634068688e1e48d
 
 COCOAPODS: 1.8.0.beta.1

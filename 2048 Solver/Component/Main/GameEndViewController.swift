@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Google
+//import Google
 import ChouTi
 
 class GameEndViewController: ConfirmViewController {
@@ -21,7 +21,7 @@ class GameEndViewController: ConfirmViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        GAI.sharedInstance().defaultTracker.set(kGAIScreenName, value: "Game End View")
-        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createScreenView().build() as Dictionary)
+//        GAI.sharedInstance().defaultTracker.set(kGAIScreenName, value: "Game End View")
+//        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createScreenView().build() as Dictionary)
     }
 }

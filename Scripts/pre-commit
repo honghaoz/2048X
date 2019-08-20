@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+function check_error {
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+}
+
+
+echo "⛓  Run $(tput setaf 4)pre-commit$(tput sgr0)..."
+
+# `test -z "$(git ls-files --exclude-standard --others)"`, whether a working tree has changes that could be staged.
+# `git diff-files --quiet`, untracked and unignored files
+# Reference: https://stackoverflow.com/a/2659808/3164091
+if test -z "$(git ls-files --exclude-standard --others)" && git diff-files --quiet; then
+  echo "⛓  [1/2] Sort Xcode project files."
+  perl ./Scripts/sort-Xcode-project-file *.xcodeproj
+  check_error
+
+  echo "⛓  [2/2] Reformat source code."
+  make format
+  check_error
+
+  git add .
+  check_error
+
+  echo "⛓  $(tput setaf 4)pre-commit $(tput setaf 2)Done."
+else
+  echo "⛓  $(tput setaf 1)Abort: unstaged changes."
+  exit 1
+fi

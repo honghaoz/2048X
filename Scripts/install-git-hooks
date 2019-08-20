@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+GIT_DIR=$(git rev-parse --git-dir)
+
+echo "Installing Git Hooks..."
+
+if [ ! -d $GIT_DIR/hooks ]; then
+  mkdir $GIT_DIR/hooks
+fi
+
+if [ ! -f $GIT_DIR/hooks/pre-commit ]; then
+  ln -s ../../Scripts/pre-commit $GIT_DIR/hooks/pre-commit
+else
+  echo "$(tput setaf 3)warning: $(tput sgr0)$GIT_DIR/hooks/pre-commit already exists."
+fi
+
+echo "Done!"

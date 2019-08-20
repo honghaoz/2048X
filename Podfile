@@ -1,14 +1,22 @@
-platform :ios, "8.0"
+platform :ios, "12.0"
 use_frameworks!
+
+def development_pods
+  pod 'SwiftFormat/CLI', :configuration => 'Debug'
+end
 
 target '2048X AI' do
 
-# Utility
-# pod 'Loggerithm', :configurations => ['Debug']
-pod 'ChouTi', :configurations => ['Debug'], :git => 'https://github.com/honghaoz/ChouTi.git', :commit => '10a7d63b1505df4a351b499f47d1e9481484e001'
+  development_pods
 
-# Analytics
-# pod 'Google/Analytics'
+  pod 'Then', '~> 2.5'
+  # Utility
+  # pod 'Loggerithm', :configurations => ['Debug']
+  pod 'ChouTi', '~> 0.6'
+  pod 'ChouTiUI', '~> 0.6'
+
+  # Analytics
+  # pod 'Google/Analytics'
 
 end
 
