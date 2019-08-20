@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Loggerithm
 import ChouTi
 
 struct GameModelHelper {
@@ -19,7 +18,7 @@ struct GameModelHelper {
     
     - returns: number of empty spots
     */
-    static func gameBoardEmptySpotsCount(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Int {
+    static func gameBoardEmptySpotsCount(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Int {
         let dimension = gameBoard.dimension
         var result = 0
         for i in 0 ..< dimension {
@@ -41,7 +40,7 @@ struct GameModelHelper {
     
     - returns: coordinates for empty spots
     */
-    static func gameBoardEmptySpots(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> [(Int, Int)] {
+    static func gameBoardEmptySpots(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> [(Int, Int)] {
         let dimension = gameBoard.dimension
         var buffer = Array<(Int, Int)>()
         for i in 0 ..< dimension {
@@ -63,12 +62,12 @@ struct GameModelHelper {
     
     - returns: true is game board is full
     */
-    static func gameBoardFull(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
+    static func gameBoardFull(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
         return gameBoardEmptySpots(&gameBoard).count == 0
     }
     
     // * Game board is not mutated
-    static func isGameEnded(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
+    static func isGameEnded(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
         if !gameBoardFull(&gameBoard) {
             return false
         }
@@ -106,7 +105,7 @@ struct GameModelHelper {
     }
     
     // * Game board is not mutated
-    static func validMoveCommandsInGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, shuffle: Bool = false) -> [MoveCommand] {
+    static func validMoveCommandsInGameBoard(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>, shuffle: Bool = false) -> [MoveCommand] {
         var commands = [MoveCommand]()
         let fullCommands = moveCommands(false)
         for command in fullCommands {
@@ -123,7 +122,7 @@ struct GameModelHelper {
     }
     
     // * Game board is not mutated
-    static func randomValidMoveCommandInGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> MoveCommand? {
+    static func randomValidMoveCommandInGameBoard(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> MoveCommand? {
         let validCommands = validMoveCommandsInGameBoard(&gameBoard, shuffle: true)
         if validCommands.count > 0 {
             return validCommands[0]
@@ -133,7 +132,7 @@ struct GameModelHelper {
     }
     
     // * Game board is not mutated
-    static func moveCommand(moveCommand: MoveCommand, inout isValidInGameBoard gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
+    static func moveCommand(moveCommand: MoveCommand, isValidInGameBoard gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
         let dimension = gameBoard.dimension
         switch moveCommand.direction {
         case .Up:
@@ -187,7 +186,7 @@ struct GameModelHelper {
     
     - returns: 2d array of Int
     */
-    static func intGameBoardFromGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> [[Int]] {
+    static func intGameBoardFromGameBoard(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> [[Int]] {
         let dimension = gameBoard.dimension
         var result = [[Int]]()
         for i in 0 ..< dimension {
@@ -209,7 +208,7 @@ struct GameModelHelper {
 
 // MARK: Memory Management
 extension GameModelHelper {
-    static func allocInitGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) {
+    static func allocInitGameBoard(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) {
         let dimension = gameBoard.dimension
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
@@ -219,7 +218,7 @@ extension GameModelHelper {
         }
     }
     
-    static func allocInitGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, withGameBoard intGameBoard: [[Int]]) {
+    static func allocInitGameBoard(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>, withGameBoard intGameBoard: [[Int]]) {
         let dimension = gameBoard.dimension
         // Alloc memory
         for i in 0 ..< dimension {
@@ -234,7 +233,7 @@ extension GameModelHelper {
         }
     }
     
-    static func resetGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, withGameBoard intGameBoard: [[Int]]) {
+    static func resetGameBoard(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>, withGameBoard intGameBoard: [[Int]]) {
         let dimension = gameBoard.dimension
         // Alloc memory
         for i in 0 ..< dimension {
@@ -248,7 +247,7 @@ extension GameModelHelper {
         }
     }
     
-    static func emptyGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> [(Int, Int)] {
+    static func emptyGameBoard(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> [(Int, Int)] {
         var removedCoordinates = [(Int, Int)]()
         let dimension = gameBoard.dimension
         for i in 0 ..< dimension {
@@ -265,7 +264,7 @@ extension GameModelHelper {
         return removedCoordinates
     }
     
-    static func deallocGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) {
+    static func deallocGameBoard(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) {
         let dimension = gameBoard.dimension
         // Dealloc temp memory
         for i in 0 ..< dimension {
@@ -276,7 +275,7 @@ extension GameModelHelper {
         }
     }
     
-    static func copyGameBoard(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> SquareGameBoard<UnsafeMutablePointer<Tile>> {
+    static func copyGameBoard(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> SquareGameBoard<UnsafeMutablePointer<Tile>> {
         let dimension = gameBoard.dimension
         // Init a temp game board
         var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = SquareGameBoard(dimension: dimension, initialValue: nil)
@@ -296,7 +295,7 @@ extension GameModelHelper {
 extension GameModelHelper {
     
     // * Game board is MUTATED
-    static func performMoveCommand(moveCommand: MoveCommand, inout onGameBoard  gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, shouldInsertNewTiles: Bool) -> (Bool, Int) {
+    static func performMoveCommand(moveCommand: MoveCommand, onGameBoard gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>, shouldInsertNewTiles: Bool) -> (Bool, Int) {
         let (moveActions, increasedScore) = performMoveCommand(moveCommand, onGameBoard: &gameBoard)
         
         if moveActions.count == 0 {
@@ -311,13 +310,13 @@ extension GameModelHelper {
     }
     
     // * Game board is MUTATED
-    static func performInsertCommand(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> InitAction {
+    static func performInsertCommand(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> InitAction {
         let (initNumber, insertedCoordinate) = insertTileAtRandomLocation(&gameBoard)
         return InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: initNumber)
     }
     
     // * Game board is MUTATED
-    static func performInsertCommand(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, multipleTimes times: Int) -> [InitAction] {
+    static func performInsertCommand(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>, multipleTimes times: Int) -> [InitAction] {
         precondition(times > 0, "Times must be greater than 0")
         var resultInitActions = [InitAction]()
         
@@ -329,7 +328,7 @@ extension GameModelHelper {
     }
     
     // * Game board is MUTATED
-    static func performMoveCommand(moveCommand: MoveCommand, inout onGameBoard gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> ([MoveAction], Int) {
+    static func performMoveCommand(moveCommand: MoveCommand, onGameBoard gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> ([MoveAction], Int) {
         let dimension = gameBoard.dimension
         var resultMoveActions = [MoveAction]()
         var increasedScore: Int = 0
@@ -394,7 +393,7 @@ extension GameModelHelper {
     
     - returns: result 1D actions
     */
-    static func processOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> ([Action1D], Int) {
+    static func processOneDimensionTiles(_ tiles: inout [UnsafeMutablePointer<Tile>]) -> ([Action1D], Int) {
         var (actions, increasedScore) = mergeOneDimensionTiles(&tiles)
         actions.appendContentsOf(condenseOneDimensionTiles(&tiles))
         return (actions, increasedScore)
@@ -414,7 +413,7 @@ extension GameModelHelper {
     
     - returns: Return a list of actions
     */
-    static func mergeOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> ([Action1D], Int) {
+    static func mergeOneDimensionTiles(_ tiles: inout [UnsafeMutablePointer<Tile>]) -> ([Action1D], Int) {
         var resultActions = [Action1D]()
         var increasedScore: Int = 0
         let count = tiles.count
@@ -466,7 +465,7 @@ extension GameModelHelper {
     
     - returns: a list of actions
     */
-    static func condenseOneDimensionTiles(inout tiles: [UnsafeMutablePointer<Tile>]) -> [Action1D] {
+    static func condenseOneDimensionTiles(_ tiles: inout [UnsafeMutablePointer<Tile>]) -> [Action1D] {
         var resultActions = [Action1D]()
         let count = tiles.count
         for i in (count - 1).stride(to: -1, by: -1) {
@@ -506,7 +505,7 @@ extension GameModelHelper {
     }
     
     // * Tile array is not mutated
-    static func oneDimensionTilesCanMove(inout tiles: [UnsafeMutablePointer<Tile>]) -> Bool {
+    static func oneDimensionTilesCanMove(_ tiles: inout [UnsafeMutablePointer<Tile>]) -> Bool {
         let count = tiles.count
         for i in (count - 1).stride(to: -1, by: -1) {
             switch tiles[i].memory {
@@ -566,7 +565,7 @@ extension GameModelHelper {
     
     // MARK: Insert
     
-    static func insertTileAtRandomLocation(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> (Int, (Int, Int)) {
+    static func insertTileAtRandomLocation(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> (Int, (Int, Int)) {
         let seed = Int(arc4random_uniform(UInt32(100)))
         let initNumber: Int = seed < 15 ? 4 : 2
         let insertedCoordinate = insertTileAtRandomLocation(&gameBoard, value: initNumber)
@@ -580,7 +579,7 @@ extension GameModelHelper {
     
     - returns: inserted coordinate, if game board is full, return (-1, -1)
     */
-    static func insertTileAtRandomLocation(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, value: Int) -> (Int, Int) {
+    static func insertTileAtRandomLocation(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>, value: Int) -> (Int, Int) {
         let openSpots = gameBoardEmptySpots(&gameBoard)
         if openSpots.count == 0 {
             // No more open spots; don't even bother
@@ -599,7 +598,7 @@ extension GameModelHelper {
     - parameter pos:   insert position/ coordinate
     - parameter value: new inserted value
     */
-    static func insertTile(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, pos: (Int, Int), value: Int) {
+    static func insertTile(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>, pos: (Int, Int), value: Int) {
         let (x, y) = pos
         switch gameBoard[x, y].memory {
         case .Empty:

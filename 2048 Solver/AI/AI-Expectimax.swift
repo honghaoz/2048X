@@ -26,7 +26,7 @@ class AIExpectimax {
         }
     }
     
-    func _nextCommand(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, level: Int = 0, maxDepth: Int = 3) -> (MoveCommand?, Double) {
+    func _nextCommand(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>, level: Int = 0, maxDepth: Int = 3) -> (MoveCommand?, Double) {
         var choosenCommand: MoveCommand? = nil
         var maxScore: Double = 0.0
         
@@ -93,12 +93,12 @@ class AIExpectimax {
     }
     
     // MARK: Heuristic
-    func heuristicScore(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Double {
+    func heuristicScore(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Double {
         let myScore = heuristicSMonotonic(&gameBoard)
         return myScore
     }
     
-    func heuristicSMonotonic(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Double {
+    func heuristicSMonotonic(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Double {
         let ratio: Double = 0.25
         var maxScore: Double = -1.0
         
@@ -149,12 +149,12 @@ class AIExpectimax {
         return maxScore
     }
     
-    func heuristicFreeTiles(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Float {
+    func heuristicFreeTiles(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Float {
         let maxLimit: Float = Float(dimension * dimension)
         return Float(GameModelHelper.gameBoardEmptySpotsCount(&gameBoard)) / maxLimit * 12
     }
     
-    func heuristicMonotonicity(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Float {
+    func heuristicMonotonicity(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Float {
         
         let r: Float = 0.25
         let dimension = gameBoard.dimension

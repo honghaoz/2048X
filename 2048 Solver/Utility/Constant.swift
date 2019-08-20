@@ -7,17 +7,26 @@
 //
 
 import Foundation
-import Loggerithm
+
+class Log {
+    func debug(_ s: String) {
+        print("DEBUG: ", s)
+    }
+
+    func verboseLog(_ s: String) {
+        print("VERBOSE: ", s)
+    }
+}
 
 class Global {
-	static let log = Loggerithm()
-	static let verboseLog = Loggerithm()
-	
-	#if DEBUG
-	static let DEBUG = true
-	#else
-	static let DEBUG = false
-	#endif
+  static let log = Log()
+  static let verboseLog = Log()
+
+  #if DEBUG
+  static let DEBUG = true
+  #else
+  static let DEBUG = false
+  #endif
 }
 
 var log = Global.log

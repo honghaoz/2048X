@@ -41,7 +41,7 @@ class AIRandom {
         return choosenCommand
     }
     
-    private func multipleRandomRun(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, withCommand command: MoveCommand, runTimes: Int) -> (Float, Float) {
+    private func multipleRandomRun(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>, withCommand command: MoveCommand, runTimes: Int) -> (Float, Float) {
         var total: Float = 0.0
         var totalMoves = 0
         
@@ -61,7 +61,7 @@ class AIRandom {
         return (average, averageMoves)
     }
     
-    private func randomRun(inout gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, withCommand command: MoveCommand) -> (Int, Int) {
+    private func randomRun(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>, withCommand command: MoveCommand) -> (Int, Int) {
         var gameBoardCopy = GameModelHelper.copyGameBoard(&gameBoard)
         var score = 0
         

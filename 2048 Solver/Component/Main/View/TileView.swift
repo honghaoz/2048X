@@ -14,7 +14,7 @@ class TileView: UIView {
         didSet {
             if number <= 0 {
                 numberLabel?.text = ""
-                self.layer.borderColor = UIColor.clearColor().CGColor
+                self.layer.borderColor = UIColor.clearColor.CGColor
             }
             else {
                 numberLabel?.text = String(number)

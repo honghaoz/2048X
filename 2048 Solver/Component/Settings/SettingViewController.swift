@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Google
+//import Google
 import ChouTi
 
 class SettingViewController: UIViewController {
