@@ -14,11 +14,11 @@ class TileView: UIView {
         didSet {
             if number <= 0 {
                 numberLabel?.text = ""
-                self.layer.borderColor = UIColor.clearColor.CGColor
+                self.layer.borderColor = UIColor.clear.cgColor
             }
             else {
                 numberLabel?.text = String(number)
-                self.layer.borderColor = borderColor.CGColor
+                self.layer.borderColor = borderColor.cgColor
             }
             self.tileBackgroundColor = SharedColors.tileBackgrounColorForNumber(number)
             self.tileNumberColor = SharedColors.tileLabelTextColorForNumber(number)
@@ -29,18 +29,18 @@ class TileView: UIView {
     
     var padding: CGFloat = 5.0
     
-    var borderColor: UIColor = UIColor.blackColor() {
+    var borderColor: UIColor = UIColor.black {
         didSet {
-            self.layer.borderColor = borderColor.CGColor
+            self.layer.borderColor = borderColor.cgColor
         }
     }
     
-    var tileNumberColor: UIColor = UIColor.blackColor() {
+    var tileNumberColor: UIColor = UIColor.black {
         didSet {
             self.numberLabel.textColor = tileNumberColor
         }
     }
-    var tileBackgroundColor: UIColor = UIColor.clearColor() {
+    var tileBackgroundColor: UIColor = UIColor.clear {
         didSet {
             self.backgroundColor = tileBackgroundColor
         }
@@ -61,7 +61,7 @@ class TileView: UIView {
     }
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: .zero)
     }
     
     override init(frame: CGRect) {
@@ -70,7 +70,7 @@ class TileView: UIView {
     }
     
     private func setupViews() {
-        self.layer.borderColor = borderColor.CGColor
+        self.layer.borderColor = borderColor.cgColor
         self.layer.borderWidth = 3.0
         
         numberLabel = UILabel()
@@ -79,36 +79,36 @@ class TileView: UIView {
         numberLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 40)
         numberLabel.minimumScaleFactor = 12.0 / numberLabel.font.pointSize
         numberLabel.adjustsFontSizeToFitWidth = true
-        numberLabel.textAlignment = NSTextAlignment.Center
-        numberLabel.baselineAdjustment = UIBaselineAdjustment.AlignCenters
+        numberLabel.textAlignment = .center
+        numberLabel.baselineAdjustment = .alignCenters
         
-        numberLabel.setContentCompressionResistancePriority(900, forAxis: UILayoutConstraintAxis.Horizontal)
-        numberLabel.setContentCompressionResistancePriority(900, forAxis: UILayoutConstraintAxis.Vertical)
-        numberLabel.setContentHuggingPriority(1000, forAxis: UILayoutConstraintAxis.Horizontal)
-        numberLabel.setContentHuggingPriority(1000, forAxis: UILayoutConstraintAxis.Vertical)
+        numberLabel.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 900), for: NSLayoutConstraint.Axis.horizontal)
+        numberLabel.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 900), for: NSLayoutConstraint.Axis.vertical)
+        numberLabel.setContentHuggingPriority(UILayoutPriority.required, for: NSLayoutConstraint.Axis.horizontal)
+        numberLabel.setContentHuggingPriority(UILayoutPriority.required, for: NSLayoutConstraint.Axis.vertical)
         
         views["numberLabel"] = numberLabel
         self.addSubview(numberLabel)
         
         metrics["padding"] = padding
         
-        self.addConstraint(NSLayoutConstraint(item: numberLabel, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0.0))
-        self.addConstraint(NSLayoutConstraint(item: numberLabel, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: numberLabel, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: numberLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(>=padding)-[numberLabel]-(>=padding)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(>=padding)-[numberLabel]-(>=padding)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(>=padding)-[numberLabel]-(>=padding)-|", options: [], metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(>=padding)-[numberLabel]-(>=padding)-|", options: [], metrics: metrics, views: views))
     }
     
     func flashTile(completion: ((Bool) -> Void)? = nil) {
 //        numberLabel.textColor = self.backgroundColor
 //        UIView.transitionWithView(numberLabel, duration: sharedAnimationDuration * 2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
 //            self.numberLabel?.text = String(self.number)
-//            self.numberLabel.textColor = UIColor.blackColor()
+//            self.numberLabel.textColor = UIColor.black
 //            }, completion: nil)
         
         // Black flash tile
-        backgroundColor = UIColor.blackColor()
-        UIView.animateWithDuration(sharedAnimationDuration * 2, animations: { () -> Void in
+        backgroundColor = UIColor.black
+        UIView.animate(withDuration: sharedAnimationDuration * 2, animations: { () -> Void in
             self.backgroundColor = self.tileBackgroundColor
             }, completion: { (finished) -> Void in
                 completion?(finished)

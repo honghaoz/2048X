@@ -50,14 +50,14 @@ class ConfirmViewController: UIViewController {
     
     private func setupViews() {
         view.backgroundColor = SharedColors.BackgroundColor
-        view.layer.borderColor = UIColor.blackColor().CGColor
+        view.layer.borderColor = UIColor.black.cgColor
         view.layer.borderWidth = 5.0
         
         // Title Label
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(titleLabel)
         titleLabel.text = "Ask me something?"
-        titleLabel.textColor = UIColor.blackColor()
+        titleLabel.textColor = UIColor.black
         titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: is320ScreenWidth ? 22 : 25)
         titleLabel.textAlignment = .Center
         titleLabel.numberOfLines = 0
@@ -88,9 +88,9 @@ class ConfirmViewController: UIViewController {
         
         var constraints = [NSLayoutConstraint]()
         
-        constraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|[titleLabel]|", options: [], metrics: metrics, views: views)
-        constraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|[okButton]-(border_width)-[cancelButton(==okButton)]|", options: [.AlignAllTop, .AlignAllBottom], metrics: metrics, views: views)
-        constraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|[titleLabel][okButton(50)]|", options: [], metrics: metrics, views: views)
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|[titleLabel]|", options: [], metrics: metrics, views: views)
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|[okButton]-(border_width)-[cancelButton(==okButton)]|", options: [.AlignAllTop, .AlignAllBottom], metrics: metrics, views: views)
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|[titleLabel][okButton(50)]|", options: [], metrics: metrics, views: views)
         
         NSLayoutConstraint.activateConstraints(constraints)
     }
@@ -99,7 +99,7 @@ class ConfirmViewController: UIViewController {
 extension ConfirmViewController {
     func okButtonTapped(sender: UIButton) {
         log.debug()
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
         
         okClosure?()
         dismissClosure?()
@@ -107,7 +107,7 @@ extension ConfirmViewController {
     
     func cancelButtonTapped(sender: UIButton) {
         log.debug()
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
         
         cancelClosure?()
         dismissClosure?()

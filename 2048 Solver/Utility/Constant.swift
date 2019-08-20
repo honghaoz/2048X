@@ -9,7 +9,7 @@
 import Foundation
 
 class Log {
-    func debug(_ s: String) {
+    func debug(_ s: String = "") {
         print("DEBUG: ", s)
     }
 

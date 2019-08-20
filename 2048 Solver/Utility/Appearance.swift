@@ -9,10 +9,10 @@
 import Foundation
 import UIKit
 
-var sharedAnimationDuration: NSTimeInterval = 0.08
+var sharedAnimationDuration: TimeInterval = 0.08
 
 struct SharedFontSize {
-    static func tileFontSizeForDimension(dimension: Int) -> Int {
+    static func tileFontSizeForDimension(_ dimension: Int) -> Int {
         switch dimension {
         case 0:
             return 150
@@ -48,7 +48,7 @@ struct SharedFontSize {
 
 struct SharedColors {
     static let BackgroundColor = UIColor(red: 160.0/255.0, green: 167.0/255.0, blue: 147.0/255.0, alpha: 1.0)
-    static func tileBackgrounColorForNumber(number: Int) -> UIColor {
+    static func tileBackgrounColorForNumber(_ number: Int) -> UIColor {
         switch number {
         case 0:
             return UIColor(red:151/255.0, green:158/255.0, blue:139/255.0, alpha:255/255.0)
@@ -79,11 +79,11 @@ struct SharedColors {
         }
     }
     
-    static func tileLabelTextColorForNumber(number: Int) -> UIColor {
+    static func tileLabelTextColorForNumber(_ number: Int) -> UIColor {
         if number > 100 {
             return SharedColors.BackgroundColor
         } else {
-            return UIColor.blackColor()
+            return UIColor.black
         }
     }
 }

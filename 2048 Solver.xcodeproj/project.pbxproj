@@ -16,7 +16,6 @@
 		02321A4D1CC886B80077C74F /* GameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A401CC886B80077C74F /* GameBoardView.swift */; };
 		02321A4E1CC886B80077C74F /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A411CC886B80077C74F /* ScoreView.swift */; };
 		02321A4F1CC886B80077C74F /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A421CC886B80077C74F /* TileView.swift */; };
-		02321A501CC886B80077C74F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A431CC886B80077C74F /* MainViewController.swift */; };
 		02321A511CC886B80077C74F /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A451CC886B80077C74F /* SettingViewController.swift */; };
 		02321A521CC886B80077C74F /* AIAlgorithmCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A471CC886B80077C74F /* AIAlgorithmCell.swift */; };
 		02321A531CC886B80077C74F /* BlackSelectionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A481CC886B80077C74F /* BlackSelectionControl.swift */; };
@@ -35,26 +34,8 @@
 		023EDE961AAA325100F5B9C5 /* _048_SolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */; };
 		0249C9C51ACB1AE5000E954F /* AI-Expectimax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0249C9C41ACB1AE5000E954F /* AI-Expectimax.swift */; };
 		024FB1F51AD3300200C6453E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 024FB1F41AD3300200C6453E /* AudioToolbox.framework */; };
-		02BC427B1AC88B230089639B /* Action2048.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42761AC88B230089639B /* Action2048.swift */; };
-		02BC427C1AC88B230089639B /* Game2048Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42771AC88B230089639B /* Game2048Board.swift */; };
-		02BC427D1AC88B230089639B /* NTuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42781AC88B230089639B /* NTuple.swift */; };
-		02BC427E1AC88B230089639B /* RectSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC42791AC88B230089639B /* RectSize.swift */; };
-		02BC427F1AC88B230089639B /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC427A1AC88B230089639B /* Util.swift */; };
 		02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */; };
 		02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAF1ABA51B800487782 /* AI-Greedy.swift */; };
-		0E1423A41ACA16E5000E8B8B /* State2048.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423A31ACA16E5000E8B8B /* State2048.swift */; };
-		0E1423A61ACA17BE000E8B8B /* NTuples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423A51ACA17BE000E8B8B /* NTuples.swift */; };
-		0E1423A81ACA4C4E000E8B8B /* DefaultNTupleEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423A71ACA4C4E000E8B8B /* DefaultNTupleEvaluator.swift */; };
-		0E1423AA1ACACEBA000E8B8B /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423A91ACACEBA000E8B8B /* Transition.swift */; };
-		0E1423AC1ACAE58A000E8B8B /* GameYS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423AB1ACAE58A000E8B8B /* GameYS.swift */; };
-		0E1423AE1ACAF879000E8B8B /* TDLGame2048.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423AD1ACAF879000E8B8B /* TDLGame2048.swift */; };
-		0E1423B01ACB4707000E8B8B /* Game2048ExperimentTDL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423AF1ACB4707000E8B8B /* Game2048ExperimentTDL.swift */; };
-		0E1423B21ACB4ADE000E8B8B /* NTuplesAllStraightFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423B11ACB4ADE000E8B8B /* NTuplesAllStraightFactory.swift */; };
-		0E1423B41ACB7C5A000E8B8B /* BoardPos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423B31ACB7C5A000E8B8B /* BoardPos.swift */; };
-		0E1423B61ACB7D41000E8B8B /* BoardPosList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423B51ACB7D41000E8B8B /* BoardPosList.swift */; };
-		0E1423BA1ACBA1F9000E8B8B /* NTuplesBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423B91ACBA1F9000E8B8B /* NTuplesBuilder.swift */; };
-		0E1423BC1ACBA7B8000E8B8B /* CollectionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423BB1ACBA7B8000E8B8B /* CollectionUtils.swift */; };
-		0E1423BE1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1423BD1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift */; };
 		B3946ED754105FE83B7898ED /* Pods_2048X_AI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4EF4C88FD5A3D3F3E8BF2BF /* Pods_2048X_AI.framework */; };
 		C9C4CC7E727DB54415A89BAE /* Pods_2048_SolverTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3113F9201CCAA35BCD8983C /* Pods_2048_SolverTests.framework */; };
 		E431E4911B896E6700B28290 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = E431E4901B896E6700B28290 /* Podfile */; };
@@ -108,11 +89,6 @@
 		0243DDF11AD348A3000CB475 /* libPods-2048X AI-GoogleAnalytics-iOS-SDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-2048X AI-GoogleAnalytics-iOS-SDK.a"; path = "Pods/../build/Debug-iphoneos/libPods-2048X AI-GoogleAnalytics-iOS-SDK.a"; sourceTree = "<group>"; };
 		0249C9C41ACB1AE5000E954F /* AI-Expectimax.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AI-Expectimax.swift"; sourceTree = "<group>"; };
 		024FB1F41AD3300200C6453E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		02BC42761AC88B230089639B /* Action2048.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action2048.swift; sourceTree = "<group>"; };
-		02BC42771AC88B230089639B /* Game2048Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game2048Board.swift; sourceTree = "<group>"; };
-		02BC42781AC88B230089639B /* NTuple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuple.swift; sourceTree = "<group>"; };
-		02BC42791AC88B230089639B /* RectSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectSize.swift; sourceTree = "<group>"; };
-		02BC427A1AC88B230089639B /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModelHelper.swift; sourceTree = "<group>"; };
 		02F21BAF1ABA51B800487782 /* AI-Greedy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AI-Greedy.swift"; sourceTree = "<group>"; };
 		02FA01551AD32E99009F73AD /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
@@ -126,19 +102,6 @@
 		02FA01671AD32ED2009F73AD /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		02FA01691AD32EDE009F73AD /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		0531437AE1E2C476FD8D7902 /* Pods-2048 SolverTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048 SolverTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-2048 SolverTests/Pods-2048 SolverTests.debug.xcconfig"; sourceTree = "<group>"; };
-		0E1423A31ACA16E5000E8B8B /* State2048.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State2048.swift; sourceTree = "<group>"; };
-		0E1423A51ACA17BE000E8B8B /* NTuples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuples.swift; sourceTree = "<group>"; };
-		0E1423A71ACA4C4E000E8B8B /* DefaultNTupleEvaluator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultNTupleEvaluator.swift; sourceTree = "<group>"; };
-		0E1423A91ACACEBA000E8B8B /* Transition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transition.swift; sourceTree = "<group>"; };
-		0E1423AB1ACAE58A000E8B8B /* GameYS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameYS.swift; sourceTree = "<group>"; };
-		0E1423AD1ACAF879000E8B8B /* TDLGame2048.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TDLGame2048.swift; sourceTree = "<group>"; };
-		0E1423AF1ACB4707000E8B8B /* Game2048ExperimentTDL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game2048ExperimentTDL.swift; sourceTree = "<group>"; };
-		0E1423B11ACB4ADE000E8B8B /* NTuplesAllStraightFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuplesAllStraightFactory.swift; sourceTree = "<group>"; };
-		0E1423B31ACB7C5A000E8B8B /* BoardPos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardPos.swift; sourceTree = "<group>"; };
-		0E1423B51ACB7D41000E8B8B /* BoardPosList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardPosList.swift; sourceTree = "<group>"; };
-		0E1423B91ACBA1F9000E8B8B /* NTuplesBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuplesBuilder.swift; sourceTree = "<group>"; };
-		0E1423BB1ACBA7B8000E8B8B /* CollectionUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionUtils.swift; sourceTree = "<group>"; };
-		0E1423BD1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NTuplesAllRectanglesFactory.swift; sourceTree = "<group>"; };
 		35E1AD304AA5C71D83F4679B /* Pods-2048 SolverTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048 SolverTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-2048 SolverTests/Pods-2048 SolverTests.release.xcconfig"; sourceTree = "<group>"; };
 		62F4EF6554B600BCFE68170D /* Pods-2048X AI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048X AI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-2048X AI/Pods-2048X AI.debug.xcconfig"; sourceTree = "<group>"; };
 		A3113F9201CCAA35BCD8983C /* Pods_2048_SolverTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_2048_SolverTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -335,31 +298,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		02BC42751AC88B230089639B /* TDLearning */ = {
-			isa = PBXGroup;
-			children = (
-				0E1423A31ACA16E5000E8B8B /* State2048.swift */,
-				02BC42761AC88B230089639B /* Action2048.swift */,
-				02BC42771AC88B230089639B /* Game2048Board.swift */,
-				02BC42781AC88B230089639B /* NTuple.swift */,
-				02BC42791AC88B230089639B /* RectSize.swift */,
-				02BC427A1AC88B230089639B /* Util.swift */,
-				0E1423A51ACA17BE000E8B8B /* NTuples.swift */,
-				0E1423A91ACACEBA000E8B8B /* Transition.swift */,
-				0E1423A71ACA4C4E000E8B8B /* DefaultNTupleEvaluator.swift */,
-				0E1423AB1ACAE58A000E8B8B /* GameYS.swift */,
-				0E1423AD1ACAF879000E8B8B /* TDLGame2048.swift */,
-				0E1423AF1ACB4707000E8B8B /* Game2048ExperimentTDL.swift */,
-				0E1423B11ACB4ADE000E8B8B /* NTuplesAllStraightFactory.swift */,
-				0E1423B31ACB7C5A000E8B8B /* BoardPos.swift */,
-				0E1423B51ACB7D41000E8B8B /* BoardPosList.swift */,
-				0E1423B91ACBA1F9000E8B8B /* NTuplesBuilder.swift */,
-				0E1423BB1ACBA7B8000E8B8B /* CollectionUtils.swift */,
-				0E1423BD1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift */,
-			);
-			path = TDLearning;
-			sourceTree = "<group>";
-		};
 		754B25108EAF598101145E50 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -403,7 +341,6 @@
 				0225A2411AB7D74500EA72C8 /* GameBoardAssistant.swift */,
 				0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */,
 				02F21BAF1ABA51B800487782 /* AI-Greedy.swift */,
-				02BC42751AC88B230089639B /* TDLearning */,
 				0249C9C41ACB1AE5000E954F /* AI-Expectimax.swift */,
 			);
 			path = AI;
@@ -639,11 +576,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02BC427E1AC88B230089639B /* RectSize.swift in Sources */,
 				02321A661CC890D70077C74F /* GameAppearance.swift in Sources */,
 				FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */,
-				0E1423B41ACB7C5A000E8B8B /* BoardPos.swift in Sources */,
-				02BC427F1AC88B230089639B /* Util.swift in Sources */,
 				02321A5A1CC886F60077C74F /* Appearance.swift in Sources */,
 				02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */,
 				0249C9C51ACB1AE5000E954F /* AI-Expectimax.swift in Sources */,
@@ -651,35 +585,19 @@
 				02321A4B1CC886B80077C74F /* GameEndViewController.swift in Sources */,
 				02321A631CC88A610077C74F /* BlackBorderButton.swift in Sources */,
 				02321A531CC886B80077C74F /* BlackSelectionControl.swift in Sources */,
-				0E1423B01ACB4707000E8B8B /* Game2048ExperimentTDL.swift in Sources */,
-				0E1423A81ACA4C4E000E8B8B /* DefaultNTupleEvaluator.swift in Sources */,
-				0E1423BA1ACBA1F9000E8B8B /* NTuplesBuilder.swift in Sources */,
 				02321A4D1CC886B80077C74F /* GameBoardView.swift in Sources */,
 				02321A4F1CC886B80077C74F /* TileView.swift in Sources */,
-				0E1423AA1ACACEBA000E8B8B /* Transition.swift in Sources */,
-				0E1423A41ACA16E5000E8B8B /* State2048.swift in Sources */,
 				0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */,
-				0E1423BE1ACBC141000E8B8B /* NTuplesAllRectanglesFactory.swift in Sources */,
 				02107CA11AAD244A00CFF8FF /* GameModelTypes.swift in Sources */,
-				0E1423BC1ACBA7B8000E8B8B /* CollectionUtils.swift in Sources */,
-				0E1423B21ACB4ADE000E8B8B /* NTuplesAllStraightFactory.swift in Sources */,
 				02321A601CC88A060077C74F /* NewGameViewController.swift in Sources */,
-				0E1423AC1ACAE58A000E8B8B /* GameYS.swift in Sources */,
 				02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */,
 				02321A511CC886B80077C74F /* SettingViewController.swift in Sources */,
 				02321A5B1CC886F60077C74F /* Constant.swift in Sources */,
 				02321A681CC891740077C74F /* ImageAsset.swift in Sources */,
 				023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */,
-				0E1423A61ACA17BE000E8B8B /* NTuples.swift in Sources */,
-				02321A501CC886B80077C74F /* MainViewController.swift in Sources */,
 				02321A521CC886B80077C74F /* AIAlgorithmCell.swift in Sources */,
 				02321A5E1CC889FB0077C74F /* ConfirmViewController.swift in Sources */,
-				0E1423AE1ACAF879000E8B8B /* TDLGame2048.swift in Sources */,
-				02BC427C1AC88B230089639B /* Game2048Board.swift in Sources */,
-				0E1423B61ACB7D41000E8B8B /* BoardPosList.swift in Sources */,
-				02BC427D1AC88B230089639B /* NTuple.swift in Sources */,
 				02321A4E1CC886B80077C74F /* ScoreView.swift in Sources */,
-				02BC427B1AC88B230089639B /* Action2048.swift in Sources */,
 				02107C9F1AAD240400CFF8FF /* GameModel.swift in Sources */,
 				0225A2421AB7D74500EA72C8 /* GameBoardAssistant.swift in Sources */,
 			);

@@ -104,11 +104,11 @@ final class State2048 {
         return features
     }
     
-    func getValue(flatLocation:Int)->Int {
+    func getValue(_ flatLocation:Int)->Int {
         return board[flatLocation / size][flatLocation % size]
     }
     
-    func setValue(flatLocation:Int, value:Int) {
+    func setValue(_ flatLocation:Int, value:Int) {
         board[flatLocation / size][flatLocation % size] = value
     }
     
@@ -183,7 +183,7 @@ final class State2048 {
     }
     
     // make a move
-    func makeMove(action:Action2048) -> Int {
+    func makeMove(_ action:Action2048) -> Int {
         var reward = 0
         
         switch(action) {
@@ -308,7 +308,7 @@ final class State2048 {
     }
     
     
-    private func hasEqualNeighbour(row:Int, col:Int) -> Bool {
+    private func hasEqualNeighbour(_ row: Int, col: Int) -> Bool {
         if ((row>0 && board[row-1][col] == board[row][col])
         || (col < size - 1 && board[row][col+1] == board[row][col])
         || (row < size - 1 && board[row + 1][col] == board[row][col])
@@ -367,7 +367,7 @@ final class State2048 {
     }
     
     // Factory Method Return an initial State
-    class func getInitialState(numLocations:Int)->State2048 {
+    class func getInitialState(_ numLocations: Int)->State2048 {
         let state = State2048()
         for _ in 0..<numLocations {
             state.addRandomTile()

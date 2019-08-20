@@ -106,7 +106,7 @@ class GameboardAssistant: CustomStringConvertible {
     
     // MARK: Public methods
     /// Test if a move to certain directino is valid
-    func isMoveValid(dir: MoveDirection) -> Bool {
+    func isMoveValid(_ dir: MoveDirection) -> Bool {
         for i in 0..<_size {
             for j in 0..<_size {
                 switch dir {
@@ -135,7 +135,7 @@ class GameboardAssistant: CustomStringConvertible {
     
     /// Make a move in certain direction, the precondition must be met that the move to this direction is valid.
     /// Return the score of such move
-    func makeMove(dir: MoveDirection, toAddNewTile: Bool = true) -> Int {
+    func makeMove(_ dir: MoveDirection, toAddNewTile: Bool = true) -> Int {
         var hasMoved = false
         var score: Int = 0
         
@@ -173,13 +173,13 @@ class GameboardAssistant: CustomStringConvertible {
     }
     
     /// Assign a value to a specific cell
-    func setCell(x: Int, y: Int, val: Int) {
+    func setCell(_ x: Int, y: Int, val: Int) {
         _cell[y][x] = val
     }
     
     // MARK: Private methods
     /// Randomly assign a value to an empty cell
-    private func addNewTile(valueSpecified: Int = 2) {
+    private func addNewTile(_ valueSpecified: Int = 2) {
         var newTiles: [Int] = [Int](count: 10, repeatedValue: valueSpecified)
         // If the tile value is not specified, then give a array of choices consisted of [2,2,2,2,2,2,2,2,2,4]
         if valueSpecified == 2 {
@@ -202,12 +202,12 @@ class GameboardAssistant: CustomStringConvertible {
     }
     
     /// Get a copy of certain row
-    private func getRow(x: Int) -> [Int] {
+    private func getRow(_ x: Int) -> [Int] {
         return _cell[x]
     }
     
     /// Get a copy of certain col
-    private func getCol(y: Int) -> [Int] {
+    private func getCol(_ y: Int) -> [Int] {
         var col = [Int](count: _size, repeatedValue: -1)
         for i in 0..<_size {
             col[i] = _cell[i][y]
@@ -217,7 +217,7 @@ class GameboardAssistant: CustomStringConvertible {
     }
     
     /// Assign values to an entire row
-    private func setRow(row: Int, vals: [Int], inout moved: Bool) {
+    private func setRow(_ row: Int, vals: [Int], moved: inout Bool) {
         for i in 0..<vals.count {
             if _cell[row][i] != vals[i] {
                 moved = true
@@ -227,7 +227,7 @@ class GameboardAssistant: CustomStringConvertible {
     }
     
     /// Assign values to an entire col
-    private func setCol(col: Int, vals: [Int], inout moved: Bool) {
+    private func setCol(_ col: Int, vals: [Int], moved: inout Bool) {
         for i in 0..<vals.count {
             if _cell[i][col] != vals[i] {
                 moved = true
@@ -237,7 +237,7 @@ class GameboardAssistant: CustomStringConvertible {
     }
     
     /// Merge row
-    private func mergeRow(inout row: [Int], dir: MoveDirection) -> Int {
+    private func mergeRow(_ row: inout [Int], dir: MoveDirection) -> Int {
         assert(dir == .Left || dir == .Right, "The direction is not valid!")
         
         var points: Int = 0
@@ -273,7 +273,7 @@ class GameboardAssistant: CustomStringConvertible {
     }
     
     /// Merge col
-    private func mergeCol(inout col: [Int], dir: MoveDirection) -> Int {
+    private func mergeCol(_ col: inout [Int], dir: MoveDirection) -> Int {
         assert(dir == .Up || dir == .Down, "The direction is not valid!")
         
         var points: Int = 0
@@ -307,7 +307,7 @@ class GameboardAssistant: CustomStringConvertible {
     }
     
     /// Move a row to a certain direction
-    private func moveColToDirection(inout col: [Int], dir: MoveDirection) {
+    private func moveColToDirection(_ col: inout [Int], dir: MoveDirection) {
         assert(dir == .Up || dir == .Down, "The direction is not valid!")
         col = col.filter({element -> Bool in element != 0})
         if dir == .Up {
@@ -319,7 +319,7 @@ class GameboardAssistant: CustomStringConvertible {
     }
     
     /// Move a col to a certain direction
-    private func moveRowToDirection(inout row: [Int], dir: MoveDirection) {
+    private func moveRowToDirection(_ row: inout [Int], dir: MoveDirection) {
         assert(dir == .Left || dir == .Right, "The direction is not valid!")
         row = row.filter({element -> Bool in element != 0})
         if dir == .Left {

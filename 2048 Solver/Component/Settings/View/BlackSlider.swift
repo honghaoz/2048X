@@ -32,11 +32,11 @@ class BlackSlider: UISlider {
     }
     
     private func setupViews() {        
-        self.setMinimumTrackImage(UIImage.imageWithColor(UIColor.blackColor()), forState: .Normal)
-        self.setMaximumTrackImage(UIImage.imageWithColor(UIColor.blackColor()), forState: .Normal)
+        self.setMinimumTrackImage(UIImage.imageWithColor(UIColor.black), forState: .Normal)
+        self.setMaximumTrackImage(UIImage.imageWithColor(UIColor.black), forState: .Normal)
         let thumbImage = UIImage.imageWithBorderRectangle(CGSize(width: 26, height: 26),
                                                           borderWidth: 10.0,
-                                                          borderColor: UIColor.blackColor(),
+                                                          borderColor: UIColor.black,
                                                           fillColor: SharedColors.BackgroundColor)
         self.setThumbImage(thumbImage, forState: .Normal)
     }

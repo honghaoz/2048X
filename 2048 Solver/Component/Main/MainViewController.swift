@@ -120,8 +120,8 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        GAI.sharedInstance().defaultTracker.set(kGAIScreenName, value: "Main View")
-        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createScreenView().build() as Dictionary)
+//        GAI.sharedInstance().defaultTracker.set(kGAIScreenName, value: "Main View")
+//        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createScreenView().build() as Dictionary)
     }
     
     // MARK: Setups
@@ -198,7 +198,7 @@ class MainViewController: UIViewController {
         newGameButton = BlackBorderButton()
         newGameButton.translatesAutoresizingMaskIntoConstraints = false
         newGameButton.title = "New Game"
-        newGameButton.addTarget(self, action: #selector(MainViewController.newGameButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        newGameButton.addTarget(self, action: #selector(MainViewController.newGameButtonTapped(_:)), forControlEvents: .touchUpInside)
         views["newGameButton"] = newGameButton
         view.addSubview(newGameButton)
         
@@ -206,7 +206,7 @@ class MainViewController: UIViewController {
         runAIButton = BlackBorderButton()
         runAIButton.translatesAutoresizingMaskIntoConstraints = false
         runAIButton.title = "Run"
-        runAIButton.addTarget(self, action: #selector(MainViewController.runAIButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        runAIButton.addTarget(self, action: #selector(MainViewController.runAIButtonTapped(_:)), forControlEvents: .touchUpInside)
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(MainViewController.runAIButtonLongPressed(_:)))
         runAIButton.addGestureRecognizer(longPressGesture)
         views["runAIButton"] = runAIButton
@@ -216,7 +216,7 @@ class MainViewController: UIViewController {
         undoButton = BlackBorderButton()
         undoButton.translatesAutoresizingMaskIntoConstraints = false
         undoButton.title = "Undo"
-        undoButton.addTarget(self, action: #selector(MainViewController.undoButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        undoButton.addTarget(self, action: #selector(MainViewController.undoButtonTapped(_:)), forControlEvents: .touchUpInside)
         views["undoButton"] = undoButton
         view.addSubview(undoButton)
         
@@ -224,7 +224,7 @@ class MainViewController: UIViewController {
         hintButton = BlackBorderButton()
         hintButton.translatesAutoresizingMaskIntoConstraints = false
         hintButton.title = "Hint"
-        hintButton.addTarget(self, action: #selector(MainViewController.hintButtonTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        hintButton.addTarget(self, action: #selector(MainViewController.hintButtonTapped(_:)), forControlEvents: .touchUpInside)
         views["hintButton"] = hintButton
         view.addSubview(hintButton)
         
@@ -232,17 +232,17 @@ class MainViewController: UIViewController {
         metrics["buttonHeight"] = (metrics["targetViewHeight"]! - metrics["padding"]!) / 2.0
         
         // H
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[scoreView]-padding-[targetView]", options: NSLayoutFormatOptions.AlignAllTop, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[bestScoreView]-padding-[targetView]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[newGameButton]-padding-[runAIButton(==newGameButton)]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[undoButton]-padding-[hintButton(==undoButton)]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[scoreView]-padding-[targetView]", options: NSLayoutFormatOptions.AlignAllTop, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[bestScoreView]-padding-[targetView]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[newGameButton]-padding-[runAIButton(==newGameButton)]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[undoButton]-padding-[hintButton(==undoButton)]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
         
         // V
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[scoreView]-padding-[bestScoreView(==scoreView)]-padding-[gameBoardView]-padding-[newGameButton(buttonHeight)]-padding-[undoButton(buttonHeight)]", options: NSLayoutFormatOptions.AlignAllLeading, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[targetView(targetViewHeight)]-padding-[gameBoardView]-padding-[runAIButton(buttonHeight)]-padding-[hintButton(buttonHeight)]", options: NSLayoutFormatOptions.AlignAllTrailing, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[scoreView]-padding-[bestScoreView(==scoreView)]-padding-[gameBoardView]-padding-[newGameButton(buttonHeight)]-padding-[undoButton(buttonHeight)]", options: NSLayoutFormatOptions.AlignAllLeading, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[targetView(targetViewHeight)]-padding-[gameBoardView]-padding-[runAIButton(buttonHeight)]-padding-[hintButton(buttonHeight)]", options: NSLayoutFormatOptions.AlignAllTrailing, metrics: metrics, views: views))
         
         // Target view top spacing >= 22
-        view.addConstraint(NSLayoutConstraint(item: targetView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 22))
+        view.addConstraint(NSLayoutConstraint(item: targetView, attribute: .top, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: view, attribute: .top, multiplier: 1.0, constant: 22))
         
         // Must call this before start game
         view.layoutIfNeeded()
@@ -368,15 +368,15 @@ extension MainViewController {
         self.gameModel.reset()
         self.gameModel.start()
         
-        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "start_new_game", value: nil).build() as Dictionary
-        GAI.sharedInstance().defaultTracker.send(eventDict)
+//        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "start_new_game", value: nil).build() as Dictionary
+//        GAI.sharedInstance().defaultTracker.send(eventDict)
     }
     
     func runAIButtonTapped(sender: UIButton?) {
         log.debug()
-        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "run_ai", value: nil).build() as Dictionary
-        GAI.sharedInstance().defaultTracker.send(eventDict)
-        
+//        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "run_ai", value: nil).build() as Dictionary
+//        GAI.sharedInstance().defaultTracker.send(eventDict)
+
         if !isGameEnd {
             isAiRunning = !isAiRunning
             if !isAiRunning {
@@ -461,9 +461,9 @@ extension MainViewController {
     }
     
     func undoButtonTapped(sender: UIButton?) {
-        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "undo", value: nil).build() as Dictionary
-        GAI.sharedInstance().defaultTracker.send(eventDict)
-        
+//        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "undo", value: nil).build() as Dictionary
+//        GAI.sharedInstance().defaultTracker.send(eventDict)
+
         log.debug()
         let count = gameStateHistory.count
         if count <= 1 {
@@ -489,8 +489,8 @@ extension MainViewController {
     }
     
     func hintButtonTapped(sender: UIButton) {
-        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "hint", value: nil).build() as Dictionary
-        GAI.sharedInstance().defaultTracker.send(eventDict)
+//        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "hint", value: nil).build() as Dictionary
+//        GAI.sharedInstance().defaultTracker.send(eventDict)
         
         log.debug()
         if isGameEnd || isAiRunning {

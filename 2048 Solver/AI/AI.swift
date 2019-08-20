@@ -33,14 +33,14 @@ class AI {
     // MARK: Calculate next move using Mono Heuristic
     
     /// Calculate next optimal movement using Mono Heuristic
-    func nextMoveUsingMonoHeuristic(curState: [[Int]], searchDepth: Int = 3) -> MoveCommand? {
+    func nextMoveUsingMonoHeuristic(_ curState: [[Int]], searchDepth: Int = 3) -> MoveCommand? {
         let gameboardAssistant = GameboardAssistant(cells: curState)
         let (direction, _) = monoHeuristicRecursion(gameboardAssistant, curDepth: searchDepth, searchDepth: searchDepth)
         return direction
     }
     
     /// Calculate optimal movement for method "monotonic heuristic" using recursion
-    private func monoHeuristicRecursion(gameboardAssistant: GameboardAssistant, curDepth: Int, searchDepth: Int, ratio: Double = 0.9) -> (MoveCommand?, Double) {
+    private func monoHeuristicRecursion(_ gameboardAssistant: GameboardAssistant, curDepth: Int, searchDepth: Int, ratio: Double = 0.9) -> (MoveCommand?, Double) {
         var bestScore = 0.0
         var bestMove: MoveDirection? = nil
         
@@ -75,7 +75,7 @@ class AI {
     /// Evaluate the current board using "monotonic heuristic", the default progress ratio is 0.25.
     /// Return the evaluation result of current state and the (x, y) localtion of tile which should
     /// be assigned with 2.
-    private func evaluateUsingMonoHeuristic(gameboard: [[Int]], ratio: Double = 0.25) -> (Double, (Int, Int)) {
+    private func evaluateUsingMonoHeuristic(_ gameboard: [[Int]], ratio: Double = 0.25) -> (Double, (Int, Int)) {
         let yRange = (0...gameboard.count - 1).map{$0}
         let yRangeReverse = Array((0...gameboard.count - 1).map{$0}.reverse())
         let xRange = yRange
@@ -260,14 +260,14 @@ class AI {
     // MARK: Calculate next move using Combined Heuristic
     
     /// Calculate next optimal movement using Combined Heuristic
-    func nextMoveUsingCombinedStrategy(curState: [[Int]], searchDepth: Int = 3) -> MoveCommand? {
+    func nextMoveUsingCombinedStrategy(_ curState: [[Int]], searchDepth: Int = 3) -> MoveCommand? {
         let gameboardAssistant = GameboardAssistant(cells: curState)
         let (direction, _) = combinedHeuristicRecursion(gameboardAssistant, curDepth: searchDepth, searchDepth: searchDepth)
         return direction
     }
     
     /// Calculate optimal movement for method "combined heuristic" using recursion
-    private func combinedHeuristicRecursion(gameboardAssistant: GameboardAssistant, curDepth: Int, searchDepth: Int) -> (MoveCommand?, Double) {
+    private func combinedHeuristicRecursion(_ gameboardAssistant: GameboardAssistant, curDepth: Int, searchDepth: Int) -> (MoveCommand?, Double) {
         var bestScore = 0.0
         var bestMove: MoveDirection? = nil
         
@@ -300,7 +300,7 @@ class AI {
     
     /// Evaluate the current board using combined heuristic.
     /// Return the evaluation result of current state.
-    private func evaluateUsingCombinedHeuristic(gameboard: [[Int]]) -> Double {
+    private func evaluateUsingCombinedHeuristic(_ gameboard: [[Int]]) -> Double {
         // The size of the board
         let size = gameboard[0].count
         let squareSize = Double(size * size)
@@ -336,7 +336,7 @@ class AI {
     let directionToOffset: [MoveDirection: (rowOffset: Int, colOffset: Int)] = [.Up: (1, 0), .Down: (-1, 0), .Left: (0, -1), .Right: (0, 1)]
     
     /// Calculate optimal movement for method "minimax alpha-beta pruning"
-    func nextMoveUsingAlphaBetaPruning(curState: [[Int]], depth: Int = 10) -> MoveCommand? {
+    func nextMoveUsingAlphaBetaPruning(_ curState: [[Int]], depth: Int = 10) -> MoveCommand? {
         let gameboardAssistant = GameboardAssistant(cells: curState)
         
         var bestDirection: MoveDirection?
@@ -355,7 +355,7 @@ class AI {
     }
     
     /// Calculate optimal movement for method "minimax alpha-beta pruning" using recursion
-    private func minimaxAlphaBetaPruning(gameboardAssistant: GameboardAssistant, curDepth: Int, player: Player,
+    private func minimaxAlphaBetaPruning(_ gameboardAssistant: GameboardAssistant, curDepth: Int, player: Player,
         alpha: Double, beta: Double, lastPositions: Int, lastCutoffs: Int) -> (bestDirection: MoveDirection?, score: Double, positions: Int, cutoffs: Int) {
             // Size of the board
             let size = gameboardAssistant.cell[0].count
@@ -461,7 +461,7 @@ class AI {
     
     /// Evaluate the current board using the combination of monotonicity and smoothness.
     /// Return the evaluation result of current state.
-    private func evaluateUsingSmoothnessAndMonotonicity(gameboardAssistant: GameboardAssistant) -> Double {
+    private func evaluateUsingSmoothnessAndMonotonicity(_ gameboardAssistant: GameboardAssistant) -> Double {
         let EMPTY_CELL_WEIGHT = 2.7
         let MONOTONICITY_WEIGHT = 1.0
         let SMOOTHNESS_WEIGHT = 0.1
@@ -475,7 +475,7 @@ class AI {
     }
     
     /// Calculate the number of isolated cells
-    private func numberOfIsolated(gameboard: [[Int]]) -> Int {
+    private func numberOfIsolated(_ gameboard: [[Int]]) -> Int {
         // Size fo the board
         let size = gameboard[0].count
         
@@ -501,7 +501,7 @@ class AI {
     }
     
     /// Calculate the smoothness of the gameboard
-    private func smoothness(gameboard: [[Int]]) -> Double {
+    private func smoothness(_ gameboard: [[Int]]) -> Double {
         // Size of the board
         let size = gameboard[0].count
         
@@ -526,7 +526,7 @@ class AI {
     }
     
     /// Calculate the monotonicity of the board
-    private func monotonicity(gameboard: [[Int]]) -> Double {
+    private func monotonicity(_ gameboard: [[Int]]) -> Double {
         // Size of the board
         let size = gameboard[0].count
         // The monotonicity in all four directions, which are: .Up, .Down, .Left, .Right
@@ -584,7 +584,7 @@ class AI {
     }
     
     /// Restore cells which have been marked as isolated
-    private func deMark(row: Int, col: Int, val: Int, gameboard: [[Int]], inout marked: [[Bool]]) {
+    private func deMark(_ row: Int, col: Int, val: Int, gameboard: [[Int]], marked: inout [[Bool]]) {
         // Size of the board
         let size = gameboard[0].count
         
@@ -601,7 +601,7 @@ class AI {
     
     /// For a certain cell which is not empty, find the next non-empty cell (skip any empty cell(s)), return
     /// its value as, if no such cell exists, return 0
-    private func getNextAdjCellVal(gameboard: [[Int]], curRow: Int, curCol: Int, offset: (rowOffset: Int, colOffset: Int)) -> Int {
+    private func getNextAdjCellVal(_ gameboard: [[Int]], curRow: Int, curCol: Int, offset: (rowOffset: Int, colOffset: Int)) -> Int {
         // Size of the board
         let size = gameboard[0].count
         var prevPos = (row: curRow, col: curCol)

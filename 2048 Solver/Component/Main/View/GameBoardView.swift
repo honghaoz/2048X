@@ -49,7 +49,7 @@ class GameBoardView: UIView {
     }
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: .zero)
     }
     
     override init(frame: CGRect) {
@@ -72,7 +72,7 @@ class GameBoardView: UIView {
     }
     
     private func setupViews() {
-        self.layer.borderColor = UIColor.blackColor().CGColor
+        self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 5.0
     }
     
@@ -175,7 +175,7 @@ extension GameBoardView {
             let underneathTile = forgroundTiles[i][j].1
             self.forgroundTiles[i][j] = (nil, nil)
             // Animation
-            UIView.animateWithDuration(sharedAnimationDuration * 2,
+            UIView.animate(withDuration: sharedAnimationDuration * 2,
                 animations: { () -> Void in
                     tile.alpha = 0.0
                     underneathTile?.alpha = 0.0
@@ -237,7 +237,7 @@ extension GameBoardView {
             
             // Blink pattern: 0 -> 1
             tile.alpha = 0.0
-            UIView.animateWithDuration(sharedAnimationDuration * 2,
+            UIView.animate(withDuration: sharedAnimationDuration * 2,
                 animations: { () -> Void in
                     tile.alpha = 1.0
                 },
@@ -284,7 +284,7 @@ extension GameBoardView {
                 forgroundTiles[from.0][from.1] = (nil, nil)
                 
                 // Animation
-                UIView.animateWithDuration(sharedAnimationDuration,
+                UIView.animate(withDuration: sharedAnimationDuration,
                     animations: { () -> Void in
                         fromView.frame = self.tileFrameForCoordinate(to)
                         fromUnderneath?.frame = fromView.frame
@@ -313,7 +313,7 @@ extension GameBoardView {
                 // Put fromTileView underneath toTileView
                 forgroundTiles[to.0][to.1] = (toTileView, fromTileView)
                 
-                UIView.animateWithDuration(sharedAnimationDuration,
+                UIView.animate(withDuration: sharedAnimationDuration,
                     animations: { () -> Void in
                         fromTileView.frame = self.tileFrameForCoordinate(to)
                     }, completion: { (finished) -> Void in

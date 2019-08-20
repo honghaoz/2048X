@@ -12,8 +12,8 @@ func == (lhs:BoardPos, rhs:BoardPos) -> Bool {
 }
 
 class BoardPos : Equatable{
-    private var _row: Int
-    private var _column: Int
+    fileprivate var _row: Int
+    fileprivate var _column: Int
     
     init(row:Int, col:Int) {
         _row = row

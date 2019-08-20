@@ -27,9 +27,9 @@ class BlackBorderButton: UIButton {
     override var enabled: Bool {
         didSet {
             if enabled {
-                layer.borderColor = UIColor.blackColor().CGColor
+                layer.borderColor = UIColor.black.cgColor
             } else {
-                layer.borderColor = disabledColor.CGColor
+                layer.borderColor = disabledColor.cgColor
             }
         }
     }
@@ -50,7 +50,7 @@ class BlackBorderButton: UIButton {
     }
     
     private func setupViews() {
-        layer.borderColor = UIColor.blackColor().CGColor
+        layer.borderColor = UIColor.black.cgColor
         layer.borderWidth = 5.0
         
         titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: titleLabelMaxFontSize)
@@ -60,11 +60,11 @@ class BlackBorderButton: UIButton {
         titleLabel?.minimumScaleFactor = 12.0 / (titleLabel?.font.pointSize ?? 24.0) // Mini font: 12.0
         titleLabel?.baselineAdjustment = .AlignCenters
         
-        setTitleColor(UIColor.blackColor(), forState: .Normal)
+        setTitleColor(UIColor.black, forState: .Normal)
         setTitleColor(SharedColors.BackgroundColor, forState: .Highlighted)
         setTitleColor(disabledColor, forState: .Disabled)
         
         setBackgroundColor(SharedColors.BackgroundColor, forUIControlState: .Normal)
-        setBackgroundColor(UIColor.blackColor(), forUIControlState: .Highlighted)
+        setBackgroundColor(UIColor.black, forUIControlState: .Highlighted)
     }
 }

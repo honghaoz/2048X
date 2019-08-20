@@ -34,10 +34,10 @@ class BlackSelectionControl: UIControl {
     }
     
     private func setupViews() {
-        layer.borderColor = UIColor.blackColor().CGColor
+        layer.borderColor = UIColor.black.cgColor
         layer.borderWidth = 5.0
         
-        selectionDotView.backgroundColor = UIColor.blackColor()
+        selectionDotView.backgroundColor = UIColor.black
         updateSelectionDotView()
         
         addSubview(selectionDotView)

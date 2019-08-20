@@ -19,12 +19,12 @@ class ScoreView: UIView {
     }
     
     var padding: CGFloat = 12.0
-    var borderColor: UIColor = UIColor.blackColor() {
+    var borderColor: UIColor = UIColor.black {
         didSet {
-            self.layer.borderColor = borderColor.CGColor
+            self.layer.borderColor = borderColor.cgColor
         }
     }
-    var numberColor: UIColor = UIColor.blackColor() {
+    var numberColor: UIColor = UIColor.black {
         didSet {
             self.numberLabel.textColor = numberColor
         }
@@ -49,7 +49,7 @@ class ScoreView: UIView {
     }
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: .zero)
     }
     
     override init(frame: CGRect) {
@@ -58,7 +58,7 @@ class ScoreView: UIView {
     }
     
     private func setupViews() {
-        self.layer.borderColor = borderColor.CGColor
+        self.layer.borderColor = borderColor.cgColor
         self.layer.borderWidth = 5.0
         
         // TitleLabel
@@ -70,13 +70,13 @@ class ScoreView: UIView {
         titleLabel.text = "SCORE"
         titleLabel.textColor = borderColor
         titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 10)
-        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 1
         
-        titleLabel.setContentCompressionResistancePriority(1000, forAxis: UILayoutConstraintAxis.Horizontal)
-        titleLabel.setContentCompressionResistancePriority(1000, forAxis: UILayoutConstraintAxis.Vertical)
-        titleLabel.setContentHuggingPriority(900, forAxis: UILayoutConstraintAxis.Horizontal)
-        titleLabel.setContentHuggingPriority(1000, forAxis: UILayoutConstraintAxis.Vertical)
+        titleLabel.setContentCompressionResistancePriority(UILayoutPriority.required, for: NSLayoutConstraint.Axis.horizontal)
+        titleLabel.setContentCompressionResistancePriority(UILayoutPriority.required, for: NSLayoutConstraint.Axis.vertical)
+        titleLabel.setContentHuggingPriority(UILayoutPriority(rawValue: 900), for: NSLayoutConstraint.Axis.horizontal)
+        titleLabel.setContentHuggingPriority(UILayoutPriority.required, for: NSLayoutConstraint.Axis.vertical)
         
         // NumberLabel
         numberLabel = UILabel()
@@ -87,27 +87,27 @@ class ScoreView: UIView {
         numberLabel.text = "0"
         numberLabel.textColor = borderColor
         numberLabel.font = UIFont(name: "HelveticaNeue-Bold", size: numberLabelMaxFontSize)
-        numberLabel.textAlignment = NSTextAlignment.Center
+        numberLabel.textAlignment = .center
         // Adjust font size dynamically
         numberLabel.numberOfLines = 1
         numberLabel.adjustsFontSizeToFitWidth = true
         numberLabel.minimumScaleFactor = 12.0 / numberLabel.font.pointSize // Mini font: 12.0
-        numberLabel.baselineAdjustment = UIBaselineAdjustment.AlignCenters
+        numberLabel.baselineAdjustment = .alignCenters
         
-        numberLabel.setContentCompressionResistancePriority(900, forAxis: UILayoutConstraintAxis.Horizontal)
-        numberLabel.setContentCompressionResistancePriority(900, forAxis: UILayoutConstraintAxis.Vertical)
-        numberLabel.setContentHuggingPriority(1000, forAxis: UILayoutConstraintAxis.Horizontal)
-        numberLabel.setContentHuggingPriority(1000, forAxis: UILayoutConstraintAxis.Vertical)
+        numberLabel.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 900), for: NSLayoutConstraint.Axis.horizontal)
+        numberLabel.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 900), for: NSLayoutConstraint.Axis.vertical)
+        numberLabel.setContentHuggingPriority(UILayoutPriority.required, for: NSLayoutConstraint.Axis.horizontal)
+        numberLabel.setContentHuggingPriority(UILayoutPriority.required, for: NSLayoutConstraint.Axis.vertical)
         
         metrics["padding"] = padding
         
         // TitleLabel constraints
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[titleLabel]", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[titleLabel]", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[titleLabel]", options: [], metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[titleLabel]", options: [], metrics: metrics, views: views))
         
         // ScoreLabel constraints
-        self.addConstraint(NSLayoutConstraint(item: numberLabel, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0.0))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(padding)-[numberLabel]-(padding)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(>=8)-[numberLabel]-(>=8)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: metrics, views: views))
+        self.addConstraint(NSLayoutConstraint(item: numberLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(padding)-[numberLabel]-(padding)-|", options: [], metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(>=8)-[numberLabel]-(>=8)-|", options: [], metrics: metrics, views: views))
     }
 }

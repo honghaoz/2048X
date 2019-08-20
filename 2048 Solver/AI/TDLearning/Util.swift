@@ -42,7 +42,7 @@ protocol Container {
 
 extension Array : Container {}
 
-func allItemsMatch <C1: Container, C2:Container>(container1:C1, container2:C2)->Bool where C1.ItemType == C2.ItemType, C1.ItemType: Equatable {
+func allItemsMatch<C1: Container, C2:Container>(container1:C1, container2:C2)->Bool where C1.ItemType == C2.ItemType, C1.ItemType: Equatable {
     
     if container1.count != container2.count {
         return false

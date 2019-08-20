@@ -14,7 +14,7 @@ enum Action2048 {
     case DOWN
     case LEFT
     
-    static func rawValue(action: Action2048) -> (Int, Int, Int) {
+    static func rawValue(_ action: Action2048) -> (Int, Int, Int) {
         switch(action) {
         case .UP:
             return (0, 0, -1)

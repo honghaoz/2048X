@@ -29,14 +29,14 @@ class AIAlgorithmCell: UITableViewCell {
     }
     
     private func setupViews() {
-        backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clear
         selectionStyle = UITableViewCellSelectionStyle.None
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(titleLabel)
         
         titleLabel.text = "(Title)"
-        titleLabel.textColor = UIColor.blackColor()
+        titleLabel.textColor = UIColor.black
         titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
         titleLabel.textAlignment = .Left
         titleLabel.numberOfLines = 1

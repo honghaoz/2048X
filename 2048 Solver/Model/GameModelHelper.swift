@@ -78,7 +78,7 @@ struct GameModelHelper {
         return !canMove
     }
     
-    static func moveCommands(shuffle: Bool = false) -> [MoveCommand] {
+    static func moveCommands(_ shuffle: Bool = false) -> [MoveCommand] {
         var commands = [MoveCommand]()
         commands.append(MoveCommand(direction: MoveDirection.Up))
         commands.append(MoveCommand(direction: MoveDirection.Left))
@@ -295,7 +295,7 @@ extension GameModelHelper {
 extension GameModelHelper {
     
     // * Game board is MUTATED
-    static func performMoveCommand(moveCommand: MoveCommand, onGameBoard gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>, shouldInsertNewTiles: Bool) -> (Bool, Int) {
+    static func performMoveCommand(_ moveCommand: MoveCommand, onGameBoard gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>, shouldInsertNewTiles: Bool) -> (Bool, Int) {
         let (moveActions, increasedScore) = performMoveCommand(moveCommand, onGameBoard: &gameBoard)
         
         if moveActions.count == 0 {
@@ -328,7 +328,7 @@ extension GameModelHelper {
     }
     
     // * Game board is MUTATED
-    static func performMoveCommand(moveCommand: MoveCommand, onGameBoard gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> ([MoveAction], Int) {
+    static func performMoveCommand(_ moveCommand: MoveCommand, onGameBoard gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> ([MoveAction], Int) {
         let dimension = gameBoard.dimension
         var resultMoveActions = [MoveAction]()
         var increasedScore: Int = 0
@@ -550,7 +550,7 @@ extension GameModelHelper {
     
     - returns: (rightTile, rightIndex), if there's no right vaild tile, return .Empty
     */
-    static func getFirstRightNonEmptyTileForIndex(index: Int, inTiles tiles: [UnsafeMutablePointer<Tile>]) -> (Tile, Int) {
+    static func getFirstRightNonEmptyTileForIndex(_ index: Int, inTiles tiles: [UnsafeMutablePointer<Tile>]) -> (Tile, Int) {
         let count = tiles.count
         for i in (index + 1) ..< count {
             switch tiles[i].memory {
@@ -611,7 +611,7 @@ extension GameModelHelper {
 
 // MARK: Debug Helper
 extension GameModelHelper {
-    static func printOutGameBoard(gameBoard: [[Int]], level: LogLevel = .Debug) {
+    static func printOutGameBoard(_ gameBoard: [[Int]]) {
 //        logDebug("Game Board:")
         let dimension = gameBoard.count
         var buffer = "\n"
@@ -625,10 +625,10 @@ extension GameModelHelper {
             }
             buffer += "\n"
         }
-        log.logWithLevel(level, buffer)
+        log.debug(buffer)
     }
     
-    static func printOutGameBoard(gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>, level: LogLevel = .Debug) {
+    static func printOutGameBoard(_ gameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>>) {
         let dimension = gameBoard.dimension
         var buffer = "\n"
         for i in 0 ..< dimension {
@@ -642,10 +642,10 @@ extension GameModelHelper {
             }
             buffer += "\n"
         }
-        log.logWithLevel(level, buffer)
+        log.debug(buffer)
     }
     
-    static func printOutTilePointers(tilePointers: [UnsafeMutablePointer<Tile>]) {
+    static func printOutTilePointers(_ tilePointers: [UnsafeMutablePointer<Tile>]) {
         print("Tile Pointers:")
         for p in tilePointers {
             switch p.memory {
@@ -658,20 +658,20 @@ extension GameModelHelper {
         print("")
     }
     
-    static func printOutCommand(command: MoveCommand, level: LogLevel = .Debug) {
+    static func printOutCommand(_ command: MoveCommand) {
         switch command.direction {
         case .Up:
-            log.logWithLevel(level, "Up")
+            log.debug(level, "Up")
         case .Down:
-            log.logWithLevel(level, "Down")
+            log.debug(level, "Down")
         case .Left:
-            log.logWithLevel(level, "Left")
+            log.debug(level, "Left")
         case .Right:
-            log.logWithLevel(level, "Right")
+            log.debug(level, "Right")
         }
     }
     
-    static func printOutMoveActions(actions: [MoveAction]) {
+    static func printOutMoveActions(_ actions: [MoveAction]) {
         for action in actions {
             print("From: \(action.fromCoordinates) To:\(action.toCoordinate)")
         }
