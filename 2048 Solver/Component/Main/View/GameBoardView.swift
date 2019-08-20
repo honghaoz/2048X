@@ -80,7 +80,7 @@ class GameBoardView: UIView {
         precondition(gameModel != nil, "GameModel must not be nil")
         // Remove old ones
         backgroundTiles.forEach { $0.forEach { $0.removeFromSuperview() }}
-        backgroundTiles.removeAll(keepCapacity: false)
+        backgroundTiles.removeAll(keepingCapacity: false)
         // Layout tiles
         for i in 0 ..< dimension {
             var tiles = [TileView]()
@@ -98,7 +98,7 @@ class GameBoardView: UIView {
         precondition(gameModel != nil, "GameModel must not be nil")
         forgroundTiles.forEach { $0.forEach { $0.0?.removeFromSuperview() } }
         forgroundTiles.forEach { $0.forEach { $0.1?.removeFromSuperview() } }
-        forgroundTiles.removeAll(keepCapacity: false)
+        forgroundTiles.removeAll(keepingCapacity: false)
         
         for _ in 0 ..< dimension {
             var tiles = [(TileView?, TileView?)]()
@@ -141,7 +141,7 @@ class GameBoardView: UIView {
         }
     }
     
-    func setGameBoardWithBoard(board: [[Int]]) {
+    func setGameBoardWithBoard(_ board: [[Int]]) {
         precondition(board.count == dimension, "dimension must be equal")
         cleanForgroundTileViews()
         
@@ -150,7 +150,7 @@ class GameBoardView: UIView {
                 if board[i][j] > 0 {
                     let tile = TileView(frame: tileFrameForCoordinate((i, j)))
                     tile.number = board[i][j]
-                    tile.numberLabel.font = tile.numberLabel.font.fontWithSize(CGFloat(SharedFontSize.tileFontSizeForDimension(dimension)))
+                    tile.numberLabel.font = tile.numberLabel.font.withSize(CGFloat(SharedFontSize.tileFontSizeForDimension(dimension)))
                     self.addSubview(tile)
                     forgroundTiles[i][j] = (tile, nil)
                 }
@@ -162,11 +162,11 @@ class GameBoardView: UIView {
 // MARK: Update View Actions
 extension GameBoardView {
     
-    func removeWithRemoveActions(removeActions: [RemoveAction], completion: (() -> ())? = nil) {
+    func removeWithRemoveActions(_ removeActions: [RemoveAction], completion: (() -> ())? = nil) {
 //        logDebug("removeWithRemoveActions: ")
 //        GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
         let count = removeActions.count
-        for (index, action) in removeActions.enumerate() {
+        for (index, action) in removeActions.enumerated() {
             let i = action.removeCoordinate.0
             let j = action.removeCoordinate.1
             
@@ -200,7 +200,7 @@ extension GameBoardView {
     - parameter moveActions: a list of actions which specify how tiles are merged or moved
     - parameter initActions: a list of actions which specify how new tiles are inserted
     */
-    func updateWithMoveActions(moveActions: [MoveAction], initActions: [InitAction], completion: (() -> ())? = nil) {
+    func updateWithMoveActions(_ moveActions: [MoveAction], initActions: [InitAction], completion: (() -> ())? = nil) {
         updateWithMoveActions(moveActions, completion: {
             self.updateWithInitActions(initActions, completion: {
                 completion?()
@@ -213,7 +213,7 @@ extension GameBoardView {
     
     - parameter initActions: a list of actions which specify how new tiles are inserted
     */
-    private func updateWithInitActions(initActions: [InitAction], completion: (() -> ())? = nil) {
+    private func updateWithInitActions(_ initActions: [InitAction], completion: (() -> ())? = nil) {
         log.debug("updateWithInitActions: ")
         GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
         let count = initActions.count
@@ -222,14 +222,14 @@ extension GameBoardView {
             return
         }
         
-        for (index, action) in initActions.enumerate() {
+        for (index, action) in initActions.enumerated() {
             let initCoordinate = action.initCoordinate
             let number = action.initNumber
             
             log.debug("Init: \(initCoordinate), \(number)")
             let tile = TileView(frame: tileFrameForCoordinate(initCoordinate))
             tile.number = number
-            tile.numberLabel.font = tile.numberLabel.font.fontWithSize(CGFloat(SharedFontSize.tileFontSizeForDimension(dimension)))
+            tile.numberLabel.font = tile.numberLabel.font.withSize(CGFloat(SharedFontSize.tileFontSizeForDimension(dimension)))
             
             // Store new tile views
             forgroundTiles[initCoordinate.0][initCoordinate.1].0 = tile
@@ -256,7 +256,7 @@ extension GameBoardView {
     - parameter moveActions: a list of actions which specify how tiles are merged or moved
     - parameter completion:  an optional completion clousure, which will be called once all move actions are done
     */
-    private func updateWithMoveActions(moveActions: [MoveAction], completion: (() -> ())? = nil) {
+    private func updateWithMoveActions(_ moveActions: [MoveAction], completion: (() -> ())? = nil) {
         log.debug("updateWithMoveActions: ")
         GameModelHelper.printOutGameBoard(self.currentDisplayingGameBoard())
         
@@ -267,7 +267,7 @@ extension GameBoardView {
             return
         }
         
-        for (index, action) in moveActions.enumerate() {
+        for (index, action) in moveActions.enumerated() {
             if action.fromCoordinates.count == 1 {
                 // Move Action
                 let from = action.fromCoordinates[0]
@@ -325,11 +325,9 @@ extension GameBoardView {
                         
                         // If this is the very last actions, call completion block
                         if index == count - 1 {
-                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
-                                Int64(sharedAnimationDuration * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), { () -> Void in
-                                    completion?()
-                                    
-                            })
+                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + sharedAnimationDuration) {
+                                completion?()
+                            }
                         }
                 })
             }
@@ -356,10 +354,10 @@ extension GameBoardView {
     
     - returns: CGRect frame
     */
-    func tileFrameForCoordinate(coordinate: (Int, Int)) -> CGRect {
+    func tileFrameForCoordinate(_ coordinate: (Int, Int)) -> CGRect {
         let y = padding + (tilePadding + tileWidth) * CGFloat(coordinate.0)
         let x = padding + (tilePadding + tileWidth) * CGFloat(coordinate.1)
-        return CGRectMake(x, y, tileWidth, tileWidth)
+        return CGRect(x: x, y: y, width: tileWidth, height: tileWidth)
     }
     
     func currentDisplayingGameBoard() -> [[Int]] {

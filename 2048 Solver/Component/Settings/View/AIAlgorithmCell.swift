@@ -12,8 +12,8 @@ class AIAlgorithmCell: UITableViewCell {
 
     let titleLabel = UILabel()
     let selectionControl = BlackSelectionControl()
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
     }
@@ -30,7 +30,7 @@ class AIAlgorithmCell: UITableViewCell {
     
     private func setupViews() {
         backgroundColor = UIColor.clear
-        selectionStyle = UITableViewCellSelectionStyle.None
+        selectionStyle = .none
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(titleLabel)
@@ -38,30 +38,30 @@ class AIAlgorithmCell: UITableViewCell {
         titleLabel.text = "(Title)"
         titleLabel.textColor = UIColor.black
         titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
-        titleLabel.textAlignment = .Left
+        titleLabel.textAlignment = .left
         titleLabel.numberOfLines = 1
         
         selectionControl.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(selectionControl)
-        selectionControl.userInteractionEnabled = false
+        selectionControl.isUserInteractionEnabled = false
     }
     
     private func setupConstraints() {
         let constraints = [
-            NSLayoutConstraint(item: titleLabel, attribute: .CenterY, relatedBy: .Equal, toItem: contentView, attribute: .CenterY, multiplier: 1.0, constant: 0.0),
-            NSLayoutConstraint(item: titleLabel, attribute: .Leading, relatedBy: .Equal, toItem: contentView, attribute: .LeadingMargin, multiplier: 1.0, constant: 0.0),
-            NSLayoutConstraint(item: selectionControl, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 0.0, constant: 26),
-            NSLayoutConstraint(item: selectionControl, attribute: .Width, relatedBy: .Equal, toItem: selectionControl, attribute: .Height, multiplier: 1.0, constant: 0.0),
-            NSLayoutConstraint(item: titleLabel, attribute: .CenterY, relatedBy: .Equal, toItem: selectionControl, attribute: .CenterY, multiplier: 1.0, constant: 0.0),
-            NSLayoutConstraint(item: selectionControl, attribute: .Trailing, relatedBy: .Equal, toItem: contentView, attribute: .TrailingMargin, multiplier: 1.0, constant: 0.0),
-            NSLayoutConstraint(item: titleLabel, attribute: .Trailing, relatedBy: .LessThanOrEqual, toItem: selectionControl, attribute: .Leading, multiplier: 1.0, constant: -10)
+            NSLayoutConstraint(item: titleLabel, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: titleLabel, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leadingMargin, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: selectionControl, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 0.0, constant: 26),
+            NSLayoutConstraint(item: selectionControl, attribute: .width, relatedBy: .equal, toItem: selectionControl, attribute: .height, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: titleLabel, attribute: .centerY, relatedBy: .equal, toItem: selectionControl, attribute: .centerY, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: selectionControl, attribute: .trailing, relatedBy: .equal, toItem: contentView, attribute: .trailingMargin, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: titleLabel, attribute: .trailing, relatedBy: .lessThanOrEqual, toItem: selectionControl, attribute: .leading, multiplier: 1.0, constant: -10)
         ]
         
-        NSLayoutConstraint.activateConstraints(constraints)
+        NSLayoutConstraint.activate(constraints)
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        selectionControl.selected = selected
+        selectionControl.isSelected = selected
     }
 }

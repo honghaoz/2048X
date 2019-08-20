@@ -18,10 +18,10 @@ enum Tile {
 // MARK: Command Related
 /// An enum representing directions supported by the game model.
 enum MoveDirection {
-    case Up
-    case Down
-    case Left
-    case Right
+    case up
+    case down
+    case left
+    case right
 }
 
 /**
@@ -83,7 +83,7 @@ struct SquareGameBoard<T> {
     let dimension: Int
     var boardArray: [T]
     
-    init(dimension d: Int, initialValue: T) {
+    init(dimension d: Int, initialValue: T?) {
         dimension = d
         boardArray = [T](count:d*d, repeatedValue:initialValue)
     }
@@ -101,7 +101,7 @@ struct SquareGameBoard<T> {
         }
     }
     
-    func getRow(row: Int, reversed: Bool = false) -> [T] {
+    func getRow(_ row: Int, reversed: Bool = false) -> [T] {
         precondition(row >= 0 && row < dimension, "")
         var result = [T]()
         if reversed {
@@ -117,7 +117,7 @@ struct SquareGameBoard<T> {
         return result
     }
 
-    func getColumn(col: Int, reversed: Bool = false) -> [T] {
+    func getColumn(_ col: Int, reversed: Bool = false) -> [T] {
         precondition(col >= 0 && col < dimension, "")
         var result = [T]()
         if reversed {
@@ -134,7 +134,7 @@ struct SquareGameBoard<T> {
     }
     
     // We mark this function as 'mutating' since it changes its 'parent' struct.
-    mutating func setAll(item: T) {
+    mutating func setAll(_ item: T) {
         for i in 0..<dimension {
             for j in 0..<dimension {
                 self[i, j] = item

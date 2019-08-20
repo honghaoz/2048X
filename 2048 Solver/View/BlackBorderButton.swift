@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import ChouTiUI
 
 class BlackBorderButton: UIButton {
     
     var title: String = "Button" {
         didSet {
-            setTitle(title, forState: .Normal)
+            setTitle(title, for: .normal)
         }
     }
     
@@ -24,9 +25,9 @@ class BlackBorderButton: UIButton {
     
     private let disabledColor = UIColor(white: 0.0, alpha: 0.5)
     
-    override var enabled: Bool {
+    override var isEnabled: Bool {
         didSet {
-            if enabled {
+            if isEnabled {
                 layer.borderColor = UIColor.black.cgColor
             } else {
                 layer.borderColor = disabledColor.cgColor
@@ -54,17 +55,23 @@ class BlackBorderButton: UIButton {
         layer.borderWidth = 5.0
         
         titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: titleLabelMaxFontSize)
-        titleLabel?.textAlignment = .Center
+        titleLabel?.textAlignment = .center
         titleLabel?.numberOfLines = 1
         titleLabel?.adjustsFontSizeToFitWidth = true
         titleLabel?.minimumScaleFactor = 12.0 / (titleLabel?.font.pointSize ?? 24.0) // Mini font: 12.0
-        titleLabel?.baselineAdjustment = .AlignCenters
+        titleLabel?.baselineAdjustment = .alignCenters
         
-        setTitleColor(UIColor.black, forState: .Normal)
-        setTitleColor(SharedColors.BackgroundColor, forState: .Highlighted)
-        setTitleColor(disabledColor, forState: .Disabled)
-        
-        setBackgroundColor(SharedColors.BackgroundColor, forUIControlState: .Normal)
-        setBackgroundColor(UIColor.black, forUIControlState: .Highlighted)
+        setTitleColor(UIColor.black, for: .normal)
+        setTitleColor(SharedColors.BackgroundColor, for: .highlighted)
+        setTitleColor(disabledColor, for: .disabled)
+
+        setBackgroundColor(SharedColors.BackgroundColor, for: .normal)
+        setBackgroundColor(UIColor.black, for: .highlighted)
+    }
+}
+
+extension UIButton {
+    func setBackgroundColor(_ color: UIColor, for state: UIControl.State) {
+        self.setBackgroundImage(UIImage.imageWithColor(color), for: state)
     }
 }

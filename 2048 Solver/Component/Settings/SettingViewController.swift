@@ -43,7 +43,7 @@ class SettingViewController: UIViewController {
     var dismissClosure: (() -> ())? = nil
     
     let animator = DropPresentingAnimator()
-    
+
     weak var mainViewController: MainViewController!
     
     convenience init(mainViewController: MainViewController) {
@@ -58,7 +58,7 @@ class SettingViewController: UIViewController {
         animator.animationDuration = 0.75
         animator.allowDragToDismiss = false
         animator.shouldDismissOnTappingOutsideView = true
-        animator.overlayViewStyle = .Normal(UIColor(white: 0.0, alpha: 0.7))
+        animator.overlayViewStyle = .normal(UIColor(white: 0.0, alpha: 0.7))
         animator.presentingViewSize = CGSize(width: ceil(screenWidth * (is320ScreenWidth ? 0.82 : 0.7) + 24), height: height)
         
         modalPresentationStyle = .custom
@@ -73,15 +73,15 @@ class SettingViewController: UIViewController {
         setupViews()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Select AI
-        let selectedIndexPath = NSIndexPath(forRow: mainViewController.aiSelectedChoiceIndex, inSection: 0)
-        aiAlgorithmTableView.selectRowAtIndexPath(selectedIndexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
+        let selectedIndexPath = IndexPath(row: mainViewController.aiSelectedChoiceIndex, section: 0)
+        aiAlgorithmTableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 //        GAI.sharedInstance().defaultTracker.set(kGAIScreenName, value: "Setting View")
 //        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createScreenView().build() as Dictionary)
@@ -130,7 +130,7 @@ class SettingViewController: UIViewController {
         
         animationDurationNumberUnderscoreView.backgroundColor = UIColor.black
         
-        let cHeight = NSLayoutConstraint(item: animationDurationNumberUnderscoreView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 0.0, constant: 3.0)
+        let cHeight = NSLayoutConstraint(item: animationDurationNumberUnderscoreView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 0.0, constant: 3.0)
         animationDurationNumberUnderscoreView.addConstraint(cHeight)
         let cWidth = NSLayoutConstraint(item: animationDurationNumberUnderscoreView, attribute: .width, relatedBy: .equal, toItem: animationDurationNumberLabel, attribute: .width, multiplier: 1.0, constant: 0.0)
         let cTopSpacing = NSLayoutConstraint(item: animationDurationNumberUnderscoreView, attribute: .top, relatedBy: .equal, toItem: animationDurationNumberLabel, attribute: .bottom, multiplier: 1.0, constant: 0.0)
@@ -162,7 +162,7 @@ class SettingViewController: UIViewController {
         animationDurationSlider.minimumValue = 0.0
         animationDurationSlider.maximumValue = 1.0
         animationDurationSlider.value = Float(sharedAnimationDuration)
-        animationDurationSlider.addTarget(self, action: #selector(animationDurationSliderValueChanged(_:)), forControlEvents: .valueChanged)
+        animationDurationSlider.addTarget(self, action: #selector(animationDurationSliderValueChanged(_:)), for: .valueChanged)
         
         // Dimension Title Label
         dimensionTitleLabel = UILabel()
@@ -221,7 +221,7 @@ class SettingViewController: UIViewController {
         saveButton = BlackBorderButton()
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.title = "Save"
-        saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), forControlEvents: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
         views["saveButton"] = saveButton
         view.addSubview(saveButton)
         
@@ -229,16 +229,16 @@ class SettingViewController: UIViewController {
         cancelButton = BlackBorderButton()
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.title = "Cancel"
-        cancelButton.addTarget(self, action: #selector(cancelButtonTapped(_:)), forControlEvents: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped(_:)), for: .touchUpInside)
         views["cancelButton"] = cancelButton
         view.addSubview(cancelButton)
         
         // Auto Layout
         // H:
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[mainContainerView]|", options: [], metrics: metrics, views: views))
-        mainContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-12-[animationDurationTitleLabel]-3-[animationDurationNumberLabel]-2-[animationDurationUnitLabel]-(>=12)-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: metrics, views: views))
+        mainContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-12-[animationDurationTitleLabel]-3-[animationDurationNumberLabel]-2-[animationDurationUnitLabel]-(>=12)-|", options: .alignAllLastBaseline, metrics: metrics, views: views))
         mainContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-32-[animationDurationSlider]-32-|", options: [], metrics: metrics, views: views))
-        mainContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-12-[dimensionTitleLabel]-3-[dimensionNumberLabel]-(>=12)-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: metrics, views: views))
+        mainContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-12-[dimensionTitleLabel]-3-[dimensionNumberLabel]-(>=12)-|", options: .alignAllLastBaseline, metrics: metrics, views: views))
         mainContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-32-[dimensionSlider]-32-|", options: [], metrics: metrics, views: views))
         mainContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-12-[aiAlgorithmTitleLabel]", options: [], metrics: metrics, views: views))
         mainContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-24-[aiAlgorithmTableView]-24-|", options: [], metrics: metrics, views: views))
@@ -285,33 +285,35 @@ class SettingViewController: UIViewController {
 }
 
 extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
+
     func setupTableView() {
         aiAlgorithmTableView.backgroundColor = UIColor.clear
-        aiAlgorithmTableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        aiAlgorithmTableView.separatorStyle = .none
         aiAlgorithmTableView.allowsMultipleSelection = false
         
-        aiAlgorithmTableView.registerClass(AIAlgorithmCell.self, forCellReuseIdentifier: kAIAlgorithmCellIdentifier)
+        aiAlgorithmTableView.register(AIAlgorithmCell.self, forCellReuseIdentifier: kAIAlgorithmCellIdentifier)
         aiAlgorithmTableView.dataSource = self
         aiAlgorithmTableView.delegate = self
     }
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return mainViewController.aiChoices.count
     }
-    
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return kTableViewRowHeight
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return kTableViewRowHeight
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return kTableViewRowHeight
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(kAIAlgorithmCellIdentifier) as! AIAlgorithmCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: kAIAlgorithmCellIdentifier) as! AIAlgorithmCell
         // Configuration
         let aiTuple = mainViewController.aiChoices[indexPath.row]!
         cell.titleLabel.text = aiTuple.description

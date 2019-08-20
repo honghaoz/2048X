@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		02107C9F1AAD240400CFF8FF /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107C9E1AAD240400CFF8FF /* GameModel.swift */; };
 		02107CA11AAD244A00CFF8FF /* GameModelTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02107CA01AAD244A00CFF8FF /* GameModelTypes.swift */; };
+		021B70AE230C9E0C0076B68F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A431CC886B80077C74F /* MainViewController.swift */; };
 		0225A2421AB7D74500EA72C8 /* GameBoardAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A2411AB7D74500EA72C8 /* GameBoardAssistant.swift */; };
 		0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */; };
 		02321A381CC886B00077C74F /* move.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02321A371CC886B00077C74F /* move.wav */; };
@@ -590,6 +591,7 @@
 				0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */,
 				02107CA11AAD244A00CFF8FF /* GameModelTypes.swift in Sources */,
 				02321A601CC88A060077C74F /* NewGameViewController.swift in Sources */,
+				021B70AE230C9E0C0076B68F /* MainViewController.swift in Sources */,
 				02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */,
 				02321A511CC886B80077C74F /* SettingViewController.swift in Sources */,
 				02321A5B1CC886F60077C74F /* Constant.swift in Sources */,

@@ -73,17 +73,17 @@ struct GameModelHelper {
         }
         
         _ = gameBoard.dimension
-        let canMove = (moveCommand(MoveCommand(direction: .Up), isValidInGameBoard: &gameBoard) || moveCommand(MoveCommand(direction: .Left), isValidInGameBoard: &gameBoard))
+        let canMove = (moveCommand(MoveCommand(direction: .up), isValidInGameBoard: &gameBoard) || moveCommand(MoveCommand(direction: .left), isValidInGameBoard: &gameBoard))
         
         return !canMove
     }
     
     static func moveCommands(_ shuffle: Bool = false) -> [MoveCommand] {
         var commands = [MoveCommand]()
-        commands.append(MoveCommand(direction: MoveDirection.Up))
-        commands.append(MoveCommand(direction: MoveDirection.Left))
-        commands.append(MoveCommand(direction: MoveDirection.Down))
-        commands.append(MoveCommand(direction: MoveDirection.Right))
+        commands.append(MoveCommand(direction: MoveDirection.up))
+        commands.append(MoveCommand(direction: MoveDirection.left))
+        commands.append(MoveCommand(direction: MoveDirection.down))
+        commands.append(MoveCommand(direction: MoveDirection.right))
         
         if shuffle {
             commands.shuffle()
@@ -94,13 +94,13 @@ struct GameModelHelper {
     static func randomMoveCommand() -> MoveCommand {
         let seed = Int(arc4random_uniform(UInt32(100)))
         if seed < 25 {
-            return MoveCommand(direction: MoveDirection.Up)
+            return MoveCommand(direction: MoveDirection.up)
         } else if seed < 50 {
-            return MoveCommand(direction: MoveDirection.Down)
+            return MoveCommand(direction: MoveDirection.down)
         } else if seed < 75 {
-            return MoveCommand(direction: MoveDirection.Left)
+            return MoveCommand(direction: MoveDirection.left)
         } else {
-            return MoveCommand(direction: MoveDirection.Right)
+            return MoveCommand(direction: MoveDirection.right)
         }
     }
     
@@ -132,31 +132,31 @@ struct GameModelHelper {
     }
     
     // * Game board is not mutated
-    static func moveCommand(moveCommand: MoveCommand, isValidInGameBoard gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
+    static func moveCommand(_ moveCommand: MoveCommand, isValidInGameBoard gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> Bool {
         let dimension = gameBoard.dimension
         switch moveCommand.direction {
-        case .Up:
+        case .up:
             for i in 0 ..< dimension {
                 var tilePointers = gameBoard.getColumn(i, reversed: true)
                 if oneDimensionTilesCanMove(&tilePointers) {
                     return true
                 }
             }
-        case .Down:
+        case .down:
             for i in 0 ..< dimension {
                 var tilePointers = gameBoard.getColumn(i, reversed: false)
                 if oneDimensionTilesCanMove(&tilePointers) {
                     return true
                 }
             }
-        case .Left:
+        case .left:
             for i in 0 ..< dimension {
                 var tilePointers = gameBoard.getRow(i, reversed: true)
                 if oneDimensionTilesCanMove(&tilePointers) {
                     return true
                 }
             }
-        case .Right:
+        case .right:
             for i in 0 ..< dimension {
                 var tilePointers = gameBoard.getRow(i, reversed: false)
                 if oneDimensionTilesCanMove(&tilePointers) {
@@ -168,7 +168,7 @@ struct GameModelHelper {
         return false
     }
     
-    static func gameBoard(gameBoard1: [[Int]], IsEqualTo gameBoard2: [[Int]]) -> Bool {
+    static func gameBoard(_ gameBoard1: [[Int]], IsEqualTo gameBoard2: [[Int]]) -> Bool {
         let dimension = gameBoard1.count
         precondition(dimension == gameBoard2.count, "dimension must be equal")
         for i in 0 ..< dimension {
@@ -333,7 +333,7 @@ extension GameModelHelper {
         var resultMoveActions = [MoveAction]()
         var increasedScore: Int = 0
         switch moveCommand.direction {
-        case .Up:
+        case .up:
             for i in 0 ..< dimension {
                 var tilePointers = gameBoard.getColumn(i, reversed: true)
                 let (actions, score) = processOneDimensionTiles(&tilePointers)
@@ -344,7 +344,7 @@ extension GameModelHelper {
                 }
                 increasedScore += score
             }
-        case .Down:
+        case .down:
             for i in 0 ..< dimension {
                 var tilePointers = gameBoard.getColumn(i, reversed: false)
                 let (actions, score) = processOneDimensionTiles(&tilePointers)
@@ -355,7 +355,7 @@ extension GameModelHelper {
                 }
                 increasedScore += score
             }
-        case .Left:
+        case .left:
             for i in 0 ..< dimension {
                 var tilePointers = gameBoard.getRow(i, reversed: true)
                 let (actions, score) = processOneDimensionTiles(&tilePointers)
@@ -366,7 +366,7 @@ extension GameModelHelper {
                 }
                 increasedScore += score
             }
-        case .Right:
+        case .right:
             for i in 0 ..< dimension {
                 var tilePointers = gameBoard.getRow(i, reversed: false)
                 let (actions, score) = processOneDimensionTiles(&tilePointers)
@@ -660,14 +660,14 @@ extension GameModelHelper {
     
     static func printOutCommand(_ command: MoveCommand) {
         switch command.direction {
-        case .Up:
-            log.debug(level, "Up")
-        case .Down:
-            log.debug(level, "Down")
-        case .Left:
-            log.debug(level, "Left")
-        case .Right:
-            log.debug(level, "Right")
+        case .up:
+            log.debug("Up")
+        case .down:
+            log.debug("Down")
+        case .left:
+            log.debug("Left")
+        case .right:
+            log.debug("Right")
         }
     }
     

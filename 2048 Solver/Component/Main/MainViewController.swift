@@ -34,7 +34,7 @@ class MainViewController: UIViewController {
     /// queue for move command
     var commandQueue = [MoveCommand]()
     /// queue for next command calculate, AI related
-    var commandCalculationQueue = NSOperationQueue()
+    var commandCalculationQueue = OperationQueue()
     
     typealias ActionTuple = (moveActions: [MoveAction], initActions: [InitAction], removeActions: [RemoveAction], score: Int)
     /// queue for action (action is for view update)
@@ -50,9 +50,9 @@ class MainViewController: UIViewController {
     var gameStateHistory = [GameState]() {
         didSet {
             if gameStateHistory.count > 1 {
-                undoButton.enabled = true
+                undoButton.isEnabled = true
             } else {
-                undoButton.enabled = false
+                undoButton.isEnabled = false
             }
         }
     }
@@ -90,12 +90,20 @@ class MainViewController: UIViewController {
     var aiGreedy: AIGreedy!
     var aiExpectimax: AIExpectimax!
 //    var TDLAi: TDLGame2048!
-    
+
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        log.logLevel = .Debug
-        
+//        log.logLevel = .Debug
+
         readData()
         setupGameModel()
         setupViews()
@@ -114,11 +122,11 @@ class MainViewController: UIViewController {
 //        })
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 //        GAI.sharedInstance().defaultTracker.set(kGAIScreenName, value: "Main View")
 //        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createScreenView().build() as Dictionary)
@@ -147,14 +155,14 @@ class MainViewController: UIViewController {
         
         // GameBoard Size
         let gameBoardWidth = screenWidth * 0.9
-        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 0.0, constant: gameBoardWidth))
-        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: .Width, relatedBy: .Equal, toItem: gameBoardView, attribute: .Height, multiplier: 1.0, constant: 0.0))
+        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 0.0, constant: gameBoardWidth))
+        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: .width, relatedBy: .equal, toItem: gameBoardView, attribute: .height, multiplier: 1.0, constant: 0.0))
         
         // GameBoard center horizontally
-        view.addConstraint(NSLayoutConstraint(item: view, attribute: .CenterX, relatedBy: .Equal, toItem: gameBoardView, attribute: .CenterX, multiplier: 1.0, constant: 0.0))
-        let cCenterY = NSLayoutConstraint(item: view, attribute: .CenterY, relatedBy: .Equal, toItem: gameBoardView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
+        view.addConstraint(NSLayoutConstraint(item: view, attribute: .centerX, relatedBy: .equal, toItem: gameBoardView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        let cCenterY = NSLayoutConstraint(item: view, attribute: .centerY, relatedBy: .equal, toItem: gameBoardView, attribute: .centerY, multiplier: 1.0, constant: 0.0)
         // 3.5 inch Screen has a smaller height, this will be broken
-        cCenterY.priority = 750
+        cCenterY.priority = UILayoutPriority(rawValue: 750)
         view.addConstraint(cCenterY)
         
         // ScoreView
@@ -165,7 +173,7 @@ class MainViewController: UIViewController {
         
         scoreView.titleLabel.text = "SCORE"
         scoreView.numberLabelMaxFontSize = is3_5InchScreen ? 20 : 28
-        scoreView.numberLabel.textAlignment = .Right
+        scoreView.numberLabel.textAlignment = .right
         scoreView.number = 0
         
         // BestScoreView
@@ -176,7 +184,7 @@ class MainViewController: UIViewController {
         
         bestScoreView.titleLabel.text = "BEST"
         bestScoreView.numberLabelMaxFontSize = is3_5InchScreen ? 20 : 28
-        bestScoreView.numberLabel.textAlignment = .Right
+        bestScoreView.numberLabel.textAlignment = .right
         bestScoreView.number = 0
         readBestScore()
         
@@ -192,13 +200,13 @@ class MainViewController: UIViewController {
         
         metrics["targetViewHeight"] = is3_5InchScreen ? gameBoardWidth / 3.6 : gameBoardWidth / 3.0
         // TargetView is square
-        targetView.addConstraint(NSLayoutConstraint(item: targetView, attribute: .Height, relatedBy: .Equal, toItem: targetView, attribute: .Width, multiplier: 1.0, constant: 0.0))
+        targetView.addConstraint(NSLayoutConstraint(item: targetView, attribute: .height, relatedBy: .equal, toItem: targetView, attribute: .width, multiplier: 1.0, constant: 0.0))
         
         // New Game Button
         newGameButton = BlackBorderButton()
         newGameButton.translatesAutoresizingMaskIntoConstraints = false
         newGameButton.title = "New Game"
-        newGameButton.addTarget(self, action: #selector(MainViewController.newGameButtonTapped(_:)), forControlEvents: .touchUpInside)
+        newGameButton.addTarget(self, action: #selector(newGameButtonTapped(_:)), for: .touchUpInside)
         views["newGameButton"] = newGameButton
         view.addSubview(newGameButton)
         
@@ -206,8 +214,8 @@ class MainViewController: UIViewController {
         runAIButton = BlackBorderButton()
         runAIButton.translatesAutoresizingMaskIntoConstraints = false
         runAIButton.title = "Run"
-        runAIButton.addTarget(self, action: #selector(MainViewController.runAIButtonTapped(_:)), forControlEvents: .touchUpInside)
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(MainViewController.runAIButtonLongPressed(_:)))
+        runAIButton.addTarget(self, action: #selector(runAIButtonTapped(_:)), for: .touchUpInside)
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(runAIButtonLongPressed(_:)))
         runAIButton.addGestureRecognizer(longPressGesture)
         views["runAIButton"] = runAIButton
         view.addSubview(runAIButton)
@@ -216,7 +224,7 @@ class MainViewController: UIViewController {
         undoButton = BlackBorderButton()
         undoButton.translatesAutoresizingMaskIntoConstraints = false
         undoButton.title = "Undo"
-        undoButton.addTarget(self, action: #selector(MainViewController.undoButtonTapped(_:)), forControlEvents: .touchUpInside)
+        undoButton.addTarget(self, action: #selector(undoButtonTapped(_:)), for: .touchUpInside)
         views["undoButton"] = undoButton
         view.addSubview(undoButton)
         
@@ -224,7 +232,7 @@ class MainViewController: UIViewController {
         hintButton = BlackBorderButton()
         hintButton.translatesAutoresizingMaskIntoConstraints = false
         hintButton.title = "Hint"
-        hintButton.addTarget(self, action: #selector(MainViewController.hintButtonTapped(_:)), forControlEvents: .touchUpInside)
+        hintButton.addTarget(self, action: #selector(hintButtonTapped(_:)), for: .touchUpInside)
         views["hintButton"] = hintButton
         view.addSubview(hintButton)
         
@@ -232,41 +240,41 @@ class MainViewController: UIViewController {
         metrics["buttonHeight"] = (metrics["targetViewHeight"]! - metrics["padding"]!) / 2.0
         
         // H
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[scoreView]-padding-[targetView]", options: NSLayoutFormatOptions.AlignAllTop, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[bestScoreView]-padding-[targetView]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[newGameButton]-padding-[runAIButton(==newGameButton)]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[undoButton]-padding-[hintButton(==undoButton)]", options: NSLayoutFormatOptions.AlignAllBottom, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[scoreView]-padding-[targetView]", options: .alignAllTop, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[bestScoreView]-padding-[targetView]", options: .alignAllBottom, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[newGameButton]-padding-[runAIButton(==newGameButton)]", options: .alignAllBottom, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[undoButton]-padding-[hintButton(==undoButton)]", options: .alignAllBottom, metrics: metrics, views: views))
         
         // V
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[scoreView]-padding-[bestScoreView(==scoreView)]-padding-[gameBoardView]-padding-[newGameButton(buttonHeight)]-padding-[undoButton(buttonHeight)]", options: NSLayoutFormatOptions.AlignAllLeading, metrics: metrics, views: views))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[targetView(targetViewHeight)]-padding-[gameBoardView]-padding-[runAIButton(buttonHeight)]-padding-[hintButton(buttonHeight)]", options: NSLayoutFormatOptions.AlignAllTrailing, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[scoreView]-padding-[bestScoreView(==scoreView)]-padding-[gameBoardView]-padding-[newGameButton(buttonHeight)]-padding-[undoButton(buttonHeight)]", options: .alignAllLeading, metrics: metrics, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[targetView(targetViewHeight)]-padding-[gameBoardView]-padding-[runAIButton(buttonHeight)]-padding-[hintButton(buttonHeight)]", options: .alignAllTrailing, metrics: metrics, views: views))
         
         // Target view top spacing >= 22
-        view.addConstraint(NSLayoutConstraint(item: targetView, attribute: .top, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: view, attribute: .top, multiplier: 1.0, constant: 22))
+        view.addConstraint(NSLayoutConstraint(item: targetView, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: view, attribute: .top, multiplier: 1.0, constant: 22))
         
         // Must call this before start game
         view.layoutIfNeeded()
     }
     
     func setupSwipeGestures() {
-        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MainViewController.upCommand(_:)))
+        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(upCommand(_:)))
         upSwipe.numberOfTouchesRequired = 1
-        upSwipe.direction = UISwipeGestureRecognizerDirection.Up
+        upSwipe.direction = .up
         gameBoardView.addGestureRecognizer(upSwipe)
         
-        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MainViewController.downCommand(_:)))
+        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(downCommand(_:)))
         downSwipe.numberOfTouchesRequired = 1
-        downSwipe.direction = UISwipeGestureRecognizerDirection.Down
+        downSwipe.direction = .down
         gameBoardView.addGestureRecognizer(downSwipe)
         
-        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MainViewController.leftCommand(_:)))
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(leftCommand(_:)))
         leftSwipe.numberOfTouchesRequired = 1
-        leftSwipe.direction = UISwipeGestureRecognizerDirection.Left
+        leftSwipe.direction = .left
         gameBoardView.addGestureRecognizer(leftSwipe)
         
-        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MainViewController.rightCommand(_:)))
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(rightCommand(_:)))
         rightSwipe.numberOfTouchesRequired = 1
-        rightSwipe.direction = UISwipeGestureRecognizerDirection.Right
+        rightSwipe.direction = .right
         gameBoardView.addGestureRecognizer(rightSwipe)
     }
     
@@ -306,42 +314,38 @@ class MainViewController: UIViewController {
 
 // MARK: Swipe Gestures
 extension MainViewController {
-    @objc(up:)
-    func upCommand(r: UIGestureRecognizer!) {
+    @objc func upCommand(_ r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
         if !isGameEnd && !isAiRunning {
-            queueCommand(MoveCommand(direction: MoveDirection.Up))
+            queueCommand(MoveCommand(direction: MoveDirection.up))
         }
     }
     
-    @objc(down:)
-    func downCommand(r: UIGestureRecognizer!) {
+    @objc func downCommand(_ r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
         if !isGameEnd && !isAiRunning {
-            queueCommand(MoveCommand(direction: MoveDirection.Down))
+            queueCommand(MoveCommand(direction: MoveDirection.down))
         }
     }
     
-    @objc(left:)
-    func leftCommand(r: UIGestureRecognizer!) {
+    @objc func leftCommand(_ r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
         if !isGameEnd && !isAiRunning {
-            queueCommand(MoveCommand(direction: MoveDirection.Left))
+            queueCommand(MoveCommand(direction: MoveDirection.left))
         }
     }
     
-    @objc(right:)
-    func rightCommand(r: UIGestureRecognizer!) {
+    @objc func rightCommand(_ r: UIGestureRecognizer!) {
         precondition(gameModel != nil, "")
         if !isGameEnd && !isAiRunning {
-            queueCommand(MoveCommand(direction: MoveDirection.Right))
+            queueCommand(MoveCommand(direction: MoveDirection.right))
         }
     }
 }
 
 // MARK: Button Actions
 extension MainViewController {
-    func newGameButtonTapped(sender: AnyObject?) {
+    @objc func newGameButtonTapped(_ sender: AnyObject?) {
         log.debug()
         
         var aiIsRunningBefore = false
@@ -361,7 +365,7 @@ extension MainViewController {
             }
         }
         
-        presentViewController(newGameVC, animated: true, completion: nil)
+        present(newGameVC, animated: true, completion: nil)
     }
     
     private func startNewGame() {
@@ -372,7 +376,7 @@ extension MainViewController {
 //        GAI.sharedInstance().defaultTracker.send(eventDict)
     }
     
-    func runAIButtonTapped(sender: UIButton?) {
+    @objc func runAIButtonTapped(_ sender: UIButton?) {
         log.debug()
 //        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "run_ai", value: nil).build() as Dictionary
 //        GAI.sharedInstance().defaultTracker.send(eventDict)
@@ -381,8 +385,8 @@ extension MainViewController {
             isAiRunning = !isAiRunning
             if !isAiRunning {
                 userStoppedAI = true
-                commandQueue.removeAll(keepCapacity: false)
-                actionQueue.removeAll(keepCapacity: false)
+                commandQueue.removeAll(keepingCapacity: false)
+                actionQueue.removeAll(keepingCapacity: false)
                 log.debug("cancelAllOperations")
                 commandCalculationQueue.cancelAllOperations()
                 
@@ -419,8 +423,8 @@ extension MainViewController {
         self.userStoppedAI = false
     }
     
-    func runAIButtonLongPressed(sender: UILongPressGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.Began {
+    @objc func runAIButtonLongPressed(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
             log.debug()
             var aiIsRunningBefore = false
             if isAiRunning {
@@ -456,11 +460,11 @@ extension MainViewController {
                 }
             }
             
-            self.presentViewController(settingVC, animated: true, completion: nil)
+            self.present(settingVC, animated: true, completion: nil)
         }
     }
     
-    func undoButtonTapped(sender: UIButton?) {
+    @objc func undoButtonTapped(_ sender: UIButton?) {
 //        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "undo", value: nil).build() as Dictionary
 //        GAI.sharedInstance().defaultTracker.send(eventDict)
 
@@ -488,7 +492,7 @@ extension MainViewController {
         updateTargetScore()
     }
     
-    func hintButtonTapped(sender: UIButton) {
+    @objc func hintButtonTapped(_ sender: UIButton) {
 //        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "hint", value: nil).build() as Dictionary
 //        GAI.sharedInstance().defaultTracker.send(eventDict)
         
@@ -503,7 +507,7 @@ extension MainViewController {
 // MARK: AI Calculation
 extension MainViewController {
     // If ignoreIsAIRunning is true, command calculated will be queued anyway
-    func runAIforNextStep(ignoreIsAIRunning: Bool = false) {
+    func runAIforNextStep(_ ignoreIsAIRunning: Bool = false) {
         if isGameEnd {
             return
         }
@@ -518,9 +522,9 @@ extension MainViewController {
         }
 
         log.debug("Add new command calculation")
-        commandCalculationQueue.addOperationWithBlock { () -> Void in
+        commandCalculationQueue.addOperation { () -> Void in
             if let nextCommand = self.aiChoices[self.aiSelectedChoiceIndex]!.function() {
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                OperationQueue.main.addOperation({ () -> Void in
                     if ignoreIsAIRunning || self.isAiRunning {
                         self.queueCommand(nextCommand)
                     }
@@ -553,7 +557,7 @@ extension MainViewController {
 
 // MARK: Command Queue
 extension MainViewController {
-    func queueCommand(command: MoveCommand) {
+    func queueCommand(_ command: MoveCommand) {
         // If user just stopped AI, stop queueing command
         if userStoppedAI {
             log.debug("user stopped AI")
@@ -589,7 +593,7 @@ extension MainViewController {
             log.debug("Dequeue and Execute")
             let command = commandQueue[0]
 //            GameModelHelper.printOutCommand(command, level: .Info)
-            commandQueue.removeAtIndex(0)
+            commandQueue.remove(at: 0)
             log.debug("CommandQueue size: \(commandQueue.count)")
             gameModel.playWithCommand(command)
         } else {
@@ -597,7 +601,7 @@ extension MainViewController {
         }
     }
     
-    func queueAction(action: ActionTuple) {
+    func queueAction(_ action: ActionTuple) {
         if userStoppedAI {
             log.debug("user stopped AI")
             log.debug("ActionQueue size: \(actionQueue.count)")
@@ -632,7 +636,7 @@ extension MainViewController {
             }
             log.debug("Dequeue and Execute")
             let actionTuple = actionQueue[0]
-            actionQueue.removeAtIndex(0)
+            actionQueue.remove(at: 0)
             log.debug("ActionQueue size: \(actionQueue.count)")
             
             // If before dequeuing, actionQueue is full, command queue is empty, reactivate AI
@@ -680,7 +684,7 @@ extension MainViewController {
                     self.startNewGame()
                 }
                 
-                self.presentViewController(gameEndVC, animated: true, completion: nil)
+                self.present(gameEndVC, animated: true, completion: nil)
             }
         }
     }
@@ -704,7 +708,7 @@ extension MainViewController {
 
 // MARK: Game 2048 Delegate
 extension MainViewController: Game2048Delegate {
-    func game2048DidReset(game2048: Game2048, removeActions: [RemoveAction]) {
+    func game2048DidReset(_ game2048: Game2048, removeActions: [RemoveAction]) {
         log.debug("Reseted")
         isGameEnd = true
         isAiRunning = false
@@ -713,17 +717,17 @@ extension MainViewController: Game2048Delegate {
         }
     }
     
-    func game2048DidStartNewGame(game2048: Game2048) {
+    func game2048DidStartNewGame(_ game2048: Game2048) {
         log.debug("Started")
         game2048.printOutGameState()
         isGameEnd = false
         
         // Clean up
-        gameStateHistory.removeAll(keepCapacity: false)
-        commandHistory.removeAll(keepCapacity: false)
+        gameStateHistory.removeAll(keepingCapacity: false)
+        commandHistory.removeAll(keepingCapacity: false)
     }
     
-    func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction], score: Int) {
+    func game2048DidUpdate(_ game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction], score: Int) {
         log.debug("Updated")
         game2048.printOutGameState()
         
@@ -741,7 +745,7 @@ extension MainViewController: Game2048Delegate {
         }
     }
     
-    func game2048DidEnd(game2048: Game2048) {
+    func game2048DidEnd(_ game2048: Game2048) {
         game2048.printOutGameState()
         log.debug("Ended")
         isGameEnd = true
@@ -781,52 +785,52 @@ extension MainViewController {
     }
     
     func saveAIChoice() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let number = NSNumber(integer: aiSelectedChoiceIndex)
-        defaults.setObject(number, forKey: "AIChoice")
+        let defaults = UserDefaults.standard
+        let number = NSNumber(value: aiSelectedChoiceIndex)
+        defaults.set(number, forKey: "AIChoice")
     }
     
     func readAIChoice() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let choiceNumber = defaults.objectForKey("AIChoice") as? NSNumber {
-            aiSelectedChoiceIndex = choiceNumber.integerValue
+        let defaults = UserDefaults.standard
+        if let choiceNumber = defaults.object(forKey: "AIChoice") as? NSNumber {
+            aiSelectedChoiceIndex = choiceNumber.intValue
         }
     }
     
     func saveDimension() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setInteger(dimension, forKey: "Dimension")
+        let defaults = UserDefaults.standard
+        defaults.set(dimension, forKey: "Dimension")
     }
     
     func readDimension() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let storedDimension: Int = defaults.integerForKey("Dimension")
+        let defaults = UserDefaults.standard
+        let storedDimension: Int = defaults.integer(forKey: "Dimension")
         if storedDimension > 0 {
             dimension = storedDimension
         }
     }
     
     func saveAnimationDuration() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let number = NSNumber(double: sharedAnimationDuration)
-        defaults.setObject(number, forKey: "AnimationDuration")
+        let defaults = UserDefaults.standard
+        let number = NSNumber(value: sharedAnimationDuration)
+        defaults.set(number, forKey: "AnimationDuration")
     }
     
     func readAnimationDuration() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let durationNumber = defaults.objectForKey("AnimationDuration") as? NSNumber {
+        let defaults = UserDefaults.standard
+        if let durationNumber = defaults.object(forKey: "AnimationDuration") as? NSNumber {
             sharedAnimationDuration = durationNumber.doubleValue
         }
     }
     
-    func saveBestScore(score: Int) {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setInteger(score, forKey: String(format: "BestScore_%d", dimension))
+    func saveBestScore(_ score: Int) {
+        let defaults = UserDefaults.standard
+        defaults.set(score, forKey: String(format: "BestScore_%d", dimension))
     }
     
     func readBestScore() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        bestScoreView.number = defaults.integerForKey(String(format: "BestScore_%d", dimension))
+        let defaults = UserDefaults.standard
+        bestScoreView.number = defaults.integer(forKey: String(format: "BestScore_%d", dimension))
     }
     
     func updateTargetScore() {

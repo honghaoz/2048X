@@ -19,7 +19,7 @@ class GameEndViewController: ConfirmViewController {
         okButton.title = "Retry"
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 //        GAI.sharedInstance().defaultTracker.set(kGAIScreenName, value: "Game End View")
 //        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createScreenView().build() as Dictionary)

@@ -8,6 +8,7 @@
 
 import UIKit
 import ChouTi
+import ChouTiUI
 
 class ConfirmViewController: UIViewController {
     
@@ -20,8 +21,8 @@ class ConfirmViewController: UIViewController {
     var okClosure: (() -> ())? = nil
     var cancelClosure: (() -> ())? = nil
     var dismissClosure: (() -> ())? = nil
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         commonInit()
     }
@@ -35,9 +36,9 @@ class ConfirmViewController: UIViewController {
         animator.allowDragToDismiss = false
         animator.shouldDismissOnTappingOutsideView = true
         animator.presentingViewSize = CGSize(width: ceil(screenWidth * 0.7), height: 120.0)
-        animator.overlayViewStyle = .Normal(UIColor(white: 0.0, alpha: 0.7))
+        animator.overlayViewStyle = .normal(UIColor(white: 0.0, alpha: 0.7))
         
-        modalPresentationStyle = .Custom
+        modalPresentationStyle = .custom
         transitioningDelegate = animator
     }
     
@@ -59,20 +60,20 @@ class ConfirmViewController: UIViewController {
         titleLabel.text = "Ask me something?"
         titleLabel.textColor = UIColor.black
         titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: is320ScreenWidth ? 22 : 25)
-        titleLabel.textAlignment = .Center
+        titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
         
         // OK button
         okButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(okButton)
         okButton.title = "Yes"
-        okButton.addTarget(self, action: #selector(ConfirmViewController.okButtonTapped(_:)), forControlEvents: .TouchUpInside)
+        okButton.addTarget(self, action: #selector(okButtonTapped(_:)), for: .touchUpInside)
         
         // Cancel button
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cancelButton)
         cancelButton.title = "No"
-        cancelButton.addTarget(self, action: #selector(ConfirmViewController.cancelButtonTapped(_:)), forControlEvents: .TouchUpInside)
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped(_:)), for: .touchUpInside)
     }
     
     private func setupConstraints() {
@@ -89,15 +90,15 @@ class ConfirmViewController: UIViewController {
         var constraints = [NSLayoutConstraint]()
         
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|[titleLabel]|", options: [], metrics: metrics, views: views)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|[okButton]-(border_width)-[cancelButton(==okButton)]|", options: [.AlignAllTop, .AlignAllBottom], metrics: metrics, views: views)
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|[okButton]-(border_width)-[cancelButton(==okButton)]|", options: [.alignAllTop, .alignAllBottom], metrics: metrics, views: views)
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|[titleLabel][okButton(50)]|", options: [], metrics: metrics, views: views)
         
-        NSLayoutConstraint.activateConstraints(constraints)
+        NSLayoutConstraint.activate(constraints)
     }
 }
 
 extension ConfirmViewController {
-    func okButtonTapped(sender: UIButton) {
+    @objc func okButtonTapped(_ sender: UIButton) {
         log.debug()
         dismiss(animated: true, completion: nil)
         
@@ -105,7 +106,7 @@ extension ConfirmViewController {
         dismissClosure?()
     }
     
-    func cancelButtonTapped(sender: UIButton) {
+    @objc func cancelButtonTapped(_ sender: UIButton) {
         log.debug()
         dismiss(animated: true, completion: nil)
         

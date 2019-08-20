@@ -110,19 +110,19 @@ class GameboardAssistant: CustomStringConvertible {
         for i in 0..<_size {
             for j in 0..<_size {
                 switch dir {
-                case .Up:
+                case .up:
                     if j > 0 && (_cell[j][i] == _cell[j - 1][i] && _cell[j][i] != 0 || _cell[j][i] != 0 && _cell[j - 1][i] == 0) {
                         return true
                     }
-                case .Down:
+                case .down:
                     if j < _size - 1 && (_cell[j][i] == _cell[j + 1][i] && _cell[j][i] != 0 || _cell[j][i] != 0 && _cell[j + 1][i] == 0) {
                         return true
                     }
-                case .Left:
+                case .left:
                     if i > 0 && (_cell[j][i] == _cell[j][i - 1] && _cell[j][i] != 0 || _cell[j][i] != 0 && _cell[j][i - 1] == 0) {
                         return true
                     }
-                case .Right:
+                case .right:
                     if i < _size - 1 && (_cell[j][i] == _cell[j][i + 1] && _cell[j][i] != 0 || _cell[j][i] != 0 && _cell[j][i + 1] == 0) {
                         return true
                     }
@@ -139,11 +139,11 @@ class GameboardAssistant: CustomStringConvertible {
         var hasMoved = false
         var score: Int = 0
         
-//        var setFun = dir == .Up || dir == .Down ? setRow : setCol
-//        var getFun = dir == .Up || dir == .Down ? getRow : getRow
+//        var setFun = dir == .up || dir == .down ? setRow : setCol
+//        var getFun = dir == .up || dir == .down ? getRow : getRow
 		
         // Move col
-        if dir == .Left || dir == .Right {
+        if dir == .left || dir == .right {
             for j in 0..<_size {
                 var oriRow = getRow(j)
                 moveRowToDirection(&oriRow, dir: dir)
@@ -238,13 +238,13 @@ class GameboardAssistant: CustomStringConvertible {
     
     /// Merge row
     private func mergeRow(_ row: inout [Int], dir: MoveDirection) -> Int {
-        assert(dir == .Left || dir == .Right, "The direction is not valid!")
+        assert(dir == .left || dir == .right, "The direction is not valid!")
         
         var points: Int = 0
         var offset = 0
         var range: [Int]? = nil
         
-        if dir == .Left {
+        if dir == .left {
             range = (0..._size - 2).map{$0}
             offset = 1
         }
@@ -274,13 +274,13 @@ class GameboardAssistant: CustomStringConvertible {
     
     /// Merge col
     private func mergeCol(_ col: inout [Int], dir: MoveDirection) -> Int {
-        assert(dir == .Up || dir == .Down, "The direction is not valid!")
+        assert(dir == .up || dir == .down, "The direction is not valid!")
         
         var points: Int = 0
         var offset = 0
         var range: [Int]? = nil
         
-        if dir == .Up {
+        if dir == .up {
             range = (0..._size - 2).map{$0}
             offset = 1
         }
@@ -308,9 +308,9 @@ class GameboardAssistant: CustomStringConvertible {
     
     /// Move a row to a certain direction
     private func moveColToDirection(_ col: inout [Int], dir: MoveDirection) {
-        assert(dir == .Up || dir == .Down, "The direction is not valid!")
+        assert(dir == .up || dir == .down, "The direction is not valid!")
         col = col.filter({element -> Bool in element != 0})
-        if dir == .Up {
+        if dir == .up {
             col += [Int](count: _size - col.count, repeatedValue: 0)
         }
         else {
@@ -320,9 +320,9 @@ class GameboardAssistant: CustomStringConvertible {
     
     /// Move a col to a certain direction
     private func moveRowToDirection(_ row: inout [Int], dir: MoveDirection) {
-        assert(dir == .Left || dir == .Right, "The direction is not valid!")
+        assert(dir == .left || dir == .right, "The direction is not valid!")
         row = row.filter({element -> Bool in element != 0})
-        if dir == .Left {
+        if dir == .left {
             row += [Int](count: _size - row.count, repeatedValue: 0)
         }
         else {

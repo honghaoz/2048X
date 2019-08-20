@@ -16,10 +16,10 @@ enum Player: Int {
 /// MARK: AI
 class AI {
     private let rawValToDirection: [Int : MoveCommand] = [
-        0 : MoveCommand(direction: .Up),
-        1 : MoveCommand(direction: .Down),
-        2 : MoveCommand(direction: .Left),
-        3 : MoveCommand(direction: .Right)
+        0 : MoveCommand(direction: .up),
+        1 : MoveCommand(direction: .down),
+        2 : MoveCommand(direction: .left),
+        3 : MoveCommand(direction: .right)
     ]
     
     private static var _ai: AI = AI()
@@ -333,7 +333,7 @@ class AI {
     
     // MARK: Calculate next move using Minimax Algorigthm with Alpha-beta pruning
     
-    let directionToOffset: [MoveDirection: (rowOffset: Int, colOffset: Int)] = [.Up: (1, 0), .Down: (-1, 0), .Left: (0, -1), .Right: (0, 1)]
+    let directionToOffset: [MoveDirection: (rowOffset: Int, colOffset: Int)] = [.up: (1, 0), .down: (-1, 0), .left: (0, -1), .right: (0, 1)]
     
     /// Calculate optimal movement for method "minimax alpha-beta pruning"
     func nextMoveUsingAlphaBetaPruning(_ curState: [[Int]], depth: Int = 10) -> MoveCommand? {
@@ -529,7 +529,7 @@ class AI {
     private func monotonicity(_ gameboard: [[Int]]) -> Double {
         // Size of the board
         let size = gameboard[0].count
-        // The monotonicity in all four directions, which are: .Up, .Down, .Left, .Right
+        // The monotonicity in all four directions, which are: .up, .down, .left, .right
         var monoInFourDirection = [Double](count: 4, repeatedValue: 0.0)
         
         // Up and Down direction

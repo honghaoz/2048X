@@ -55,15 +55,15 @@ class BlackSelectionControl: UIControl {
         return CGRect(x: x, y: y, width: width, height: height)
     }
     
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         didSet {
-            selectionDotView.alpha = highlighted ? 1.0 : 0.0
+            selectionDotView.alpha = isHighlighted ? 1.0 : 0.0
         }
     }
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            selectionDotView.alpha = selected ? 1.0 : 0.0
+            selectionDotView.alpha = isSelected ? 1.0 : 0.0
         }
     }
 }

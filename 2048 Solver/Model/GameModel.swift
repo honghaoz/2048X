@@ -9,10 +9,10 @@
 import Foundation
 
 protocol Game2048Delegate: class {
-    func game2048DidReset(game2048: Game2048, removeActions: [RemoveAction])
-    func game2048DidStartNewGame(game2048: Game2048)
-    func game2048DidUpdate(game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction], score: Int)
-    func game2048DidEnd(game2048: Game2048)
+    func game2048DidReset(_ game2048: Game2048, removeActions: [RemoveAction])
+    func game2048DidStartNewGame(_ game2048: Game2048)
+    func game2048DidUpdate(_ game2048: Game2048, moveActions: [MoveAction], initActions: [InitAction], score: Int)
+    func game2048DidEnd(_ game2048: Game2048)
 }
 
 class Game2048: NSObject {
@@ -63,7 +63,7 @@ class Game2048: NSObject {
 extension Game2048 {
     func reset() {
         score = 0
-        commandQueue.removeAll(keepCapacity: true)
+        commandQueue.removeAll(keepingCapacity: true)
         let removedCoordinates = emptyGameBoard()
         var removeActions = [RemoveAction]()
         for coordinate in removedCoordinates {
@@ -84,7 +84,7 @@ extension Game2048 {
         delegate?.game2048DidUpdate(self, moveActions: [], initActions: resultInitActions, score: self.score)
     }
     
-    func playWithCommand(command: MoveCommand) {
+    func playWithCommand(_ command: MoveCommand) {
         if commandQueue.count > commandQueueSize {
             // Queue is wedged. This should actually never happen in practice.
             return
@@ -96,12 +96,12 @@ extension Game2048 {
     private func executeCommandQueue() {
         while commandQueue.count > 0 {
             let command = commandQueue[0]
-            commandQueue.removeAtIndex(0)
+            commandQueue.remove(at: 0)
             performMoveCommand(command)
         }
     }
     
-    private func performMoveCommand(moveCommand: MoveCommand) {
+    private func performMoveCommand(_ moveCommand: MoveCommand) {
         let (resultMoveActions, increasedScores) = GameModelHelper.performMoveCommand(moveCommand, onGameBoard: &gameBoard)
         
         var resultInitActions = [InitAction]()
@@ -129,7 +129,7 @@ extension Game2048 {
         GameModelHelper.allocInitGameBoard(&gameBoard)
     }
     
-    func resetGameBoardWithIntBoard(intGameBoard: [[Int]], score: Int) {
+    func resetGameBoardWithIntBoard(_ intGameBoard: [[Int]], score: Int) {
         self.score = score
         GameModelHelper.resetGameBoard(&gameBoard, withGameBoard: intGameBoard)
     }
@@ -182,7 +182,7 @@ extension Game2048 {
     
     - returns: next game board and increased scores
     */
-    func nextStateFromGameBoard(gameBoard: [[Int]], withCommand command: MoveCommand, shouldCheckGameEnd: Bool = false, shouldInsertNewTile: Bool = false) -> ([[Int]], Int) {
+    func nextStateFromGameBoard(_ gameBoard: [[Int]], withCommand command: MoveCommand, shouldCheckGameEnd: Bool = false, shouldInsertNewTile: Bool = false) -> ([[Int]], Int) {
         precondition(gameBoard.count == dimension, "dimension must be equal")
         // Init a temp game board
         var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = SquareGameBoard(dimension: dimension, initialValue: nil)
@@ -196,25 +196,25 @@ extension Game2048 {
         
         // Mutate tempGameBoard
         switch command.direction {
-        case .Up:
+        case .up:
             for i in 0 ..< dimension {
                 var tilePointers = tempGameBoard.getColumn(i, reversed: true)
                 let (_, score) = GameModelHelper.processOneDimensionTiles(&tilePointers)
                 increasedScore += score
             }
-        case .Down:
+        case .down:
             for i in 0 ..< dimension {
                 var tilePointers = tempGameBoard.getColumn(i, reversed: false)
                 let (_, score) = GameModelHelper.processOneDimensionTiles(&tilePointers)
                 increasedScore += score
             }
-        case .Left:
+        case .left:
             for i in 0 ..< dimension {
                 var tilePointers = tempGameBoard.getRow(i, reversed: true)
                 let (_, score) = GameModelHelper.processOneDimensionTiles(&tilePointers)
                 increasedScore += score
             }
-        case .Right:
+        case .right:
             for i in 0 ..< dimension {
                 var tilePointers = tempGameBoard.getRow(i, reversed: false)
                 let (_, score) = GameModelHelper.processOneDimensionTiles(&tilePointers)
@@ -248,7 +248,7 @@ extension Game2048 {
         return (resultBoard, increasedScore)
     }
     
-    func isGameBoardEnded(gameBoard: [[Int]]) -> Bool {
+    func isGameBoardEnded(_ gameBoard: [[Int]]) -> Bool {
         precondition(gameBoard.count == dimension, "dimension must be equal")
         
         // PreCheck

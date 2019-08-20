@@ -130,7 +130,7 @@ class AIExpectimax {
                     
                     var weight: Double = 1.0
                     var result: Double = 0.0
-                    for (_, tile) in oneDimension.enumerate(){
+                    for (_, tile) in oneDimension.enumerated(){
                         switch tile.memory {
                         case .Empty:
                             break
