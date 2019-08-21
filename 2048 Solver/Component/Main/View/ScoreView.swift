@@ -106,7 +106,7 @@ class ScoreView: UIView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[titleLabel]", options: [], metrics: metrics, views: views))
         
         // ScoreLabel constraints
-        self.addConstraint(NSLayoutConstraint(item: numberLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(numberLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(padding)-[numberLabel]-(padding)-|", options: [], metrics: metrics, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(>=8)-[numberLabel]-(>=8)-|", options: [], metrics: metrics, views: views))
     }

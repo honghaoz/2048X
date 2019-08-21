@@ -155,12 +155,12 @@ class MainViewController: UIViewController {
         
         // GameBoard Size
         let gameBoardWidth = screenWidth * 0.9
-        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 0.0, constant: gameBoardWidth))
-        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView, attribute: .width, relatedBy: .equal, toItem: gameBoardView, attribute: .height, multiplier: 1.0, constant: 0.0))
+        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 0.0, constant: gameBoardWidth))
+        gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView!, attribute: .width, relatedBy: .equal, toItem: gameBoardView, attribute: .height, multiplier: 1.0, constant: 0.0))
         
         // GameBoard center horizontally
-        view.addConstraint(NSLayoutConstraint(item: view, attribute: .centerX, relatedBy: .equal, toItem: gameBoardView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-        let cCenterY = NSLayoutConstraint(item: view, attribute: .centerY, relatedBy: .equal, toItem: gameBoardView, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+        view.addConstraint(NSLayoutConstraint(item: view!, attribute: .centerX, relatedBy: .equal, toItem: gameBoardView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        let cCenterY = NSLayoutConstraint(item: view!, attribute: .centerY, relatedBy: .equal, toItem: gameBoardView, attribute: .centerY, multiplier: 1.0, constant: 0.0)
         // 3.5 inch Screen has a smaller height, this will be broken
         cCenterY.priority = UILayoutPriority(rawValue: 750)
         view.addConstraint(cCenterY)
@@ -200,7 +200,7 @@ class MainViewController: UIViewController {
         
         metrics["targetViewHeight"] = is3_5InchScreen ? gameBoardWidth / 3.6 : gameBoardWidth / 3.0
         // TargetView is square
-        targetView.addConstraint(NSLayoutConstraint(item: targetView, attribute: .height, relatedBy: .equal, toItem: targetView, attribute: .width, multiplier: 1.0, constant: 0.0))
+        targetView.addConstraint(NSLayoutConstraint(item: targetView!, attribute: .height, relatedBy: .equal, toItem: targetView, attribute: .width, multiplier: 1.0, constant: 0.0))
         
         // New Game Button
         newGameButton = BlackBorderButton()
@@ -250,7 +250,7 @@ class MainViewController: UIViewController {
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[targetView(targetViewHeight)]-padding-[gameBoardView]-padding-[runAIButton(buttonHeight)]-padding-[hintButton(buttonHeight)]", options: .alignAllTrailing, metrics: metrics, views: views))
         
         // Target view top spacing >= 22
-        view.addConstraint(NSLayoutConstraint(item: targetView, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: view, attribute: .top, multiplier: 1.0, constant: 22))
+        view.addConstraint(NSLayoutConstraint(item: targetView!, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: view, attribute: .top, multiplier: 1.0, constant: 22))
         
         // Must call this before start game
         view.layoutIfNeeded()

@@ -130,11 +130,11 @@ class SettingViewController: UIViewController {
         
         animationDurationNumberUnderscoreView.backgroundColor = UIColor.black
         
-        let cHeight = NSLayoutConstraint(item: animationDurationNumberUnderscoreView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 0.0, constant: 3.0)
+        let cHeight = NSLayoutConstraint(item: animationDurationNumberUnderscoreView!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 0.0, constant: 3.0)
         animationDurationNumberUnderscoreView.addConstraint(cHeight)
-        let cWidth = NSLayoutConstraint(item: animationDurationNumberUnderscoreView, attribute: .width, relatedBy: .equal, toItem: animationDurationNumberLabel, attribute: .width, multiplier: 1.0, constant: 0.0)
-        let cTopSpacing = NSLayoutConstraint(item: animationDurationNumberUnderscoreView, attribute: .top, relatedBy: .equal, toItem: animationDurationNumberLabel, attribute: .bottom, multiplier: 1.0, constant: 0.0)
-        let cLeading = NSLayoutConstraint(item: animationDurationNumberUnderscoreView, attribute: .leading, relatedBy: .equal, toItem: animationDurationNumberLabel, attribute: .leading, multiplier: 1.0, constant: 0.0)
+        let cWidth = NSLayoutConstraint(item: animationDurationNumberUnderscoreView!, attribute: .width, relatedBy: .equal, toItem: animationDurationNumberLabel, attribute: .width, multiplier: 1.0, constant: 0.0)
+        let cTopSpacing = NSLayoutConstraint(item: animationDurationNumberUnderscoreView!, attribute: .top, relatedBy: .equal, toItem: animationDurationNumberLabel, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+        let cLeading = NSLayoutConstraint(item: animationDurationNumberUnderscoreView!, attribute: .leading, relatedBy: .equal, toItem: animationDurationNumberLabel, attribute: .leading, multiplier: 1.0, constant: 0.0)
         mainContainerView.addConstraints([cWidth, cTopSpacing, cLeading])
         
         // Animation Duration Unit Label

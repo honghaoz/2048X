@@ -91,9 +91,9 @@ class TileView: UIView {
         self.addSubview(numberLabel)
         
         metrics["padding"] = padding
-        
-        self.addConstraint(NSLayoutConstraint(item: numberLabel, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-        self.addConstraint(NSLayoutConstraint(item: numberLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+
+        self.addConstraint(NSLayoutConstraint(item: numberLabel!, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: numberLabel!, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(>=padding)-[numberLabel]-(>=padding)-|", options: [], metrics: metrics, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(>=padding)-[numberLabel]-(>=padding)-|", options: [], metrics: metrics, views: views))
