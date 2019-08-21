@@ -47,7 +47,7 @@ class Game2048: NSObject {
         targetScore = t
         
         // Initialize gameBoard
-        gameBoard =  SquareGameBoard(dimension: d, initialValue: nil)
+        gameBoard = SquareGameBoard(dimension: d, initialValue: nil)
         super.init()
         // Allocate memory and initialize it
         allocateGameBoard()
@@ -162,7 +162,7 @@ extension Game2048 {
         for i in 0 ..< dimension {
             var row = [Int]()
             for j in 0 ..< dimension {
-                switch gameBoard[i, j].memory {
+                switch gameBoard[i, j].pointee {
                 case .Empty:
                     row.append(0)
                 case let .Number(num):
@@ -186,7 +186,7 @@ extension Game2048 {
         precondition(gameBoard.count == dimension, "dimension must be equal")
         // Init a temp game board
         var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = SquareGameBoard(dimension: dimension, initialValue: nil)
-        
+
         // Alloc memory
         GameModelHelper.allocInitGameBoard(&tempGameBoard, withGameBoard: gameBoard)
         
@@ -231,7 +231,7 @@ extension Game2048 {
         for i in 0 ..< dimension {
             var row = [Int]()
             for j in 0 ..< dimension {
-                switch tempGameBoard[i, j].memory {
+                switch tempGameBoard[i, j].pointee {
                 case .Empty:
                     row.append(0)
                 case let .Number(tileNumber):

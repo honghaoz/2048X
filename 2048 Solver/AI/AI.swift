@@ -77,7 +77,7 @@ class AI {
     /// be assigned with 2.
     private func evaluateUsingMonoHeuristic(_ gameboard: [[Int]], ratio: Double = 0.25) -> (Double, (Int, Int)) {
         let yRange = (0...gameboard.count - 1).map{$0}
-        let yRangeReverse = Array((0...gameboard.count - 1).map{$0}.reverse())
+        let yRangeReverse = Array((0...gameboard.count - 1).map{$0}.reversed())
         let xRange = yRange
         let xRangeReverse = yRangeReverse
         let size = gameboard.count
@@ -104,7 +104,7 @@ class AI {
         }
         results.append(tempResult)
         let (x, y) = (initialTile.0, initialTile.1)
-        initialTiles.append(x, y)
+        initialTiles.append((x, y))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -125,7 +125,7 @@ class AI {
         }
         results.append(tempResult)
         let (x2, y2) = (initialTile.0, initialTile.1)
-        initialTiles.append(x2, y2)
+        initialTiles.append((x2, y2))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -146,7 +146,7 @@ class AI {
         }
         results.append(tempResult)
         let (x3, y3) = (initialTile.0, initialTile.1)
-        initialTiles.append(x3, y3)
+        initialTiles.append((x3, y3))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -167,7 +167,7 @@ class AI {
         }
         results.append(tempResult)
         let (x4, y4) = (initialTile.0, initialTile.1)
-        initialTiles.append(x4, y4)
+        initialTiles.append((x4, y4))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -188,7 +188,7 @@ class AI {
         }
         results.append(tempResult)
         let (x5, y5) = (initialTile.0, initialTile.1)
-        initialTiles.append(x5, y5)
+        initialTiles.append((x5, y5))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -209,7 +209,7 @@ class AI {
         }
         results.append(tempResult)
         let (x6, y6) = (initialTile.0, initialTile.1)
-        initialTiles.append(x6, y6)
+        initialTiles.append((x6, y6))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -230,7 +230,7 @@ class AI {
         }
         results.append(tempResult)
         let (x7, y7) = (initialTile.0, initialTile.1)
-        initialTiles.append(x7, y7)
+        initialTiles.append((x7, y7))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -251,7 +251,7 @@ class AI {
         }
         results.append(tempResult)
         let (x8, y8) = (initialTile.0, initialTile.1)
-        initialTiles.append(x8, y8)
+        initialTiles.append((x8, y8))
         
         let maxIndex = results.findMaxIndex()
         return (results[maxIndex], initialTiles[maxIndex])
@@ -478,8 +478,7 @@ class AI {
     private func numberOfIsolated(_ gameboard: [[Int]]) -> Int {
         // Size fo the board
         let size = gameboard[0].count
-        
-        var marked = [[Bool]](count: size, repeatedValue: [Bool](count: size, repeatedValue: true))
+        var marked = [[Bool]](repeating: [Bool](repeating: true, count: size), count: size)
         
         var numOfIsolated = 0
         
@@ -520,7 +519,7 @@ class AI {
                     }
                 }
             }
-        }
+        } 
         
         return smoothness
     }
@@ -530,7 +529,7 @@ class AI {
         // Size of the board
         let size = gameboard[0].count
         // The monotonicity in all four directions, which are: .up, .down, .left, .right
-        var monoInFourDirection = [Double](count: 4, repeatedValue: 0.0)
+        var monoInFourDirection = [Double](repeating: 0.0, count: 4)
         
         // Up and Down direction
         for col in 0..<size {

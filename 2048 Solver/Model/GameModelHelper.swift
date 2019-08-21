@@ -23,7 +23,7 @@ struct GameModelHelper {
         var result = 0
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                switch gameBoard[i, j].memory {
+                switch gameBoard[i, j].pointee {
                 case .Empty:
                     result += 1
                 case .Number:
@@ -45,7 +45,7 @@ struct GameModelHelper {
         var buffer = Array<(Int, Int)>()
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                switch gameBoard[i, j].memory {
+                switch gameBoard[i, j].pointee {
                 case .Empty:
                     buffer += [(i, j)]
                 case .Number:
@@ -192,7 +192,7 @@ struct GameModelHelper {
         for i in 0 ..< dimension {
             var row = [Int]()
             for j in 0 ..< dimension {
-                switch gameBoard[i, j].memory {
+                switch gameBoard[i, j].pointee {
                 case .Empty:
                     row.append(0)
                 case let .Number(num):
@@ -212,8 +212,8 @@ extension GameModelHelper {
         let dimension = gameBoard.dimension
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                gameBoard[i, j] = UnsafeMutablePointer<Tile>.alloc(1)
-                gameBoard[i, j].initialize(Tile.Empty)
+                gameBoard[i, j] = UnsafeMutablePointer<Tile>.allocate(capacity: 1)
+                gameBoard[i, j].initialize(to: Tile.Empty)
             }
         }
     }
@@ -223,11 +223,11 @@ extension GameModelHelper {
         // Alloc memory
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                gameBoard[i, j] = UnsafeMutablePointer<Tile>.alloc(1)
+                gameBoard[i, j] = UnsafeMutablePointer<Tile>.allocate(capacity: 1)
                 if intGameBoard[i][j] == 0 {
-                    gameBoard[i, j].initialize(Tile.Empty)
+                    gameBoard[i, j].initialize(to: Tile.Empty)
                 } else {
-                    gameBoard[i, j].initialize(Tile.Number(intGameBoard[i][j]))
+                    gameBoard[i, j].initialize(to: Tile.Number(intGameBoard[i][j]))
                 }
             }
         }
@@ -239,9 +239,9 @@ extension GameModelHelper {
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
                 if intGameBoard[i][j] == 0 {
-                    gameBoard[i, j].memory = Tile.Empty
+                    gameBoard[i, j].pointee = Tile.Empty
                 } else {
-                    gameBoard[i, j].memory = Tile.Number(intGameBoard[i][j])
+                    gameBoard[i, j].pointee = Tile.Number(intGameBoard[i][j])
                 }
             }
         }
@@ -252,11 +252,11 @@ extension GameModelHelper {
         let dimension = gameBoard.dimension
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                switch gameBoard[i, j].memory {
+                switch gameBoard[i, j].pointee {
                 case .Empty:
                     continue
                 case .Number:
-                    gameBoard[i, j].memory = Tile.Empty
+                    gameBoard[i, j].pointee = Tile.Empty
                     removedCoordinates.append((i, j))
                 }
             }
@@ -269,8 +269,7 @@ extension GameModelHelper {
         // Dealloc temp memory
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                gameBoard[i, j].destroy()
-                gameBoard[i, j].dealloc(1)
+                gameBoard[i, j].deallocate()
             }
         }
     }
@@ -282,8 +281,8 @@ extension GameModelHelper {
         // Alloc memory
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                tempGameBoard[i, j] = UnsafeMutablePointer<Tile>.alloc(1)
-                tempGameBoard[i, j].initialize(gameBoard[i, j].memory)
+                tempGameBoard[i, j] = UnsafeMutablePointer<Tile>.allocate(capacity: 1)
+                tempGameBoard[i, j].initialize(to: gameBoard[i, j].pointee)
             }
         }
         
@@ -310,6 +309,7 @@ extension GameModelHelper {
     }
     
     // * Game board is MUTATED
+    @discardableResult
     static func performInsertCommand(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> InitAction {
         let (initNumber, insertedCoordinate) = insertTileAtRandomLocation(&gameBoard)
         return InitAction(actionType: .Init, initCoordinate: insertedCoordinate, initNumber: initNumber)
@@ -321,6 +321,7 @@ extension GameModelHelper {
         var resultInitActions = [InitAction]()
         
         for _ in 0 ..< times {
+            log.debug("perform insert command")
             resultInitActions.append(GameModelHelper.performInsertCommand(&gameBoard))
         }
         
@@ -395,7 +396,7 @@ extension GameModelHelper {
     */
     static func processOneDimensionTiles(_ tiles: inout [UnsafeMutablePointer<Tile>]) -> ([Action1D], Int) {
         var (actions, increasedScore) = mergeOneDimensionTiles(&tiles)
-        actions.appendContentsOf(condenseOneDimensionTiles(&tiles))
+        actions.append(contentsOf: condenseOneDimensionTiles(&tiles))
         return (actions, increasedScore)
     }
     
@@ -417,8 +418,8 @@ extension GameModelHelper {
         var resultActions = [Action1D]()
         var increasedScore: Int = 0
         let count = tiles.count
-        for i in (count - 1).stride(to: -1, by: -1) {
-            switch tiles[i].memory {
+        for i in stride(from: count - 1, to: -1, by: -1) {
+            switch tiles[i].pointee {
             case .Empty:
                 continue
             case let .Number(tileNumber):
@@ -431,21 +432,21 @@ extension GameModelHelper {
                     case .Empty:
                         // Right wall
                         // [2,_,_] -> [_,_,2]
-                        tiles[rightIndex - 1].memory = Tile.Number(tileNumber)
-                        tiles[i].memory = Tile.Empty
+                        tiles[rightIndex - 1].pointee = Tile.Number(tileNumber)
+                        tiles[i].pointee = Tile.Empty
                         resultActions.append(Action1D(fromIndexs: [i], toIndex: rightIndex - 1))
                     case let .Number(rightTileNumber):
                         // Exist rightTile
                         if tileNumber == rightTileNumber {
                             // Merge
-                            tiles[rightIndex].memory = Tile.Number(tileNumber * 2)
+                            tiles[rightIndex].pointee = Tile.Number(tileNumber * 2)
                             increasedScore += tileNumber * 2
-                            tiles[i].memory = Tile.Number(0)
+                            tiles[i].pointee = Tile.Number(0)
                             resultActions.append(Action1D(fromIndexs: [i, rightIndex], toIndex: rightIndex))
                         } else if rightIndex > i + 1 {
                             // Move
-                            tiles[rightIndex - 1].memory = Tile.Number(tileNumber)
-                            tiles[i].memory = Tile.Empty
+                            tiles[rightIndex - 1].pointee = Tile.Number(tileNumber)
+                            tiles[i].pointee = Tile.Empty
                             resultActions.append(Action1D(fromIndexs: [i], toIndex: rightIndex - 1))
                         }
                     }
@@ -468,13 +469,13 @@ extension GameModelHelper {
     static func condenseOneDimensionTiles(_ tiles: inout [UnsafeMutablePointer<Tile>]) -> [Action1D] {
         var resultActions = [Action1D]()
         let count = tiles.count
-        for i in (count - 1).stride(to: -1, by: -1) {
-            switch tiles[i].memory {
+        for i in stride(from: count - 1, to: -1, by: -1) {
+            switch tiles[i].pointee {
             case .Empty:
                 continue
             case let .Number(tileNumber):
                 if tileNumber == 0 {
-                    tiles[i].memory = Tile.Empty
+                    tiles[i].pointee = Tile.Empty
                     continue
                 } else {
                     let (rightTile, rightIndex) = getFirstRightNonEmptyTileForIndex(i, inTiles: tiles)
@@ -484,16 +485,16 @@ extension GameModelHelper {
                         // [_,_,4] -> [_,_,4]
                         // [2,_,_] -> [_,_,2]
                         if rightIndex > i + 1 {
-                            tiles[rightIndex - 1].memory = Tile.Number(tileNumber)
-                            tiles[i].memory = Tile.Empty
+                            tiles[rightIndex - 1].pointee = Tile.Number(tileNumber)
+                            tiles[i].pointee = Tile.Empty
                             resultActions.append(Action1D(fromIndexs: [i], toIndex: rightIndex - 1))
                         }
                     case .Number(_):
                         // Exist rightTile
                         if rightIndex > i + 1 {
                             // Move
-                            tiles[rightIndex - 1].memory = Tile.Number(tileNumber)
-                            tiles[i].memory = Tile.Empty
+                            tiles[rightIndex - 1].pointee = Tile.Number(tileNumber)
+                            tiles[i].pointee = Tile.Empty
                             resultActions.append(Action1D(fromIndexs: [i], toIndex: rightIndex - 1))
                         }
                     }
@@ -507,8 +508,8 @@ extension GameModelHelper {
     // * Tile array is not mutated
     static func oneDimensionTilesCanMove(_ tiles: inout [UnsafeMutablePointer<Tile>]) -> Bool {
         let count = tiles.count
-        for i in (count - 1).stride(to: -1, by: -1) {
-            switch tiles[i].memory {
+        for i in stride(from: count - 1, to: -1, by: -1) {
+            switch tiles[i].pointee {
             case .Empty:
                 continue
             case let .Number(tileNumber):
@@ -553,18 +554,19 @@ extension GameModelHelper {
     static func getFirstRightNonEmptyTileForIndex(_ index: Int, inTiles tiles: [UnsafeMutablePointer<Tile>]) -> (Tile, Int) {
         let count = tiles.count
         for i in (index + 1) ..< count {
-            switch tiles[i].memory {
+            switch tiles[i].pointee {
             case .Empty:
                 continue
             case .Number:
-                return (tiles[i].memory, i)
+                return (tiles[i].pointee, i)
             }
         }
         return (Tile.Empty, count)
     }
     
     // MARK: Insert
-    
+
+    @discardableResult
     static func insertTileAtRandomLocation(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> (Int, (Int, Int)) {
         let seed = Int(arc4random_uniform(UInt32(100)))
         let initNumber: Int = seed < 15 ? 4 : 2
@@ -583,11 +585,13 @@ extension GameModelHelper {
         let openSpots = gameBoardEmptySpots(&gameBoard)
         if openSpots.count == 0 {
             // No more open spots; don't even bother
+            assertionFailure()
             return (-1, -1)
         }
         // Randomly select an open spot, and put a new tile there
         let idx = Int(arc4random_uniform(UInt32(openSpots.count - 1)))
         let (x, y) = openSpots[idx]
+        assert(x >= 0 && y >= 0)
         insertTile(&gameBoard, pos: (x, y), value: value)
         return (x, y)
     }
@@ -600,9 +604,9 @@ extension GameModelHelper {
     */
     static func insertTile(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>, pos: (Int, Int), value: Int) {
         let (x, y) = pos
-        switch gameBoard[x, y].memory {
+        switch gameBoard[x, y].pointee {
         case .Empty:
-            gameBoard[x, y].memory = Tile.Number(value)
+            gameBoard[x, y].pointee = Tile.Number(value)
         case .Number:
             break
         }
@@ -633,7 +637,7 @@ extension GameModelHelper {
         var buffer = "\n"
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                switch gameBoard[i, j].memory {
+                switch gameBoard[i, j].pointee {
                 case .Empty:
                     buffer += "_\t"
                 case let .Number(num):
@@ -648,7 +652,7 @@ extension GameModelHelper {
     static func printOutTilePointers(_ tilePointers: [UnsafeMutablePointer<Tile>]) {
         print("Tile Pointers:")
         for p in tilePointers {
-            switch p.memory {
+            switch p.pointee {
             case .Empty:
                 print("_\t", terminator: "")
             case let .Number(num):

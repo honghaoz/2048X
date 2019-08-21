@@ -411,14 +411,14 @@ extension MainViewController {
         // Reset game state history (roll back)
         let historyCount = gameStateHistory.count
         var currentGameStateIndex = -1
-        for i in (historyCount - 1).stride(to: -1, by: -1) {
+        for i in stride(from: historyCount - 1, to: -1, by: -1) {
             let gameBoard = gameStateHistory[i].gameBoard
             if GameModelHelper.gameBoard(gameBoard, IsEqualTo: currentDisplayingGameBoard) {
                 currentGameStateIndex = i
             }
         }
         assert(currentGameStateIndex > -1, "error game state history")
-        gameStateHistory.removeRange(currentGameStateIndex + 1 ..< gameStateHistory.count)
+        gameStateHistory.removeSubrange(currentGameStateIndex + 1 ..< gameStateHistory.count)
         
         self.userStoppedAI = false
     }

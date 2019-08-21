@@ -71,7 +71,7 @@ class GameboardAssistant: CustomStringConvertible {
     // MARK: Initializer
     init(size: Int = 4, won: Bool = false) {
         // Initialize the game board and add two new tiles
-        _cell = [[Int]](count: size, repeatedValue: [Int](count: size, repeatedValue: 0))
+        _cell = [[Int]](repeating: [Int](repeating: 0, count: size), count: size)
         _size = size
         _won = won
         addNewTile()
@@ -96,7 +96,7 @@ class GameboardAssistant: CustomStringConvertible {
         for i in 0..<_size {
             for j in 0..<_size {
                 if _cell[j][i] == 0 {
-                    emptyCells.append(x: i, y: j)
+                    emptyCells.append((x: i, y: j))
                 }
             }
         }
@@ -135,6 +135,7 @@ class GameboardAssistant: CustomStringConvertible {
     
     /// Make a move in certain direction, the precondition must be met that the move to this direction is valid.
     /// Return the score of such move
+    @discardableResult
     func makeMove(_ dir: MoveDirection, toAddNewTile: Bool = true) -> Int {
         var hasMoved = false
         var score: Int = 0
@@ -180,7 +181,7 @@ class GameboardAssistant: CustomStringConvertible {
     // MARK: Private methods
     /// Randomly assign a value to an empty cell
     private func addNewTile(_ valueSpecified: Int = 2) {
-        var newTiles: [Int] = [Int](count: 10, repeatedValue: valueSpecified)
+        var newTiles: [Int] = [Int](repeating: valueSpecified, count: 10)
         // If the tile value is not specified, then give a array of choices consisted of [2,2,2,2,2,2,2,2,2,4]
         if valueSpecified == 2 {
             newTiles[9] = 4
@@ -208,7 +209,7 @@ class GameboardAssistant: CustomStringConvertible {
     
     /// Get a copy of certain col
     private func getCol(_ y: Int) -> [Int] {
-        var col = [Int](count: _size, repeatedValue: -1)
+        var col = [Int](repeating: -1, count: _size)
         for i in 0..<_size {
             col[i] = _cell[i][y]
         }
@@ -249,7 +250,7 @@ class GameboardAssistant: CustomStringConvertible {
             offset = 1
         }
         else {
-            range = Array((1..._size - 1).map{$0}.reverse())
+            range = Array((1..._size - 1).map{$0}.reversed())
             offset = -1
         }
 
@@ -285,7 +286,7 @@ class GameboardAssistant: CustomStringConvertible {
             offset = 1
         }
         else {
-            range = Array((1..._size - 1).map{$0}.reverse())
+            range = Array((1..._size - 1).map{ $0 }.reversed())
             offset = -1
         }
 
@@ -311,10 +312,10 @@ class GameboardAssistant: CustomStringConvertible {
         assert(dir == .up || dir == .down, "The direction is not valid!")
         col = col.filter({element -> Bool in element != 0})
         if dir == .up {
-            col += [Int](count: _size - col.count, repeatedValue: 0)
+            col += [Int](repeating: 0, count: _size - col.count)
         }
         else {
-            col = [Int](count: _size - col.count, repeatedValue: 0) + col
+            col = [Int](repeating: 0, count: _size - col.count) + col
         }
     }
     
@@ -323,10 +324,10 @@ class GameboardAssistant: CustomStringConvertible {
         assert(dir == .left || dir == .right, "The direction is not valid!")
         row = row.filter({element -> Bool in element != 0})
         if dir == .left {
-            row += [Int](count: _size - row.count, repeatedValue: 0)
+            row += [Int](repeating: 0, count: _size - row.count)
         }
         else {
-            row = [Int](count: _size - row.count, repeatedValue: 0) + row
+            row = [Int](repeating: 0, count: _size - row.count) + row
         }
     }
 }

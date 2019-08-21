@@ -77,7 +77,7 @@ class AIExpectimax {
 //                score += nextLevelScore
 //                
 //                // Restore
-//                gameBoardCopy[eachAvailableSpot.0, eachAvailableSpot.1].memory = .Empty
+//                gameBoardCopy[eachAvailableSpot.0, eachAvailableSpot.1].pointee = .Empty
 //                
 //                // Try to insert 4
 //                GameModelHelper.insertTile(&gameBoardCopy, pos: eachAvailableSpot, value: 4)
@@ -86,7 +86,7 @@ class AIExpectimax {
 //                score += nextLevelScore
 //                
 //                // Restore
-//                gameBoardCopy[eachAvailableSpot.0, eachAvailableSpot.1].memory = .Empty
+//                gameBoardCopy[eachAvailableSpot.0, eachAvailableSpot.1].pointee = .Empty
 //            }
         }
         return (choosenCommand, maxScore)
@@ -110,20 +110,20 @@ class AIExpectimax {
                 // Whether it's row or column
                 for rOrC in 0 ..< 2 {
                     var oneDimension = [UnsafeMutablePointer<Tile>]()
-                    for row in 0.stride(to: dimension, by: 2) {
-                        let firstRow = Bool(flip) ? (dimension - 1 - row) : row
-                        if Bool(rOrC) {
-                            oneDimension.appendContentsOf(gameBoard.getRow(firstRow, reversed: Bool(startDirection)))
+                    for row in stride(from: 0, to: dimension, by: 2) {
+                        let firstRow = (flip != 0) ? (dimension - 1 - row) : row
+                        if (rOrC != 0) {
+                            oneDimension.append(contentsOf: gameBoard.getRow(firstRow, reversed: (startDirection != 0)))
                         } else {
-                            oneDimension.appendContentsOf(gameBoard.getColumn(firstRow, reversed: Bool(startDirection)))
+                            oneDimension.append(contentsOf: gameBoard.getColumn(firstRow, reversed: (startDirection != 0)))
                         }
                         
-                        let secondRow = Bool(flip) ? (dimension - 1 - row - 1) : row + 1
+                        let secondRow = (flip != 0) ? (dimension - 1 - row - 1) : row + 1
                         if 0 <= secondRow && secondRow < dimension {
-                            if Bool(rOrC) {
-                                oneDimension.appendContentsOf(gameBoard.getRow(firstRow, reversed: !Bool(startDirection)))
+                            if (rOrC != 0) {
+                                oneDimension.append(contentsOf: gameBoard.getRow(firstRow, reversed: (startDirection == 0)))
                             } else {
-                                oneDimension.appendContentsOf(gameBoard.getColumn(firstRow, reversed: !Bool(startDirection)))
+                                oneDimension.append(contentsOf: gameBoard.getColumn(firstRow, reversed: (startDirection == 0)))
                             }
                         }
                     }
@@ -131,7 +131,7 @@ class AIExpectimax {
                     var weight: Double = 1.0
                     var result: Double = 0.0
                     for (_, tile) in oneDimension.enumerated(){
-                        switch tile.memory {
+                        switch tile.pointee {
                         case .Empty:
                             break
                         case .Number(let num):
@@ -163,7 +163,7 @@ class AIExpectimax {
         // Top Left
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                switch gameBoard[i, j].memory {
+                switch gameBoard[i, j].pointee {
                 case .Empty:
                     continue
                 case let .Number(num):
@@ -178,8 +178,8 @@ class AIExpectimax {
         // Top Right
         result = 0
         for i in 0 ..< dimension {
-            for j in (dimension - 1).stride(to: -1, by: -1) {
-                switch gameBoard[i, j].memory {
+            for j in stride(from: dimension - 1, to: -1, by: -1) {
+                switch gameBoard[i, j].pointee {
                 case .Empty:
                     continue
                 case .Number(_):
@@ -193,9 +193,9 @@ class AIExpectimax {
         
         // Bottom Left
         result = 0
-        for i in (dimension - 1).stride(to: -1, by: -1) {
+        for i in stride(from: dimension - 1, to: -1, by: -1) {
             for j in 0 ..< dimension {
-                switch gameBoard[i, j].memory {
+                switch gameBoard[i, j].pointee {
                 case .Empty:
                     continue
                 case .Number(_):
@@ -209,9 +209,9 @@ class AIExpectimax {
         
         // Bottom Right
         result = 0
-        for i in (dimension - 1).stride(to: -1, by: -1) {
-            for j in (dimension - 1).stride(to: -1, by: -1) {
-                switch gameBoard[i, j].memory {
+        for i in stride(from: dimension - 1, to: -1, by: -1) {
+            for j in stride(from: dimension - 1, to: -1, by: -1) {
+                switch gameBoard[i, j].pointee {
                 case .Empty:
                     continue
                 case .Number(_):
@@ -240,7 +240,7 @@ class AIExpectimax {
         assert(hasZero == true, "")
         
         let yRange = (0...gameboard.count - 1).map{$0}
-        let yRangeReverse = Array((0...gameboard.count - 1).map{$0}.reverse())
+        let yRangeReverse = Array((0...gameboard.count - 1).map{ $0 }.reversed())
         let xRange = yRange
         let xRangeReverse = yRangeReverse
         let size = gameboard.count
@@ -267,7 +267,7 @@ class AIExpectimax {
         }
         results.append(tempResult)
         let (x, y) = (initialTile.0, initialTile.1)
-        initialTiles.append(x, y)
+        initialTiles.append((x, y))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -288,7 +288,7 @@ class AIExpectimax {
         }
         results.append(tempResult)
         let (x2, y2) = (initialTile.0, initialTile.1)
-        initialTiles.append(x2, y2)
+        initialTiles.append((x2, y2))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -309,7 +309,7 @@ class AIExpectimax {
         }
         results.append(tempResult)
         let (x3, y3) = (initialTile.0, initialTile.1)
-        initialTiles.append(x3, y3)
+        initialTiles.append((x3, y3))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -330,7 +330,7 @@ class AIExpectimax {
         }
         results.append(tempResult)
         let (x4, y4) = (initialTile.0, initialTile.1)
-        initialTiles.append(x4, y4)
+        initialTiles.append((x4, y4))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -351,7 +351,7 @@ class AIExpectimax {
         }
         results.append(tempResult)
         let (x5, y5) = (initialTile.0, initialTile.1)
-        initialTiles.append(x5, y5)
+        initialTiles.append((x5, y5))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -372,7 +372,7 @@ class AIExpectimax {
         }
         results.append(tempResult)
         let (x6, y6) = (initialTile.0, initialTile.1)
-        initialTiles.append(x6, y6)
+        initialTiles.append((x6, y6))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -393,7 +393,7 @@ class AIExpectimax {
         }
         results.append(tempResult)
         let (x7, y7) = (initialTile.0, initialTile.1)
-        initialTiles.append(x7, y7)
+        initialTiles.append((x7, y7))
         
         tempResult = 0.0
         initialTile = (-1, -1)
@@ -414,7 +414,7 @@ class AIExpectimax {
         }
         results.append(tempResult)
         let (x8, y8) = (initialTile.0, initialTile.1)
-        initialTiles.append(x8, y8)
+        initialTiles.append((x8, y8))
         
         let maxIndex = results.findMaxIndex()
         return (results[maxIndex], initialTiles[maxIndex])
