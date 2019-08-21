@@ -47,7 +47,7 @@ class Game2048: NSObject {
         targetScore = t
         
         // Initialize gameBoard
-        gameBoard = SquareGameBoard(dimension: d, initialValue: nil)
+        gameBoard = SquareGameBoard(dimension: d, initialValue: { return UnsafeMutablePointer<Tile>.allocate(capacity: 1) })
         super.init()
         // Allocate memory and initialize it
         allocateGameBoard()
@@ -185,7 +185,7 @@ extension Game2048 {
     func nextStateFromGameBoard(_ gameBoard: [[Int]], withCommand command: MoveCommand, shouldCheckGameEnd: Bool = false, shouldInsertNewTile: Bool = false) -> ([[Int]], Int) {
         precondition(gameBoard.count == dimension, "dimension must be equal")
         // Init a temp game board
-        var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = SquareGameBoard(dimension: dimension, initialValue: nil)
+        var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = SquareGameBoard(dimension: dimension, initialValue: { return UnsafeMutablePointer<Tile>.allocate(capacity: 1) })
 
         // Alloc memory
         GameModelHelper.allocInitGameBoard(&tempGameBoard, withGameBoard: gameBoard)
@@ -261,7 +261,7 @@ extension Game2048 {
         }
         
         // Init a temp game board
-        var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = SquareGameBoard(dimension: dimension, initialValue: nil)
+        var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = SquareGameBoard(dimension: dimension, initialValue: { return UnsafeMutablePointer<Tile>.allocate(capacity: 1) })
         
         // Alloc memory
         GameModelHelper.allocInitGameBoard(&tempGameBoard, withGameBoard: gameBoard)

@@ -212,7 +212,6 @@ extension GameModelHelper {
         let dimension = gameBoard.dimension
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                gameBoard[i, j] = UnsafeMutablePointer<Tile>.allocate(capacity: 1)
                 gameBoard[i, j].initialize(to: Tile.Empty)
             }
         }
@@ -223,7 +222,6 @@ extension GameModelHelper {
         // Alloc memory
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                gameBoard[i, j] = UnsafeMutablePointer<Tile>.allocate(capacity: 1)
                 if intGameBoard[i][j] == 0 {
                     gameBoard[i, j].initialize(to: Tile.Empty)
                 } else {
@@ -277,11 +275,10 @@ extension GameModelHelper {
     static func copyGameBoard(_ gameBoard: inout SquareGameBoard<UnsafeMutablePointer<Tile>>) -> SquareGameBoard<UnsafeMutablePointer<Tile>> {
         let dimension = gameBoard.dimension
         // Init a temp game board
-        var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = SquareGameBoard(dimension: dimension, initialValue: nil)
+        var tempGameBoard: SquareGameBoard<UnsafeMutablePointer<Tile>> = SquareGameBoard(dimension: dimension, initialValue: { return UnsafeMutablePointer<Tile>.allocate(capacity: 1) })
         // Alloc memory
         for i in 0 ..< dimension {
             for j in 0 ..< dimension {
-                tempGameBoard[i, j] = UnsafeMutablePointer<Tile>.allocate(capacity: 1)
                 tempGameBoard[i, j].initialize(to: gameBoard[i, j].pointee)
             }
         }

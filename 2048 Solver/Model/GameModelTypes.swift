@@ -81,14 +81,17 @@ struct Action1D {
 */
 struct SquareGameBoard<T> {
     let dimension: Int
-    var boardArray: [T?]
+    var boardArray: [T]
 
-    // Migration Note:
-    // Makes T as an optional type because passing `nil` for `UnsafeMutablePointer<Tile>` is no longer accepted.
-    // The nil value is only used in GameModelHelper when game board is allocated.
-    init(dimension d: Int, initialValue: T?) {
+    init(dimension d: Int, initialValue: (() -> T)) {
         dimension = d
-        boardArray = [T?](repeating: initialValue, count: d * d)
+        var newBoardArray = [T]()
+        for _ in 0..<d {
+            for _ in 0..<d {
+                newBoardArray.append(initialValue())
+            }
+        }
+        boardArray = newBoardArray
     }
     
     subscript(row: Int, col: Int) -> T! {
@@ -109,11 +112,11 @@ struct SquareGameBoard<T> {
         var result = [T]()
         if reversed {
             for col in stride(from: dimension - 1, to: -1, by: -1) {
-                result.append(boardArray[row * dimension + col]!)
+                result.append(boardArray[row * dimension + col])
             }
         } else {
             for col in stride(from: 0, to: dimension, by: 1) {
-                result.append(boardArray[row * dimension + col]!)
+                result.append(boardArray[row * dimension + col])
             }
         }
         
@@ -125,11 +128,11 @@ struct SquareGameBoard<T> {
         var result = [T]()
         if reversed {
             for row in stride(from: dimension - 1, to: -1, by: -1) {
-                result.append(boardArray[row * dimension + col]!)
+                result.append(boardArray[row * dimension + col])
             }
         } else {
             for row in stride(from: 0, to: dimension, by: 1) {
-                result.append(boardArray[row * dimension + col]!)
+                result.append(boardArray[row * dimension + col])
             }
         }
         
