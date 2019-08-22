@@ -1,5 +1,5 @@
-# 2048-Solver-AI
-2048 Game Solver in iOS
+# 2048X
+2048 Game with AI solver.
 
 # Contributors
 * [Honghao Zhang](https://github.com/honghaoz)
