@@ -10,11 +10,15 @@ import UIKit
 
 class Log {
     func debug(_ s: String = "") {
+        #if DEBUG
         print("DEBUG: ", s)
+        #endif
     }
 
     func verbose(_ s: String = "") {
+        #if DEBUG
         print("VERBOSE: ", s)
+        #endif
     }
 
     func error(_ s: String = "") {
@@ -39,7 +43,6 @@ var verboseLog = Global.verbose
 var error = Global.error
 
 let DEBUG = Global.DEBUG
-
 
 // MARK: - Device Related
 var isIOS7: Bool = !isIOS8

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import Google
+import Firebase
 import ChouTi
 
 class GameEndViewController: ConfirmViewController {
@@ -17,11 +17,5 @@ class GameEndViewController: ConfirmViewController {
         titleLabel.text = "Game Over!"
         cancelButton.title = "Undo"
         okButton.title = "Retry"
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        GAI.sharedInstance().defaultTracker.set(kGAIScreenName, value: "Game End View")
-//        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createScreenView().build() as Dictionary)
     }
 }

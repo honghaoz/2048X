@@ -1,40 +1,27 @@
-platform :ios, "12.0"
-use_frameworks!
+platform :ios, "11.0"
+inhibit_all_warnings!
 
 def development_pods
   pod 'SwiftFormat/CLI', :configuration => 'Debug'
 end
 
 target '2048X AI' do
+  use_frameworks!
 
   development_pods
 
   pod 'Then', '~> 2.5'
-  # Utility
-  # pod 'Loggerithm', :configurations => ['Debug']
+
+  pod 'Firebase/Core'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Performance'
+  pod 'Crashlytics'
+
   pod 'ChouTi', '~> 0.6'
   pod 'ChouTiUI', '~> 0.6'
 
-  # Analytics
-  # pod 'Google/Analytics'
+  target '2048 SolverTests' do
+    inherit! :search_paths
+  end
 
 end
-
-target '2048 SolverTests' do
-
-end
-
-# post_install_hooks
-#post_install do |installer|
-#    installer.pods_project.targets.each do |target|
-#        if target.name == 'Loggerithm'
-#            target.build_configurations.each do |config|
-#                if config.name == 'Debug'
-#                    config.build_settings['OTHER_SWIFT_FLAGS'] = '-D DEBUG'
-#				else
-#                    config.build_settings['OTHER_SWIFT_FLAGS'] = ''
-#                end
-#            end
-#        end
-#    end
-#end

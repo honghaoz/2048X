@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import Google
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var mainViewController: MainViewController!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        setupAnalytics(launchOptions)
+        FirebaseApp.configure()
 
         mainViewController = MainViewController()
         window = UIWindow()
@@ -27,15 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         return true
-    }
-    
-    func setupAnalytics(_ launchOptions: [UIApplication.LaunchOptionsKey : Any]?) {
-        // GA
-//        let gai = GAI.sharedInstance()
-//        gai.trackUncaughtExceptions = true
-//        gai.dispatchInterval = 5
-//        gai.logger.logLevel = DEBUG ? .Verbose : .Warning
-//        gai.trackerWithTrackingId("UA-45146473-7")
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

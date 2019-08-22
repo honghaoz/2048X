@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import Google
+import Firebase
 import ChouTi
 //import AVFoundation
 
@@ -120,16 +120,6 @@ class MainViewController: UIViewController {
 //            var myGame = Game2048ExperimentTDL()
 //            myGame.RunMe()
 //        })
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        GAI.sharedInstance().defaultTracker.set(kGAIScreenName, value: "Main View")
-//        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createScreenView().build() as Dictionary)
     }
     
     // MARK: Setups
@@ -371,15 +361,14 @@ extension MainViewController {
     private func startNewGame() {
         self.gameModel.reset()
         self.gameModel.start()
-        
-//        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "start_new_game", value: nil).build() as Dictionary
-//        GAI.sharedInstance().defaultTracker.send(eventDict)
+
+        Analytics.logEvent("start_new_game", parameters: nil)
     }
     
     @objc func runAIButtonTapped(_ sender: UIButton?) {
         log.debug()
-//        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "run_ai", value: nil).build() as Dictionary
-//        GAI.sharedInstance().defaultTracker.send(eventDict)
+
+        Analytics.logEvent("run_ai", parameters: nil)
 
         if !isGameEnd {
             isAiRunning = !isAiRunning
@@ -465,8 +454,7 @@ extension MainViewController {
     }
     
     @objc func undoButtonTapped(_ sender: UIButton?) {
-//        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "undo", value: nil).build() as Dictionary
-//        GAI.sharedInstance().defaultTracker.send(eventDict)
+        Analytics.logEvent("undo", parameters: nil)
 
         log.debug()
         let count = gameStateHistory.count
@@ -493,8 +481,7 @@ extension MainViewController {
     }
     
     @objc func hintButtonTapped(_ sender: UIButton) {
-//        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "hint", value: nil).build() as Dictionary
-//        GAI.sharedInstance().defaultTracker.send(eventDict)
+        Analytics.logEvent("hint", parameters: nil)
         
         log.debug()
         if isGameEnd || isAiRunning {

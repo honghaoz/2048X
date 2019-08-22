@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import Google
+import Firebase
 import ChouTi
 import ChouTiUI
 
@@ -79,12 +79,6 @@ class SettingViewController: UIViewController {
         // Select AI
         let selectedIndexPath = IndexPath(row: mainViewController.aiSelectedChoiceIndex, section: 0)
         aiAlgorithmTableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        GAI.sharedInstance().defaultTracker.set(kGAIScreenName, value: "Setting View")
-//        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createScreenView().build() as Dictionary)
     }
     
     private func setupViews() {
@@ -260,8 +254,7 @@ class SettingViewController: UIViewController {
     }
     
     @objc func saveButtonTapped(_ sender: UIButton) {
-//        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "save_setting", value: nil).build() as Dictionary
-//        GAI.sharedInstance().defaultTracker.send(eventDict)
+        Analytics.logEvent("save_settings", parameters: nil)
 
         log.debug()
         sharedAnimationDuration = TimeInterval(animationDurationSlider.value)
@@ -274,8 +267,7 @@ class SettingViewController: UIViewController {
     }
     
     @objc func cancelButtonTapped(_ sender: UIButton) {
-//        let eventDict = GAIDictionaryBuilder.createEventWithCategory("ui_action", action: "button_press", label: "cancel_setting", value: nil).build() as Dictionary
-//        GAI.sharedInstance().defaultTracker.send(eventDict)
+        Analytics.logEvent("cancel_settings", parameters: nil)
 
         log.debug()
         cancelClosure?()
