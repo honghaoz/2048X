@@ -1,29 +1,23 @@
-//
-//  Constant.swift
-//  4AM
-//
-//  Created by Honghao Zhang on 2015-11-15.
-//  Copyright © 2015 Honghao Zhang. All rights reserved.
-//
+// Copyright © 2019 ChouTi. All rights reserved.
 
 import UIKit
 
 class Log {
-    func debug(_ s: String = "") {
-        #if DEBUG
-        print("DEBUG: ", s)
-        #endif
-    }
+  func debug(_ s: String = "") {
+    #if DEBUG
+      print("DEBUG: ", s)
+    #endif
+  }
 
-    func verbose(_ s: String = "") {
-        #if DEBUG
-        print("VERBOSE: ", s)
-        #endif
-    }
+  func verbose(_ s: String = "") {
+    #if DEBUG
+      print("VERBOSE: ", s)
+    #endif
+  }
 
-    func error(_ s: String = "") {
-        print("ERROR: ", s)
-    }
+  func error(_ s: String = "") {
+    print("ERROR: ", s)
+  }
 }
 
 class Global {
@@ -32,9 +26,9 @@ class Global {
   static let error = Log()
 
   #if DEBUG
-  static let DEBUG = true
+    static let DEBUG = true
   #else
-  static let DEBUG = false
+    static let DEBUG = false
   #endif
 }
 
@@ -45,6 +39,7 @@ var error = Global.error
 let DEBUG = Global.DEBUG
 
 // MARK: - Device Related
+
 var isIOS7: Bool = !isIOS8
 let isIOS8: Bool = floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1
 
