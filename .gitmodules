@@ -1,0 +1,6 @@
+[submodule "Submodules/ChouTiUI"]
+	path = Submodules/ChouTiUI
+	url = git@github.com:Ch0uti/ChouTiUI.git
+[submodule "Submodules/ChouTi"]
+	path = Submodules/ChouTi
+	url = git@github.com:Ch0uti/ChouTi.git

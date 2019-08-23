@@ -27,7 +27,6 @@
 		02321A5E1CC889FB0077C74F /* ConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A5D1CC889FB0077C74F /* ConfirmViewController.swift */; };
 		02321A601CC88A060077C74F /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A5F1CC88A060077C74F /* NewGameViewController.swift */; };
 		02321A631CC88A610077C74F /* BlackBorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A621CC88A610077C74F /* BlackBorderButton.swift */; };
-		02321A661CC890D70077C74F /* GameAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A651CC890D70077C74F /* GameAppearance.swift */; };
 		02321A681CC891740077C74F /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A671CC891740077C74F /* ImageAsset.swift */; };
 		023EDE801AAA325100F5B9C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */; };
 		023EDE851AAA325100F5B9C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 023EDE831AAA325100F5B9C5 /* Main.storyboard */; };
@@ -74,7 +73,6 @@
 		02321A5D1CC889FB0077C74F /* ConfirmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmViewController.swift; sourceTree = "<group>"; };
 		02321A5F1CC88A060077C74F /* NewGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
 		02321A621CC88A610077C74F /* BlackBorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackBorderButton.swift; sourceTree = "<group>"; };
-		02321A651CC890D70077C74F /* GameAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameAppearance.swift; sourceTree = "<group>"; };
 		02321A671CC891740077C74F /* ImageAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
 		023EDE7A1AAA325100F5B9C5 /* 2048X AI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2048X AI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023EDE7E1AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -209,14 +207,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		02321A551CC886F60077C74F /* Utility */ = {
+		02321A551CC886F60077C74F /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
 				02321A561CC886F60077C74F /* Appearance.swift */,
 				02321A571CC886F60077C74F /* Constant.swift */,
 				02321A671CC891740077C74F /* ImageAsset.swift */,
 			);
-			path = Utility;
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		02321A611CC88A550077C74F /* View */ = {
@@ -225,14 +223,6 @@
 				02321A621CC88A610077C74F /* BlackBorderButton.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		02321A641CC890BD0077C74F /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				02321A651CC890D70077C74F /* GameAppearance.swift */,
-			);
-			path = Protocol;
 			sourceTree = "<group>";
 		};
 		023EDE711AAA325100F5B9C5 = {
@@ -261,8 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */,
-				02321A551CC886F60077C74F /* Utility */,
-				02321A641CC890BD0077C74F /* Protocol */,
+				02321A551CC886F60077C74F /* Utilities */,
 				FF5C5DD81AAF77C600CE6981 /* AI */,
 				02107C9D1AAD238D00CFF8FF /* Model */,
 				02321A611CC88A550077C74F /* View */,
@@ -560,7 +549,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02321A661CC890D70077C74F /* GameAppearance.swift in Sources */,
 				FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */,
 				02321A5A1CC886F60077C74F /* Appearance.swift in Sources */,
 				02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */,

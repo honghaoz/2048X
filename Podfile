@@ -16,9 +16,11 @@ target '2048X AI' do
   pod 'Firebase/Analytics'
   pod 'Firebase/Performance'
   pod 'Crashlytics'
+  # pod 'Firebase/AdMob'
+  # pod 'Firebase/RemoteConfig'
 
-  pod 'ChouTi', '~> 0.6'
-  pod 'ChouTiUI', '~> 0.6'
+  pod 'ChouTi', :path => './Submodules/ChouTi'
+  pod 'ChouTiUI', :path => './Submodules/ChouTiUI'
 
   target '2048 SolverTests' do
     inherit! :search_paths

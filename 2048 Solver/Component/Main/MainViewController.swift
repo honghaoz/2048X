@@ -1,6 +1,7 @@
 // Copyright © 2019 ChouTi. All rights reserved.
 
 import ChouTi
+import ChouTiUI
 import Firebase
 import UIKit
 // import AVFoundation
@@ -101,7 +102,6 @@ class MainViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-//        log.logLevel = .Debug
 
     readData()
     setupGameModel()
@@ -145,8 +145,8 @@ class MainViewController: UIViewController {
 
     // GameBoard Size
     let gameBoardWidth = screenWidth * 0.9
-    gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 0.0, constant: gameBoardWidth))
-    gameBoardView.addConstraint(NSLayoutConstraint(item: gameBoardView!, attribute: .width, relatedBy: .equal, toItem: gameBoardView, attribute: .height, multiplier: 1.0, constant: 0.0))
+    gameBoardView.constrainTo(width: gameBoardWidth)
+    gameBoardView.constrain(.width, equalTo: .height, ofView: gameBoardView)
 
     // GameBoard center horizontally
     view.addConstraint(NSLayoutConstraint(item: view!, attribute: .centerX, relatedBy: .equal, toItem: gameBoardView, attribute: .centerX, multiplier: 1.0, constant: 0.0))

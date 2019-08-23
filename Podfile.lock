@@ -108,8 +108,8 @@ PODS:
   - Then (2.5.0)
 
 DEPENDENCIES:
-  - ChouTi (~> 0.6)
-  - ChouTiUI (~> 0.6)
+  - ChouTi (from `./Submodules/ChouTi`)
+  - ChouTiUI (from `./Submodules/ChouTiUI`)
   - Crashlytics
   - Firebase/Analytics
   - Firebase/Core
@@ -119,8 +119,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - ChouTi
-    - ChouTiUI
     - Crashlytics
     - Fabric
     - FirebaseCoreDiagnostics
@@ -147,9 +145,15 @@ SPEC REPOS:
     - nanopb
     - Protobuf
 
+EXTERNAL SOURCES:
+  ChouTi:
+    :path: "./Submodules/ChouTi"
+  ChouTiUI:
+    :path: "./Submodules/ChouTiUI"
+
 SPEC CHECKSUMS:
-  ChouTi: 0eefad9be6f783893b5070791744354bfb5ce290
-  ChouTiUI: fd9fa2916a5ffee45104cbcb228fd3767f80e07b
+  ChouTi: 7de47bc8d3fc30a737a61e52a757229c63bbf30c
+  ChouTiUI: 162ba55bbc06a5f911e17dc7ba6fc2f6ddb42fb1
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Firebase: 291d7b0a7b393f252358083b5d224884126fa46d
@@ -173,6 +177,6 @@ SPEC CHECKSUMS:
   SwiftFormat: 304f39cab266d39c9d60f4fceec37ed6f43b931c
   Then: 0157115e883545c77967b452fe74a1d25fb796e1
 
-PODFILE CHECKSUM: 45fcbf0d6292c0e717297ab713e1e5a46d390179
+PODFILE CHECKSUM: cc4a99d8f785541f6d72de5d499d7b2a8ccf5679
 
 COCOAPODS: 1.8.0.beta.1
