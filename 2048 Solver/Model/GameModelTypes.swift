@@ -33,7 +33,9 @@ struct MoveCommand {
 /**
  *  Action is issued from game model to view controller, view controller use Actions to animate game board
  */
-protocol Action { var actionType: ActionType { set get } }
+protocol Action {
+  var actionType: ActionType { set get }
+}
 
 enum ActionType {
   case Init // Create a new tile

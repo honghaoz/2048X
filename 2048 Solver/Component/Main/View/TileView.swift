@@ -2,14 +2,14 @@
 
 import UIKit
 
-class TileView: UIView {
+class TileView: UIView, TileViewType {
   var number: Int = 0 {
     didSet {
       if number <= 0 {
-        numberLabel?.text = ""
+        numberLabel.text = ""
         layer.borderColor = UIColor.clear.cgColor
       } else {
-        numberLabel?.text = String(number)
+        numberLabel.text = String(number)
         layer.borderColor = borderColor.cgColor
       }
       tileBackgroundColor = SharedColors.tileBackgrounColorForNumber(number)
@@ -17,35 +17,32 @@ class TileView: UIView {
     }
   }
 
-  var numberLabel: UILabel!
+  let numberLabel = UILabel()
 
-  var padding: CGFloat = 5.0
+  private var padding: CGFloat = 5.0
 
-  var borderColor: UIColor = UIColor.black {
+  private var borderColor: UIColor = UIColor.black {
     didSet {
       layer.borderColor = borderColor.cgColor
     }
   }
 
-  var tileNumberColor: UIColor = UIColor.black {
+  private var tileNumberColor: UIColor = UIColor.black {
     didSet {
       numberLabel.textColor = tileNumberColor
     }
   }
 
-  var tileBackgroundColor: UIColor = UIColor.clear {
+  private var tileBackgroundColor: UIColor = UIColor.clear {
     didSet {
       backgroundColor = tileBackgroundColor
     }
   }
 
-  var views = [String: UIView]()
-  var metrics = [String: CGFloat]()
-
   // MARK: - Init Methods
 
-  override func awakeFromNib() {
-    super.awakeFromNib()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     setupViews()
   }
 
@@ -54,20 +51,13 @@ class TileView: UIView {
     setupViews()
   }
 
-  convenience init() {
-    self.init(frame: .zero)
-  }
-
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    setupViews()
-  }
-
   private func setupViews() {
+    var views = [String: UIView]()
+    var metrics = [String: CGFloat]()
+
     layer.borderColor = borderColor.cgColor
     layer.borderWidth = 3.0
 
-    numberLabel = UILabel()
     numberLabel.translatesAutoresizingMaskIntoConstraints = false
     numberLabel.numberOfLines = 1
     numberLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 40)
@@ -86,19 +76,19 @@ class TileView: UIView {
 
     metrics["padding"] = padding
 
-    addConstraint(NSLayoutConstraint(item: numberLabel!, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-    addConstraint(NSLayoutConstraint(item: numberLabel!, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+    addConstraint(NSLayoutConstraint(item: numberLabel, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+    addConstraint(NSLayoutConstraint(item: numberLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
 
     addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(>=padding)-[numberLabel]-(>=padding)-|", options: [], metrics: metrics, views: views))
     addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(>=padding)-[numberLabel]-(>=padding)-|", options: [], metrics: metrics, views: views))
   }
 
   func flashTile(completion: ((Bool) -> Void)? = nil) {
-//        numberLabel.textColor = self.backgroundColor
-//        UIView.transitionWithView(numberLabel, duration: sharedAnimationDuration * 2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-//            self.numberLabel?.text = String(self.number)
-//            self.numberLabel.textColor = UIColor.black
-//            }, completion: nil)
+//    numberLabel.textColor = self.backgroundColor
+//    UIView.transition(with: numberLabel, duration: sharedAnimationDuration * 2, options: .transitionCrossDissolve, animations: { () -> Void in
+//      self.numberLabel?.text = String(self.number)
+//      self.numberLabel.textColor = UIColor.black
+//    }, completion: nil)
 
     // Black flash tile
     backgroundColor = UIColor.black

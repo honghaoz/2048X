@@ -16,11 +16,11 @@ class GameBoardView: UIView {
   var tileWidth: CGFloat = 0.0
 
   /// Background tiles provide a grid like background layout
-  var backgroundTiles = [[TileView]]()
+  var backgroundTiles = [[TileViewType]]()
 
-  // Reason to use (TileView?, TileView?):
+  // Reason to use (TileViewType?, TileViewType?):
   // For animation convenience. When merging two tiles are followed by a condense action, both two tiles' frame need to be updated. Thus, the tuple.1 will store the tile underneath and provide the tile view
-  var forgroundTiles = [[(TileView?, TileView?)]]()
+  var forgroundTiles = [[(TileViewType?, TileViewType?)]]()
 
   /// GameModel for GameBoardView
   var gameModel: Game2048! {
@@ -73,7 +73,7 @@ class GameBoardView: UIView {
     backgroundTiles.removeAll(keepingCapacity: false)
     // Layout tiles
     for i in 0..<dimension {
-      var tiles = [TileView]()
+      var tiles = [TileViewType]()
       for j in 0..<dimension {
         let tile = TileView(frame: tileFrameForCoordinate((i, j)))
         tile.number = 0
@@ -91,7 +91,7 @@ class GameBoardView: UIView {
     forgroundTiles.removeAll(keepingCapacity: false)
 
     for _ in 0..<dimension {
-      var tiles = [(TileView?, TileView?)]()
+      var tiles = [(TileViewType?, TileViewType?)]()
       for _ in 0..<dimension {
         tiles.append((nil, nil))
       }
@@ -131,8 +131,9 @@ class GameBoardView: UIView {
     }
   }
 
+  /// Directly mutate the game board.
   func setGameBoardWithBoard(_ board: [[Int]]) {
-    precondition(board.count == dimension, "dimension must be equal")
+    precondition(board.count == dimension, "dimension must be equal.")
     cleanForgroundTileViews()
 
     for i in 0..<dimension {
@@ -311,7 +312,7 @@ extension GameBoardView {
 
                          // Double tile number and animate this tile
                          toTileView.number *= 2
-                         toTileView.flashTile()
+                         toTileView.flashTile(completion: nil)
 
                          // If this is the very last actions, call completion block
                          if index == count - 1 {
