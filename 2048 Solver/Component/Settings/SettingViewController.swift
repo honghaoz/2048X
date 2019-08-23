@@ -48,7 +48,7 @@ class SettingViewController: UIViewController {
     var height: CGFloat = 230 + 10
     height += CGFloat(mainViewController.aiChoices.count) * kTableViewRowHeight
 
-    animator.animationDuration = 0.75
+    animator.animationDuration = 0.5
     animator.allowDragToDismiss = false
     animator.shouldDismissOnTappingOutsideView = true
     animator.overlayViewStyle = .normal(UIColor(white: 0.0, alpha: 0.7))

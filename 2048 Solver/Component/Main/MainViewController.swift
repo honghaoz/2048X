@@ -8,20 +8,7 @@ import UIKit
 
 class MainViewController: UIViewController {
   // MARK: Views
-
-  var scoreView: ScoreView!
-  var bestScoreView: ScoreView!
-  var targetView: ScoreView!
-
-  var gameBoardView: GameBoardView!
-
-  var newGameButton: BlackBorderButton!
-  var runAIButton: BlackBorderButton!
-  var undoButton: BlackBorderButton!
-  var hintButton: BlackBorderButton!
-
-  var views = [String: UIView]()
-  var metrics = [String: CGFloat]()
+  var mainView: MainView!
 
   // MARK: Model
 
@@ -46,9 +33,9 @@ class MainViewController: UIViewController {
   var gameStateHistory = [GameState]() {
     didSet {
       if gameStateHistory.count > 1 {
-        undoButton.isEnabled = true
+        mainView.undoButton.isEnabled = true
       } else {
-        undoButton.isEnabled = false
+        mainView.undoButton.isEnabled = false
       }
     }
   }
@@ -66,8 +53,8 @@ class MainViewController: UIViewController {
   var isAnimating: Bool = false
   var isAiRunning: Bool = false {
     didSet {
-      if runAIButton != nil {
-        runAIButton.title = isAiRunning ? "Stop AI" : "Run AI"
+      if mainView.runAIButton != nil {
+        mainView.runAIButton.title = isAiRunning ? "Stop AI" : "Run AI"
       }
       if isAiRunning {
         runAIforNextStep()
@@ -105,7 +92,19 @@ class MainViewController: UIViewController {
 
     readData()
     setupGameModel()
-    setupViews()
+
+    mainView = MainView(gameModel: gameModel)
+    view.addSubview(mainView)
+    mainView.translatesAutoresizingMaskIntoConstraints = false
+    mainView.constrainTo(edgesOfView: view)
+
+    // Must call this before start game
+    // Calling layoutIfNeeded to trigger gameboard view initialization.
+    // FIXME: Make this better designed
+    mainView.layoutIfNeeded()
+
+    readBestScore()
+    setupButtonActions()
     setupSwipeGestures()
     setupAI()
 
@@ -129,143 +128,34 @@ class MainViewController: UIViewController {
     gameModel.commandQueueSize = kAiCommandQueueSize
   }
 
-  func setupViews() {
-    view.backgroundColor = SharedColors.BackgroundColor
-
-    metrics["padding"] = is3_5InchScreen ? 3.0 : 8.0
-
-    // GameBoardView
-    gameBoardView = GameBoardView()
-    gameBoardView.backgroundColor = view.backgroundColor
-    gameBoardView.gameModel = gameModel
-
-    gameBoardView.translatesAutoresizingMaskIntoConstraints = false
-    views["gameBoardView"] = gameBoardView
-    view.addSubview(gameBoardView)
-
-    // GameBoard Size
-    let gameBoardWidth = screenWidth * 0.9
-    gameBoardView.constrainTo(width: gameBoardWidth)
-    gameBoardView.constrain(.width, equalTo: .height, ofView: gameBoardView)
-
-    // GameBoard center horizontally
-    view.addConstraint(NSLayoutConstraint(item: view!, attribute: .centerX, relatedBy: .equal, toItem: gameBoardView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-    let cCenterY = NSLayoutConstraint(item: view!, attribute: .centerY, relatedBy: .equal, toItem: gameBoardView, attribute: .centerY, multiplier: 1.0, constant: 0.0)
-    // 3.5 inch Screen has a smaller height, this will be broken
-    cCenterY.priority = UILayoutPriority(rawValue: 750)
-    view.addConstraint(cCenterY)
-
-    // ScoreView
-    scoreView = ScoreView()
-    scoreView.translatesAutoresizingMaskIntoConstraints = false
-    views["scoreView"] = scoreView
-    view.addSubview(scoreView)
-
-    scoreView.titleLabel.text = "SCORE"
-    scoreView.numberLabelMaxFontSize = is3_5InchScreen ? 20 : 28
-    scoreView.numberLabel.textAlignment = .right
-    scoreView.number = 0
-
-    // BestScoreView
-    bestScoreView = ScoreView()
-    bestScoreView.translatesAutoresizingMaskIntoConstraints = false
-    views["bestScoreView"] = bestScoreView
-    view.addSubview(bestScoreView)
-
-    bestScoreView.titleLabel.text = "BEST"
-    bestScoreView.numberLabelMaxFontSize = is3_5InchScreen ? 20 : 28
-    bestScoreView.numberLabel.textAlignment = .right
-    bestScoreView.number = 0
-    readBestScore()
-
-    // TargetView
-    targetView = ScoreView()
-    targetView.translatesAutoresizingMaskIntoConstraints = false
-    views["targetView"] = targetView
-    view.addSubview(targetView)
-
-    targetView.titleLabel.text = "TARGET"
-    targetView.numberLabelMaxFontSize = 38
-    targetView.number = 2048 // "∞"
-
-    metrics["targetViewHeight"] = is3_5InchScreen ? gameBoardWidth / 3.6 : gameBoardWidth / 3.0
-    // TargetView is square
-    targetView.addConstraint(NSLayoutConstraint(item: targetView!, attribute: .height, relatedBy: .equal, toItem: targetView, attribute: .width, multiplier: 1.0, constant: 0.0))
-
-    // New Game Button
-    newGameButton = BlackBorderButton()
-    newGameButton.translatesAutoresizingMaskIntoConstraints = false
-    newGameButton.title = "New Game"
-    newGameButton.addTarget(self, action: #selector(newGameButtonTapped(_:)), for: .touchUpInside)
-    views["newGameButton"] = newGameButton
-    view.addSubview(newGameButton)
-
-    // Run AI Button
-    runAIButton = BlackBorderButton()
-    runAIButton.translatesAutoresizingMaskIntoConstraints = false
-    runAIButton.title = "Run"
-    runAIButton.addTarget(self, action: #selector(runAIButtonTapped(_:)), for: .touchUpInside)
-    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(runAIButtonLongPressed(_:)))
-    runAIButton.addGestureRecognizer(longPressGesture)
-    views["runAIButton"] = runAIButton
-    view.addSubview(runAIButton)
-
-    // Undo Button
-    undoButton = BlackBorderButton()
-    undoButton.translatesAutoresizingMaskIntoConstraints = false
-    undoButton.title = "Undo"
-    undoButton.addTarget(self, action: #selector(undoButtonTapped(_:)), for: .touchUpInside)
-    views["undoButton"] = undoButton
-    view.addSubview(undoButton)
-
-    // Hint Button
-    hintButton = BlackBorderButton()
-    hintButton.translatesAutoresizingMaskIntoConstraints = false
-    hintButton.title = "Hint"
-    hintButton.addTarget(self, action: #selector(hintButtonTapped(_:)), for: .touchUpInside)
-    views["hintButton"] = hintButton
-    view.addSubview(hintButton)
-
-//        metrics["buttonHeight"] = is3_5InchScreen ? metrics["targetViewHeight"]! / 2.0 : 50.0
-    metrics["buttonHeight"] = (metrics["targetViewHeight"]! - metrics["padding"]!) / 2.0
-
-    // H
-    view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[scoreView]-padding-[targetView]", options: .alignAllTop, metrics: metrics, views: views))
-    view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[bestScoreView]-padding-[targetView]", options: .alignAllBottom, metrics: metrics, views: views))
-    view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[newGameButton]-padding-[runAIButton(==newGameButton)]", options: .alignAllBottom, metrics: metrics, views: views))
-    view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[undoButton]-padding-[hintButton(==undoButton)]", options: .alignAllBottom, metrics: metrics, views: views))
-
-    // V
-    view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[scoreView]-padding-[bestScoreView(==scoreView)]-padding-[gameBoardView]-padding-[newGameButton(buttonHeight)]-padding-[undoButton(buttonHeight)]", options: .alignAllLeading, metrics: metrics, views: views))
-    view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[targetView(targetViewHeight)]-padding-[gameBoardView]-padding-[runAIButton(buttonHeight)]-padding-[hintButton(buttonHeight)]", options: .alignAllTrailing, metrics: metrics, views: views))
-
-    // Target view top spacing >= 22
-    view.addConstraint(NSLayoutConstraint(item: targetView!, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: view, attribute: .top, multiplier: 1.0, constant: 22))
-
-    // Must call this before start game
-    view.layoutIfNeeded()
+  func setupButtonActions() {
+    mainView.newGameButton.addTarget(self, action: #selector(newGameButtonTapped(_:)), for: .touchUpInside)
+    mainView.runAIButton.addTarget(self, action: #selector(runAIButtonTapped(_:)), for: .touchUpInside)
+    mainView.undoButton.addTarget(self, action: #selector(undoButtonTapped(_:)), for: .touchUpInside)
+    mainView.hintButton.addTarget(self, action: #selector(hintButtonTapped(_:)), for: .touchUpInside)
+    mainView.settingsButton.addTarget(self, action: #selector(settingsButtonTapped(_:)), for: .touchUpInside)
   }
 
   func setupSwipeGestures() {
     let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(upCommand(_:)))
     upSwipe.numberOfTouchesRequired = 1
     upSwipe.direction = .up
-    gameBoardView.addGestureRecognizer(upSwipe)
+    mainView.gameBoardView.addGestureRecognizer(upSwipe)
 
     let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(downCommand(_:)))
     downSwipe.numberOfTouchesRequired = 1
     downSwipe.direction = .down
-    gameBoardView.addGestureRecognizer(downSwipe)
+    mainView.gameBoardView.addGestureRecognizer(downSwipe)
 
     let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(leftCommand(_:)))
     leftSwipe.numberOfTouchesRequired = 1
     leftSwipe.direction = .left
-    gameBoardView.addGestureRecognizer(leftSwipe)
+    mainView.gameBoardView.addGestureRecognizer(leftSwipe)
 
     let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(rightCommand(_:)))
     rightSwipe.numberOfTouchesRequired = 1
     rightSwipe.direction = .right
-    gameBoardView.addGestureRecognizer(rightSwipe)
+    mainView.gameBoardView.addGestureRecognizer(rightSwipe)
   }
 
   func setupAI() {
@@ -380,7 +270,7 @@ extension MainViewController {
         log.debug("cancelAllOperations")
         commandCalculationQueue.cancelAllOperations()
 
-        _ = gameBoardView.currentDisplayingGameBoard()
+        _ = mainView.gameBoardView.currentDisplayingGameBoard()
         // If not animatiing, reset game model immediately
         if !isAnimating {
           resetGameState()
@@ -391,11 +281,11 @@ extension MainViewController {
   }
 
   private func resetGameState() {
-    let currentDisplayingGameBoard = gameBoardView.currentDisplayingGameBoard()
+    let currentDisplayingGameBoard = mainView.gameBoardView.currentDisplayingGameBoard()
 
     // Reset game model from current view state
     log.debug("Reset game model")
-    gameModel.resetGameBoardWithIntBoard(currentDisplayingGameBoard, score: scoreView.number)
+    gameModel.resetGameBoardWithIntBoard(currentDisplayingGameBoard, score: mainView.scoreView.number)
     gameModel.printOutGameState()
 
     // Reset game state history (roll back)
@@ -411,47 +301,6 @@ extension MainViewController {
     gameStateHistory.removeSubrange(currentGameStateIndex + 1..<gameStateHistory.count)
 
     userStoppedAI = false
-  }
-
-  @objc func runAIButtonLongPressed(_ sender: UILongPressGestureRecognizer) {
-    if sender.state == .began {
-      log.debug()
-      var aiIsRunningBefore = false
-      if isAiRunning {
-        aiIsRunningBefore = true
-        runAIButtonTapped(nil)
-      }
-
-      let dimensionBefore = dimension
-
-      let settingVC = SettingViewController(mainViewController: self)
-      settingVC.saveClosure = {
-        self.saveData()
-      }
-
-      settingVC.dismissClosure = {
-        // If dimension is changed, reset game model and game board
-        if dimensionBefore != self.dimension {
-          self.gameModel = Game2048(dimension: self.dimension, target: 0)
-          self.gameModel.delegate = self
-          self.gameModel.commandQueueSize = self.kAiCommandQueueSize
-          self.gameBoardView.gameModel = self.gameModel
-          self.aiRandom.gameModel = self.gameModel
-          self.aiExpectimax.gameModel = self.gameModel
-
-          self.readBestScore()
-
-          self.startNewGame()
-          return
-        }
-
-        if aiIsRunningBefore, !self.isAiRunning {
-          self.runAIButtonTapped(nil)
-        }
-      }
-
-      present(settingVC, animated: true, completion: nil)
-    }
   }
 
   @objc func undoButtonTapped(_: UIButton?) {
@@ -476,8 +325,8 @@ extension MainViewController {
     // Update last state
     let lastState = gameStateHistory.last!
     gameModel.resetGameBoardWithIntBoard(lastState.gameBoard, score: lastState.score)
-    gameBoardView.setGameBoardWithBoard(lastState.gameBoard)
-    scoreView.number = lastState.score
+    mainView.gameBoardView.setGameBoardWithBoard(lastState.gameBoard)
+    mainView.scoreView.number = lastState.score
     updateTargetScore()
   }
 
@@ -489,6 +338,45 @@ extension MainViewController {
       return
     }
     runAIforNextStep(true)
+  }
+
+  @objc func settingsButtonTapped(_: UIButton?) {
+    log.debug()
+    var aiIsRunningBefore = false
+    if isAiRunning {
+      aiIsRunningBefore = true
+      runAIButtonTapped(nil)
+    }
+
+    let dimensionBefore = dimension
+
+    let settingVC = SettingViewController(mainViewController: self)
+    settingVC.saveClosure = {
+      self.saveData()
+    }
+
+    settingVC.dismissClosure = {
+      // If dimension is changed, reset game model and game board
+      if dimensionBefore != self.dimension {
+        self.gameModel = Game2048(dimension: self.dimension, target: 0)
+        self.gameModel.delegate = self
+        self.gameModel.commandQueueSize = self.kAiCommandQueueSize
+        self.mainView.gameBoardView.gameModel = self.gameModel
+        self.aiRandom.gameModel = self.gameModel
+        self.aiExpectimax.gameModel = self.gameModel
+
+        self.readBestScore()
+
+        self.startNewGame()
+        return
+      }
+
+      if aiIsRunningBefore, !self.isAiRunning {
+        self.runAIButtonTapped(nil)
+      }
+    }
+
+    present(settingVC, animated: true, completion: nil)
   }
 }
 
@@ -637,22 +525,22 @@ extension MainViewController {
 
       // Update UIs
       isAnimating = true
-      scoreView.number = actionTuple.score
-      if scoreView.number > bestScoreView.number {
-        bestScoreView.number = scoreView.number
-        saveBestScore(bestScoreView.number)
+      mainView.scoreView.number = actionTuple.score
+      if mainView.scoreView.number > mainView.bestScoreView.number {
+        mainView.bestScoreView.number = mainView.scoreView.number
+        saveBestScore(mainView.bestScoreView.number)
       }
 
       // If this is remove action, just clear board
       if !actionTuple.removeActions.isEmpty {
         log.debug("Clear board")
-        gameBoardView.removeWithRemoveActions(actionTuple.removeActions, completion: { () -> Void in
+        mainView.gameBoardView.removeWithRemoveActions(actionTuple.removeActions, completion: { () -> Void in
           self.isAnimating = false
           self.executeActionQueue()
         })
       } else {
         log.debug("Init/ Move board")
-        gameBoardView.updateWithMoveActions(actionTuple.moveActions, initActions: actionTuple.initActions, completion: {
+        mainView.gameBoardView.updateWithMoveActions(actionTuple.moveActions, initActions: actionTuple.initActions, completion: {
           self.isAnimating = false
           self.updateTargetScore()
 
@@ -823,20 +711,20 @@ extension MainViewController {
 
   func readBestScore() {
     let defaults = UserDefaults.standard
-    bestScoreView.number = defaults.integer(forKey: String(format: "BestScore_%d", dimension))
+    mainView.bestScoreView.number = defaults.integer(forKey: String(format: "BestScore_%d", dimension))
   }
 
   func updateTargetScore() {
-    let currentScore = gameBoardView.currentMaxTileNumber()
+    let currentScore = mainView.gameBoardView.currentMaxTileNumber()
     if currentScore < 2048 {
-      targetView.number = 2048
+      mainView.targetView.number = 2048
       return
     }
 
     var i: Double = 11
     while true {
       if Int(pow(Double(2.0), i)) <= currentScore, currentScore < Int(pow(Double(2.0), i + 1)) {
-        targetView.number = Int(pow(Double(2.0), i + 1))
+        mainView.targetView.number = Int(pow(Double(2.0), i + 1))
         break
       }
       i += 1

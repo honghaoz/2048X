@@ -13,6 +13,7 @@
 		021B70B0230E898F0076B68F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 021B70AF230E898F0076B68F /* GoogleService-Info.plist */; };
 		0225A2421AB7D74500EA72C8 /* GameBoardAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A2411AB7D74500EA72C8 /* GameBoardAssistant.swift */; };
 		0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */; };
+		022FDB2D230FC356008F8E28 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022FDB2C230FC356008F8E28 /* MainView.swift */; };
 		02321A381CC886B00077C74F /* move.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02321A371CC886B00077C74F /* move.wav */; };
 		02321A4B1CC886B80077C74F /* GameEndViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A3D1CC886B80077C74F /* GameEndViewController.swift */; };
 		02321A4D1CC886B80077C74F /* GameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02321A401CC886B80077C74F /* GameBoardView.swift */; };
@@ -58,6 +59,7 @@
 		021B70AF230E898F0076B68F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0225A2411AB7D74500EA72C8 /* GameBoardAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoardAssistant.swift; sourceTree = "<group>"; };
 		0225A24C1AB8FABE00EA72C8 /* AI-Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AI-Random.swift"; sourceTree = "<group>"; };
+		022FDB2C230FC356008F8E28 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		02321A371CC886B00077C74F /* move.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = move.wav; sourceTree = "<group>"; };
 		02321A3D1CC886B80077C74F /* GameEndViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameEndViewController.swift; sourceTree = "<group>"; };
 		02321A401CC886B80077C74F /* GameBoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoardView.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				02321A3D1CC886B80077C74F /* GameEndViewController.swift */,
 				02321A3E1CC886B80077C74F /* View */,
 				02321A431CC886B80077C74F /* MainViewController.swift */,
+				022FDB2C230FC356008F8E28 /* MainView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -562,6 +565,7 @@
 				0225A24D1AB8FABE00EA72C8 /* AI-Random.swift in Sources */,
 				02107CA11AAD244A00CFF8FF /* GameModelTypes.swift in Sources */,
 				02321A601CC88A060077C74F /* NewGameViewController.swift in Sources */,
+				022FDB2D230FC356008F8E28 /* MainView.swift in Sources */,
 				021B70AE230C9E0C0076B68F /* MainViewController.swift in Sources */,
 				02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */,
 				02321A511CC886B80077C74F /* SettingViewController.swift in Sources */,
