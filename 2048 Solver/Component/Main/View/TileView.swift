@@ -84,16 +84,15 @@ class TileView: UIView, TileViewType {
   }
 
   func flashTile(completion: ((Bool) -> Void)? = nil) {
-//    numberLabel.textColor = self.backgroundColor
-//    UIView.transition(with: numberLabel, duration: sharedAnimationDuration * 2, options: .transitionCrossDissolve, animations: { () -> Void in
-//      self.numberLabel?.text = String(self.number)
-//      self.numberLabel.textColor = UIColor.black
-//    }, completion: nil)
+    numberLabel.textColor = self.backgroundColor
+    UIView.transition(with: numberLabel, duration: sharedAnimationDuration, options: .transitionCrossDissolve, animations: { () -> Void in
+      self.numberLabel.text = String(self.number)
+      self.numberLabel.textColor = UIColor.black
+    }, completion: nil)
 
-    // Black flash tile
-    backgroundColor = UIColor.black
+    transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
     UIView.animate(withDuration: sharedAnimationDuration * 2, animations: { () -> Void in
-      self.backgroundColor = self.tileBackgroundColor
+      self.transform = .identity
     }, completion: { (finished) -> Void in
       completion?(finished)
     })

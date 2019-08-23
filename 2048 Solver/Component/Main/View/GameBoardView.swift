@@ -227,10 +227,12 @@ extension GameBoardView {
       addSubview(tile)
 
       // Blink pattern: 0 -> 1
+      tile.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
       tile.alpha = 0.0
       UIView.animate(withDuration: sharedAnimationDuration * 2,
                      animations: { () -> Void in
                        tile.alpha = 1.0
+                      tile.transform = .identity
                      },
                      completion: { (_) -> Void in
                        // If this is the very last actions, call completion block
