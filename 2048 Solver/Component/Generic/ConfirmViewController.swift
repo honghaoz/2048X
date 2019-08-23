@@ -25,7 +25,7 @@ class ConfirmViewController: UIViewController {
   }
 
   private func commonInit() {
-    animator.animationDuration = 0.75
+    animator.animationDuration = 0.5
     animator.allowDragToDismiss = false
     animator.shouldDismissOnTappingOutsideView = true
     animator.presentingViewSize = CGSize(width: ceil(screenWidth * 0.7), height: 120.0)

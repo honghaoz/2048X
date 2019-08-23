@@ -10,7 +10,7 @@ class BlackBorderButton: UIButton {
     }
   }
 
-  var titleLabelMaxFontSize: CGFloat = 24 {
+  private var titleLabelMaxFontSize: CGFloat = 22 {
     didSet {
       titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: titleLabelMaxFontSize)
     }
