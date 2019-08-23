@@ -39,8 +39,8 @@
 		0249C9C51ACB1AE5000E954F /* AI-Expectimax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0249C9C41ACB1AE5000E954F /* AI-Expectimax.swift */; };
 		02F21BAE1ABA3EDD00487782 /* GameModelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */; };
 		02F21BB01ABA51B800487782 /* AI-Greedy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F21BAF1ABA51B800487782 /* AI-Greedy.swift */; };
-		B3946ED754105FE83B7898ED /* Pods_2048X_AI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4EF4C88FD5A3D3F3E8BF2BF /* Pods_2048X_AI.framework */; };
-		C9C4CC7E727DB54415A89BAE /* Pods_2048_SolverTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3113F9201CCAA35BCD8983C /* Pods_2048_SolverTests.framework */; };
+		4F6039E79C6FE64432333523 /* Pods_2048_AI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C8D35E9E731770920A1996A /* Pods_2048_AI.framework */; };
+		8DBCD7BBDF5AFDC109EA10E2 /* Pods_2048_AITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91BBF7B1D821D4CF62FCAAA5 /* Pods_2048_AITests.framework */; };
 		E431E4911B896E6700B28290 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = E431E4901B896E6700B28290 /* Podfile */; };
 		FF5C5DDA1AAF782A00CE6981 /* AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5C5DD91AAF782A00CE6981 /* AI.swift */; };
 /* End PBXBuildFile section */
@@ -80,13 +80,13 @@
 		02321A5F1CC88A060077C74F /* NewGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
 		02321A621CC88A610077C74F /* BlackBorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackBorderButton.swift; sourceTree = "<group>"; };
 		02321A671CC891740077C74F /* ImageAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
-		023EDE7A1AAA325100F5B9C5 /* 2048X AI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2048X AI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		023EDE7A1AAA325100F5B9C5 /* 2048 AI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2048 AI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023EDE7E1AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		023EDE841AAA325100F5B9C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		023EDE861AAA325100F5B9C5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		023EDE891AAA325100F5B9C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		023EDE8F1AAA325100F5B9C5 /* 2048 SolverTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "2048 SolverTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		023EDE8F1AAA325100F5B9C5 /* 2048 AITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "2048 AITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		023EDE941AAA325100F5B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _048_SolverTests.swift; sourceTree = "<group>"; };
 		0243DDEB1AD34825000CB475 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -108,11 +108,15 @@
 		02FA01671AD32ED2009F73AD /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		02FA01691AD32EDE009F73AD /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		0531437AE1E2C476FD8D7902 /* Pods-2048 SolverTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048 SolverTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-2048 SolverTests/Pods-2048 SolverTests.debug.xcconfig"; sourceTree = "<group>"; };
+		34CD5F81187C9C11322A51EE /* Pods-2048 AITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048 AITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-2048 AITests/Pods-2048 AITests.release.xcconfig"; sourceTree = "<group>"; };
 		35E1AD304AA5C71D83F4679B /* Pods-2048 SolverTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048 SolverTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-2048 SolverTests/Pods-2048 SolverTests.release.xcconfig"; sourceTree = "<group>"; };
 		62F4EF6554B600BCFE68170D /* Pods-2048X AI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048X AI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-2048X AI/Pods-2048X AI.debug.xcconfig"; sourceTree = "<group>"; };
-		A3113F9201CCAA35BCD8983C /* Pods_2048_SolverTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_2048_SolverTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6589B0A1531E31D3F31B9267 /* Pods-2048 AI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048 AI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-2048 AI/Pods-2048 AI.debug.xcconfig"; sourceTree = "<group>"; };
+		8C8D35E9E731770920A1996A /* Pods_2048_AI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_2048_AI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		91BBF7B1D821D4CF62FCAAA5 /* Pods_2048_AITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_2048_AITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8D1C4C0C91467F00BFC8C98 /* Pods-2048 AI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048 AI.release.xcconfig"; path = "Pods/Target Support Files/Pods-2048 AI/Pods-2048 AI.release.xcconfig"; sourceTree = "<group>"; };
 		C049BFB8E328A928EC62D15C /* Pods-2048X AI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048X AI.release.xcconfig"; path = "Pods/Target Support Files/Pods-2048X AI/Pods-2048X AI.release.xcconfig"; sourceTree = "<group>"; };
-		D4EF4C88FD5A3D3F3E8BF2BF /* Pods_2048X_AI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_2048X_AI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8B9E0352112D5C89561C2F8 /* Pods-2048 AITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-2048 AITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-2048 AITests/Pods-2048 AITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E431E4901B896E6700B28290 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		FF5C5DD91AAF782A00CE6981 /* AI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,7 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3946ED754105FE83B7898ED /* Pods_2048X_AI.framework in Frameworks */,
+				4F6039E79C6FE64432333523 /* Pods_2048_AI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,39 +134,39 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9C4CC7E727DB54415A89BAE /* Pods_2048_SolverTests.framework in Frameworks */,
+				8DBCD7BBDF5AFDC109EA10E2 /* Pods_2048_AITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		02107C9D1AAD238D00CFF8FF /* Model */ = {
+		02107C9D1AAD238D00CFF8FF /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				02107C9E1AAD240400CFF8FF /* GameModel.swift */,
 				02107CA01AAD244A00CFF8FF /* GameModelTypes.swift */,
 				02F21BAD1ABA3EDD00487782 /* GameModelHelper.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
-		02321A361CC886B00077C74F /* Resource */ = {
+		02321A361CC886B00077C74F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				02321A371CC886B00077C74F /* move.wav */,
 			);
-			path = Resource;
+			path = Resources;
 			sourceTree = "<group>";
 		};
-		02321A391CC886B80077C74F /* Component */ = {
+		02321A391CC886B80077C74F /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				02321A3A1CC886B80077C74F /* Generic */,
 				02321A3B1CC886B80077C74F /* Main */,
 				02321A441CC886B80077C74F /* Settings */,
 			);
-			path = Component;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		02321A3A1CC886B80077C74F /* Generic */ = {
@@ -226,19 +230,19 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		02321A611CC88A550077C74F /* View */ = {
+		02321A611CC88A550077C74F /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				02321A621CC88A610077C74F /* BlackBorderButton.swift */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		023EDE711AAA325100F5B9C5 = {
 			isa = PBXGroup;
 			children = (
-				023EDE7C1AAA325100F5B9C5 /* 2048 Solver */,
-				023EDE921AAA325100F5B9C5 /* 2048 SolverTests */,
+				023EDE7C1AAA325100F5B9C5 /* 2048 AI */,
+				023EDE921AAA325100F5B9C5 /* 2048 AITests */,
 				023EDE7B1AAA325100F5B9C5 /* Products */,
 				EAD062C47FE0F47FE04DE401 /* Pods */,
 				754B25108EAF598101145E50 /* Frameworks */,
@@ -250,46 +254,46 @@
 		023EDE7B1AAA325100F5B9C5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				023EDE7A1AAA325100F5B9C5 /* 2048X AI.app */,
-				023EDE8F1AAA325100F5B9C5 /* 2048 SolverTests.xctest */,
+				023EDE7A1AAA325100F5B9C5 /* 2048 AI.app */,
+				023EDE8F1AAA325100F5B9C5 /* 2048 AITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		023EDE7C1AAA325100F5B9C5 /* 2048 Solver */ = {
+		023EDE7C1AAA325100F5B9C5 /* 2048 AI */ = {
 			isa = PBXGroup;
 			children = (
 				023EDE7F1AAA325100F5B9C5 /* AppDelegate.swift */,
 				02321A551CC886F60077C74F /* Utilities */,
 				FF5C5DD81AAF77C600CE6981 /* AI */,
-				02107C9D1AAD238D00CFF8FF /* Model */,
-				02321A611CC88A550077C74F /* View */,
-				02321A391CC886B80077C74F /* Component */,
+				02107C9D1AAD238D00CFF8FF /* Models */,
+				02321A611CC88A550077C74F /* Views */,
+				02321A391CC886B80077C74F /* Components */,
 				023EDE831AAA325100F5B9C5 /* Main.storyboard */,
 				023EDE881AAA325100F5B9C5 /* LaunchScreen.xib */,
-				023EDE861AAA325100F5B9C5 /* Images.xcassets */,
-				02321A361CC886B00077C74F /* Resource */,
+				02321A361CC886B00077C74F /* Resources */,
 				023EDE7D1AAA325100F5B9C5 /* Supporting Files */,
 			);
-			path = "2048 Solver";
+			path = "2048 AI";
 			sourceTree = "<group>";
 		};
 		023EDE7D1AAA325100F5B9C5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				023EDE861AAA325100F5B9C5 /* Images.xcassets */,
 				021B70AF230E898F0076B68F /* GoogleService-Info.plist */,
 				023EDE7E1AAA325100F5B9C5 /* Info.plist */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		023EDE921AAA325100F5B9C5 /* 2048 SolverTests */ = {
+		023EDE921AAA325100F5B9C5 /* 2048 AITests */ = {
 			isa = PBXGroup;
 			children = (
 				023EDE951AAA325100F5B9C5 /* _048_SolverTests.swift */,
 				023EDE931AAA325100F5B9C5 /* Supporting Files */,
 			);
-			path = "2048 SolverTests";
+			path = "2048 AITests";
 			sourceTree = "<group>";
 		};
 		023EDE931AAA325100F5B9C5 /* Supporting Files */ = {
@@ -318,8 +322,8 @@
 				02FA01591AD32EA6009F73AD /* CoreGraphics.framework */,
 				02FA01571AD32EA0009F73AD /* CFNetwork.framework */,
 				02FA01551AD32E99009F73AD /* AudioUnit.framework */,
-				A3113F9201CCAA35BCD8983C /* Pods_2048_SolverTests.framework */,
-				D4EF4C88FD5A3D3F3E8BF2BF /* Pods_2048X_AI.framework */,
+				8C8D35E9E731770920A1996A /* Pods_2048_AI.framework */,
+				91BBF7B1D821D4CF62FCAAA5 /* Pods_2048_AITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -332,6 +336,10 @@
 				35E1AD304AA5C71D83F4679B /* Pods-2048 SolverTests.release.xcconfig */,
 				62F4EF6554B600BCFE68170D /* Pods-2048X AI.debug.xcconfig */,
 				C049BFB8E328A928EC62D15C /* Pods-2048X AI.release.xcconfig */,
+				6589B0A1531E31D3F31B9267 /* Pods-2048 AI.debug.xcconfig */,
+				B8D1C4C0C91467F00BFC8C98 /* Pods-2048 AI.release.xcconfig */,
+				D8B9E0352112D5C89561C2F8 /* Pods-2048 AITests.debug.xcconfig */,
+				34CD5F81187C9C11322A51EE /* Pods-2048 AITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -351,9 +359,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		023EDE791AAA325100F5B9C5 /* 2048X AI */ = {
+		023EDE791AAA325100F5B9C5 /* 2048 AI */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 023EDE991AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048X AI" */;
+			buildConfigurationList = 023EDE991AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048 AI" */;
 			buildPhases = (
 				BD6643E487F6195CF3510A97 /* [CP] Check Pods Manifest.lock */,
 				023EDE761AAA325100F5B9C5 /* Sources */,
@@ -365,14 +373,14 @@
 			);
 			dependencies = (
 			);
-			name = "2048X AI";
+			name = "2048 AI";
 			productName = "2048 Solver";
-			productReference = 023EDE7A1AAA325100F5B9C5 /* 2048X AI.app */;
+			productReference = 023EDE7A1AAA325100F5B9C5 /* 2048 AI.app */;
 			productType = "com.apple.product-type.application";
 		};
-		023EDE8E1AAA325100F5B9C5 /* 2048 SolverTests */ = {
+		023EDE8E1AAA325100F5B9C5 /* 2048 AITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 023EDE9C1AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048 SolverTests" */;
+			buildConfigurationList = 023EDE9C1AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048 AITests" */;
 			buildPhases = (
 				9B6C7EB4FA40A5004796D908 /* [CP] Check Pods Manifest.lock */,
 				1582B43C5C66E3C5BDD783F9 /* 📦 Check Pods Manifest.lock */,
@@ -385,9 +393,9 @@
 			dependencies = (
 				023EDE911AAA325100F5B9C5 /* PBXTargetDependency */,
 			);
-			name = "2048 SolverTests";
+			name = "2048 AITests";
 			productName = "2048 SolverTests";
-			productReference = 023EDE8F1AAA325100F5B9C5 /* 2048 SolverTests.xctest */;
+			productReference = 023EDE8F1AAA325100F5B9C5 /* 2048 AITests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -416,7 +424,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 023EDE751AAA325100F5B9C5 /* Build configuration list for PBXProject "2048 Solver" */;
+			buildConfigurationList = 023EDE751AAA325100F5B9C5 /* Build configuration list for PBXProject "2048 AI" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -430,8 +438,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				023EDE791AAA325100F5B9C5 /* 2048X AI */,
-				023EDE8E1AAA325100F5B9C5 /* 2048 SolverTests */,
+				023EDE791AAA325100F5B9C5 /* 2048 AI */,
+				023EDE8E1AAA325100F5B9C5 /* 2048 AITests */,
 			);
 		};
 /* End PBXProject section */
@@ -481,7 +489,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-2048X AI/Pods-2048X AI-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-2048 AI/Pods-2048 AI-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ChouTi/ChouTi.framework",
 				"${BUILT_PRODUCTS_DIR}/ChouTiUI/ChouTiUI.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
@@ -504,7 +512,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-2048X AI/Pods-2048X AI-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-2048 AI/Pods-2048 AI-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9B6C7EB4FA40A5004796D908 /* [CP] Check Pods Manifest.lock */ = {
@@ -522,7 +530,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-2048 SolverTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-2048 AITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -544,7 +552,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-2048X AI-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-2048 AI-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -601,7 +609,7 @@
 /* Begin PBXTargetDependency section */
 		023EDE911AAA325100F5B9C5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 023EDE791AAA325100F5B9C5 /* 2048X AI */;
+			target = 023EDE791AAA325100F5B9C5 /* 2048 AI */;
 			targetProxy = 023EDE901AAA325100F5B9C5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -735,14 +743,14 @@
 		};
 		023EDE9A1AAA325100F5B9C5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 62F4EF6554B600BCFE68170D /* Pods-2048X AI.debug.xcconfig */;
+			baseConfigurationReference = 6589B0A1531E31D3F31B9267 /* Pods-2048 AI.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UYW9ZSKZAQ;
-				INFOPLIST_FILE = "2048 Solver/Info.plist";
+				INFOPLIST_FILE = "2048 AI/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D DEBUG";
@@ -756,14 +764,14 @@
 		};
 		023EDE9B1AAA325100F5B9C5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C049BFB8E328A928EC62D15C /* Pods-2048X AI.release.xcconfig */;
+			baseConfigurationReference = B8D1C4C0C91467F00BFC8C98 /* Pods-2048 AI.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UYW9ZSKZAQ;
-				INFOPLIST_FILE = "2048 Solver/Info.plist";
+				INFOPLIST_FILE = "2048 AI/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
@@ -776,7 +784,7 @@
 		};
 		023EDE9D1AAA325100F5B9C5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0531437AE1E2C476FD8D7902 /* Pods-2048 SolverTests.debug.xcconfig */;
+			baseConfigurationReference = D8B9E0352112D5C89561C2F8 /* Pods-2048 AITests.debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -786,7 +794,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "2048 SolverTests/Info.plist";
+				INFOPLIST_FILE = "2048 AITests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "honghaoz.$(PRODUCT_NAME:rfc1034identifier)";
@@ -796,13 +804,13 @@
 		};
 		023EDE9E1AAA325100F5B9C5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E1AD304AA5C71D83F4679B /* Pods-2048 SolverTests.release.xcconfig */;
+			baseConfigurationReference = 34CD5F81187C9C11322A51EE /* Pods-2048 AITests.release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "2048 SolverTests/Info.plist";
+				INFOPLIST_FILE = "2048 AITests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "honghaoz.$(PRODUCT_NAME:rfc1034identifier)";
@@ -813,7 +821,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		023EDE751AAA325100F5B9C5 /* Build configuration list for PBXProject "2048 Solver" */ = {
+		023EDE751AAA325100F5B9C5 /* Build configuration list for PBXProject "2048 AI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				023EDE971AAA325100F5B9C5 /* Debug */,
@@ -822,7 +830,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		023EDE991AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048X AI" */ = {
+		023EDE991AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048 AI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				023EDE9A1AAA325100F5B9C5 /* Debug */,
@@ -831,7 +839,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		023EDE9C1AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048 SolverTests" */ = {
+		023EDE9C1AAA325100F5B9C5 /* Build configuration list for PBXNativeTarget "2048 AITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				023EDE9D1AAA325100F5B9C5 /* Debug */,

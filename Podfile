@@ -5,7 +5,7 @@ def development_pods
   pod 'SwiftFormat/CLI', :configuration => 'Debug'
 end
 
-target '2048X AI' do
+target '2048 AI' do
   use_frameworks!
 
   development_pods
@@ -22,7 +22,7 @@ target '2048X AI' do
   pod 'ChouTi', :path => './Submodules/ChouTi'
   pod 'ChouTiUI', :path => './Submodules/ChouTiUI'
 
-  target '2048 SolverTests' do
+  target '2048 AITests' do
     inherit! :search_paths
   end
 
